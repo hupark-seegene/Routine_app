@@ -1,0 +1,19 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+// Apply settings plugin directly from JAR
+buildscript {
+    dependencies {
+        classpath(files("../node_modules/@react-native/gradle-plugin/settings-plugin/build/libs/settings-plugin.jar"))
+    }
+}
+
+apply plugin: "com.facebook.react.settings"
+
+rootProject.name = 'SquashTrainingApp'
+include ':app'

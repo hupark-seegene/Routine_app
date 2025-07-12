@@ -1,0 +1,34 @@
+// Fix for missing namespace and buildConfig in native modules
+allprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            android {
+                // Add buildConfig feature if not already present
+                if (!hasProperty("buildFeatures") || buildFeatures.buildConfig == null) {
+                    buildFeatures {
+                        buildConfig = true
+                    }
+                }
+                
+                // Add namespace if missing
+                if (namespace == null) {
+                    if (project.name == "react-native-linear-gradient") {
+                        namespace "com.BV.LinearGradient"
+                    } else if (project.name == "react-native-svg") {
+                        namespace "com.horcrux.svg"
+                    } else if (project.name == "react-native-screens") {
+                        namespace "com.swmansion.rnscreens"
+                    } else if (project.name == "react-native-safe-area-context") {
+                        namespace "com.th3rdwave.safeareacontext"
+                    } else if (project.name == "react-native-vector-icons") {
+                        namespace "com.oblador.vectoricons"
+                    } else if (project.name == "react-native-sqlite-storage") {
+                        namespace "io.sqlc"
+                    } else if (project.name == "@react-native-community_slider") {
+                        namespace "com.reactnativecommunity.slider"
+                    }
+                }
+            }
+        }
+    }
+}

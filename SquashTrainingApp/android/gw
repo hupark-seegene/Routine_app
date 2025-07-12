@@ -1,0 +1,118 @@
+#!/bin/bash
+# Gradle Wrapper with automatic React Native plugin building for RN 0.80+
+# Use this instead of ./gradlew to ensure the RN plugin is built
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Get the directory of this script
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$SCRIPT_DIR/.."
+PLUGIN_PATH="$PROJECT_ROOT/node_modules/@react-native/gradle-plugin"
+PLUGIN_JAR="$PLUGIN_PATH/react-native-gradle-plugin/build/libs/react-native-gradle-plugin.jar"
+SETTINGS_JAR="$PLUGIN_PATH/settings-plugin/build/libs/settings-plugin.jar"
+
+# Function to print colored output
+print_info() {
+    echo -e "${CYAN}[gw]${NC} $1"
+}
+
+print_success() {
+    echo -e "${GREEN}[gw]${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}[gw]${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}[gw]${NC} $1"
+}
+
+# Check if Java is available
+if ! command -v java &> /dev/null; then
+    print_error "Java is not installed or not in PATH!"
+    print_info "Please install JDK 17 or set JAVA_HOME correctly."
+    exit 1
+fi
+
+# Check if plugin directory exists
+if [ ! -d "$PLUGIN_PATH" ]; then
+    echo
+    print_error "React Native gradle plugin not found!"
+    print_error "Expected at: $PLUGIN_PATH"
+    echo
+    print_info "Please run 'npm install' in the project root first."
+    exit 1
+fi
+
+# Check if plugin is built
+PLUGIN_BUILT=false
+if [ -f "$PLUGIN_JAR" ] && [ -f "$SETTINGS_JAR" ]; then
+    PLUGIN_BUILT=true
+fi
+
+# Build plugin if needed
+if [ "$PLUGIN_BUILT" = false ]; then
+    echo
+    print_warning "React Native gradle plugin not built. Building it now..."
+    print_info "This is a one-time process that takes 1-2 minutes."
+    echo
+    
+    # Save current directory
+    CURRENT_DIR=$(pwd)
+    
+    # Go to plugin directory
+    cd "$PLUGIN_PATH" || exit 1
+    
+    # Use the plugin's own gradlew to build
+    if [ -f "./gradlew" ]; then
+        # Try to build with tests first
+        print_info "Building plugin (including tests)..."
+        ./gradlew build
+        BUILD_RESULT=$?
+        
+        if [ $BUILD_RESULT -ne 0 ]; then
+            echo
+            print_warning "Build with tests failed. Retrying without tests..."
+            print_info "Note: This is common on Windows due to test compatibility issues."
+            echo
+            
+            # Try building without tests
+            ./gradlew build -x test
+            BUILD_RESULT=$?
+        fi
+    else
+        print_error "gradlew not found in plugin directory!"
+        cd "$CURRENT_DIR"
+        exit 1
+    fi
+    
+    # Return to original directory
+    cd "$CURRENT_DIR" || exit 1
+    
+    if [ $BUILD_RESULT -ne 0 ]; then
+        echo
+        print_error "Failed to build React Native gradle plugin even without tests!"
+        print_info "Please check the error messages above."
+        exit 1
+    fi
+    
+    # Verify the build succeeded
+    if [ -f "$PLUGIN_JAR" ] && [ -f "$SETTINGS_JAR" ]; then
+        echo
+        print_success "React Native gradle plugin built successfully!"
+        echo
+    else
+        echo
+        print_error "Plugin build completed but JAR files not found!"
+        exit 1
+    fi
+fi
+
+# Now run the actual gradlew with all arguments
+exec "$SCRIPT_DIR/gradlew" "$@"

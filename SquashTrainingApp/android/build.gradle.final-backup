@@ -1,0 +1,50 @@
+// Android Studio compatible build.gradle for React Native 0.80+
+buildscript {
+    ext {
+        buildToolsVersion = "35.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 35
+        targetSdkVersion = 35
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "2.1.20"
+    }
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.9.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        
+        // Direct references to React Native gradle plugin JARs
+        def rnPluginDir = file("../node_modules/@react-native/gradle-plugin")
+        if (rnPluginDir.exists()) {
+            classpath files(
+                "${rnPluginDir}/react-native-gradle-plugin/build/libs/react-native-gradle-plugin.jar",
+                "${rnPluginDir}/shared/build/libs/shared.jar"
+            )
+        }
+    }
+}
+
+// React Native 0.80+ doesn't need rootproject plugin
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://www.jitpack.io" }
+        // Add React Native's Maven repository
+        maven {
+            url("$rootDir/../node_modules/react-native/android")
+        }
+    }
+}
+
+// Force a specific react-native version
+ext {
+    versionOverrides = [
+        "react-native": "0.80.1"
+    ]
+}

@@ -1,0 +1,38 @@
+// Load React Native plugin JARs directly
+def rnPluginDir = new File(rootDir, "../node_modules/@react-native/gradle-plugin")
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Load JARs directly
+        def jars = [
+            new File(rnPluginDir, "settings-plugin/build/libs/settings-plugin.jar"),
+            new File(rnPluginDir, "react-native-gradle-plugin/build/libs/react-native-gradle-plugin.jar"),
+            new File(rnPluginDir, "shared/build/libs/shared.jar")
+        ]
+        
+        jars.each { jar ->
+            if (jar.exists()) {
+                classpath files(jar)
+            }
+        }
+        
+        // Required dependencies
+        classpath 'com.google.code.gson:gson:2.10.1'
+        classpath 'com.google.guava:guava:31.1-jre'
+        classpath 'com.squareup:javapoet:1.13.0'
+    }
+}
+
+// Make plugin classes available
+allprojects {
+    buildscript {
+        repositories {
+            google()
+            mavenCentral()
+        }
+    }
+}

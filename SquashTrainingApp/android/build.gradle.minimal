@@ -1,0 +1,66 @@
+// Minimal build.gradle that manually configures React Native
+buildscript {
+    ext {
+        buildToolsVersion = "35.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 35
+        targetSdkVersion = 35
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "2.1.20"
+        
+        // React Native configuration
+        reactNativeVersion = "0.80.1"
+        hermesEnabled = true
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.9.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://www.jitpack.io" }
+        
+        // React Native's Maven repository
+        maven {
+            url("$rootDir/../node_modules/react-native/android")
+        }
+    }
+    
+    // Force React Native version
+    configurations.all {
+        resolutionStrategy {
+            force "com.facebook.react:react-native:$reactNativeVersion"
+        }
+    }
+}
+
+// Define React tasks manually
+task createBundleDebugJsAndAssets(type: Exec) {
+    workingDir "$rootDir/.."
+    
+    // Windows command
+    if (System.properties['os.name'].toLowerCase().contains('windows')) {
+        commandLine 'cmd', '/c', 'npx', 'react-native', 'bundle', '--platform', 'android', '--dev', 'true', '--entry-file', 'index.js', '--bundle-output', 'android/app/src/main/assets/index.android.bundle', '--assets-dest', 'android/app/src/main/res'
+    } else {
+        commandLine 'npx', 'react-native', 'bundle', '--platform', 'android', '--dev', 'true', '--entry-file', 'index.js', '--bundle-output', 'android/app/src/main/assets/index.android.bundle', '--assets-dest', 'android/app/src/main/res'
+    }
+}
+
+task createBundleReleaseJsAndAssets(type: Exec) {
+    workingDir "$rootDir/.."
+    
+    // Windows command
+    if (System.properties['os.name'].toLowerCase().contains('windows')) {
+        commandLine 'cmd', '/c', 'npx', 'react-native', 'bundle', '--platform', 'android', '--dev', 'false', '--entry-file', 'index.js', '--bundle-output', 'android/app/src/main/assets/index.android.bundle', '--assets-dest', 'android/app/src/main/res', '--minify', 'true'
+    } else {
+        commandLine 'npx', 'react-native', 'bundle', '--platform', 'android', '--dev', 'false', '--entry-file', 'index.js', '--bundle-output', 'android/app/src/main/assets/index.android.bundle', '--assets-dest', 'android/app/src/main/res', '--minify', 'true'
+    }
+}

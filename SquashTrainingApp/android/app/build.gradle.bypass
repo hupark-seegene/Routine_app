@@ -1,0 +1,120 @@
+apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
+
+// React Native vector icons
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+
+/**
+ * React configuration - manual setup without plugin
+ */
+def reactRoot = file("../../")
+def reactNativeRoot = file("../../node_modules/react-native")
+
+android {
+    ndkVersion rootProject.ext.ndkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk rootProject.ext.compileSdkVersion
+
+    namespace "com.squashtrainingapp"
+    defaultConfig {
+        applicationId "com.squashtrainingapp"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        
+        // React Native configuration
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "false"
+        buildConfigField "boolean", "IS_HERMES_ENABLED", "true"
+    }
+    
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+    
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+    
+    // Configure packaging options for React Native
+    packagingOptions {
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        
+        // Exclude unnecessary files
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+dependencies {
+    // React Native dependencies - manual configuration
+    implementation("com.facebook.react:react-android:${rootProject.ext.reactNativeVersion}")
+    implementation("com.facebook.react:hermes-android:${rootProject.ext.reactNativeVersion}")
+    
+    // React Native modules
+    implementation project(':react_native_vector_icons')
+    implementation project(':react_native_sqlite_storage')
+    
+    // Android dependencies
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    
+    // Kotlin
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.kotlinVersion}")
+    
+    // JSC (if Hermes is disabled)
+    def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
+    if (!project.hasProperty("hermesEnabled") || !hermesEnabled.toBoolean()) {
+        implementation jscFlavor
+    }
+}
+
+// Task to bundle JavaScript
+task bundleReleaseJsAndAssets(type: Exec) {
+    workingDir reactRoot
+    
+    commandLine(
+        "npx",
+        "react-native",
+        "bundle",
+        "--platform", "android",
+        "--dev", "false",
+        "--entry-file", "index.js",
+        "--bundle-output", file("src/main/assets/index.android.bundle"),
+        "--assets-dest", file("src/main/res")
+    )
+}
+
+// Ensure JS is bundled before building release
+tasks.whenTaskAdded { task ->
+    if (task.name == 'mergeReleaseAssets') {
+        task.dependsOn bundleReleaseJsAndAssets
+    }
+}

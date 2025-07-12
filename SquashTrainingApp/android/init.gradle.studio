@@ -1,0 +1,82 @@
+// Android Studio specific Gradle initialization script
+// This helps Android Studio properly resolve React Native 0.80+ plugins
+
+// Ensure plugin JARs are in the classpath before any evaluation
+gradle.allprojects { project ->
+    project.buildscript {
+        repositories {
+            google()
+            mavenCentral()
+            gradlePluginPortal()
+        }
+        
+        dependencies {
+            def rnPluginDir = file("${rootDir}/../node_modules/@react-native/gradle-plugin")
+            
+            // Check if JARs exist and add them to classpath
+            def jars = [
+                "${rnPluginDir}/settings-plugin/build/libs/settings-plugin.jar",
+                "${rnPluginDir}/react-native-gradle-plugin/build/libs/react-native-gradle-plugin.jar",
+                "${rnPluginDir}/shared/build/libs/shared.jar"
+            ]
+            
+            def existingJars = []
+            jars.each { jarPath ->
+                if (file(jarPath).exists()) {
+                    existingJars.add(file(jarPath))
+                }
+            }
+            
+            if (!existingJars.isEmpty()) {
+                classpath files(existingJars)
+            }
+            
+            // Add required dependencies for React Native plugin
+            classpath 'com.google.code.gson:gson:2.10.1'
+            classpath 'com.google.guava:guava:31.1-jre'
+            classpath 'com.squareup:javapoet:1.13.0'
+            
+            // Kotlin and AGP dependencies
+            classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.20'
+            classpath 'com.android.tools.build:gradle:8.9.2'
+        }
+    }
+}
+
+// Configure plugin resolution strategy for all projects
+gradle.settingsEvaluated { settings ->
+    settings.pluginManagement {
+        repositories {
+            google()
+            mavenCentral()
+            gradlePluginPortal()
+        }
+        
+        resolutionStrategy {
+            eachPlugin {
+                switch (requested.id.id) {
+                    case "com.facebook.react.settings":
+                        useClass("com.facebook.react.ReactSettingsPlugin")
+                        break
+                    case "com.facebook.react":
+                        useClass("com.facebook.react.ReactPlugin")
+                        break
+                    case "com.facebook.react.rootproject":
+                        useClass("com.facebook.react.ReactRootProjectPlugin")
+                        break
+                }
+            }
+        }
+    }
+}
+
+// Add React Native Maven repository
+gradle.allprojects { project ->
+    project.repositories {
+        maven {
+            url "${rootDir}/../node_modules/react-native/android"
+        }
+    }
+}
+
+println "Android Studio init script loaded - React Native 0.80+ compatibility enabled"

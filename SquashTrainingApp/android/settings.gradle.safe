@@ -1,0 +1,112 @@
+// Safe settings.gradle for React Native 0.80+ with better error handling
+// This version gracefully handles missing plugin JARs
+
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    
+    // Register React Native plugins with fallback
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "com.facebook.react.settings") {
+                def pluginClass = "com.facebook.react.ReactSettingsPlugin"
+                try {
+                    useClass(pluginClass)
+                } catch (Exception e) {
+                    println "WARNING: Could not load ${pluginClass}. React Native plugin may not be built."
+                    println "Run build-rn-plugin.ps1 to build the required JARs."
+                }
+            } else if (requested.id.id == "com.facebook.react") {
+                def pluginClass = "com.facebook.react.ReactPlugin"
+                try {
+                    useClass(pluginClass)
+                } catch (Exception e) {
+                    println "WARNING: Could not load ${pluginClass}"
+                }
+            }
+        }
+    }
+}
+
+// Conditionally add plugin JARs to buildscript
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    
+    dependencies {
+        def rnPluginDir = file("../node_modules/@react-native/gradle-plugin")
+        def pluginJarsFound = false
+        
+        if (rnPluginDir.exists()) {
+            def requiredJars = [
+                "${rnPluginDir}/settings-plugin/build/libs/settings-plugin.jar",
+                "${rnPluginDir}/react-native-gradle-plugin/build/libs/react-native-gradle-plugin.jar",
+                "${rnPluginDir}/shared/build/libs/shared.jar"
+            ]
+            
+            def existingJars = []
+            requiredJars.each { jarPath ->
+                if (file(jarPath).exists()) {
+                    existingJars.add(file(jarPath))
+                }
+            }
+            
+            if (existingJars.size() == requiredJars.size()) {
+                classpath files(existingJars)
+                pluginJarsFound = true
+            }
+        }
+        
+        if (!pluginJarsFound) {
+            println ""
+            println "========================================="
+            println "ERROR: React Native gradle plugin JARs not found!"
+            println "========================================="
+            println ""
+            println "Please run the following commands:"
+            println "1. cd C:\\Git\\Routine_app\\SquashTrainingApp\\android"
+            println "2. .\\build-rn-plugin.ps1"
+            println "3. .\\fix-android-studio.ps1"
+            println ""
+            println "Then reopen the project in Android Studio."
+            println "========================================="
+            println ""
+        }
+        
+        // Always add required dependencies
+        classpath 'com.google.code.gson:gson:2.10.1'
+        classpath 'com.google.guava:guava:31.1-jre'
+        classpath 'com.squareup:javapoet:1.13.0'
+    }
+}
+
+// Try to apply the settings plugin
+try {
+    apply plugin: "com.facebook.react.settings"
+} catch (Exception e) {
+    println "WARNING: Could not apply React Native settings plugin"
+    println "Falling back to manual configuration..."
+    
+    // Manual fallback configuration
+    rootProject.name = 'SquashTrainingApp'
+    include ':app'
+    
+    // Manually include native modules
+    include ':react-native-vector-icons'
+    project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+    
+    include ':react-native-sqlite-storage'
+    project(':react-native-sqlite-storage').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sqlite-storage/android')
+}
+
+// If plugin was applied successfully, just set the project name
+if (hasProperty('rootProject')) {
+    rootProject.name = 'SquashTrainingApp'
+    include ':app'
+}

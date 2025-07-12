@@ -1,0 +1,44 @@
+buildscript {
+    ext {
+        buildToolsVersion = "35.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 35
+        targetSdkVersion = 35
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "2.1.20"
+    }
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.9.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        
+        // React Native Gradle Plugin - Direct JAR approach
+        classpath(files("../node_modules/@react-native/gradle-plugin/react-native-gradle-plugin/build/libs/react-native-gradle-plugin.jar"))
+        classpath(files("../node_modules/@react-native/gradle-plugin/settings-plugin/build/libs/settings-plugin.jar"))
+        
+        // Dependencies required by React Native gradle plugin
+        classpath("com.google.code.gson:gson:2.10.1")
+        classpath("com.google.guava:guava:31.1-jre")
+        classpath("com.squareup:javapoet:1.13.0")
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://www.jitpack.io" }
+    }
+}
+
+// Force a specific react-native version
+ext {
+    reactNativeVersion = "0.80.1"
+}
+
+// Apply the React Native root project plugin
+apply plugin: "com.facebook.react.rootproject"

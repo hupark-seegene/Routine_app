@@ -1,0 +1,54 @@
+// Stable build.gradle for React Native 0.80.1
+buildscript {
+    ext {
+        buildToolsVersion = "34.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 34
+        targetSdkVersion = 34
+        ndkVersion = "26.1.10909125"
+        kotlinVersion = "1.9.24"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.3.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+    }
+}
+
+// Add React Native plugin JARs to buildscript
+buildscript {
+    dependencies {
+        def rnPluginDir = file("../node_modules/@react-native/gradle-plugin")
+        if (rnPluginDir.exists()) {
+            def jarFiles = []
+            def jarPaths = [
+                "${rnPluginDir}/react-native-gradle-plugin/build/libs/react-native-gradle-plugin.jar",
+                "${rnPluginDir}/shared/build/libs/shared.jar"
+            ]
+            
+            jarPaths.each { jarPath ->
+                if (file(jarPath).exists()) {
+                    jarFiles.add(file(jarPath))
+                }
+            }
+            
+            if (!jarFiles.isEmpty()) {
+                classpath files(jarFiles)
+            }
+        }
+    }
+}
+
+apply plugin: "com.facebook.react.rootproject"
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://www.jitpack.io" }
+        maven { url("$rootDir/../node_modules/react-native/android") }
+    }
+}

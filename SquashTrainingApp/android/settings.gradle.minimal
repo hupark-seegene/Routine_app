@@ -1,0 +1,19 @@
+// Minimal settings.gradle that avoids React Native plugin issues
+rootProject.name = 'SquashTrainingApp'
+include ':app'
+
+// Manual module configuration (bypassing autolinking)
+include ':react-native-vector-icons'
+project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+
+include ':react-native-sqlite-storage'
+project(':react-native-sqlite-storage').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sqlite-storage/android')
+
+// Basic repository configuration
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}

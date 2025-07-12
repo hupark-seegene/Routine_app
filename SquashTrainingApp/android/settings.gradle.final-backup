@@ -1,0 +1,75 @@
+// Android Studio compatible settings.gradle for React Native 0.80+
+// This version uses direct JAR references instead of includeBuild()
+
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    
+    // Register React Native plugins
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "com.facebook.react.settings") {
+                useClass("com.facebook.react.ReactSettingsPlugin")
+            } else if (requested.id.id == "com.facebook.react") {
+                useClass("com.facebook.react.ReactPlugin") 
+            }
+        }
+    }
+}
+
+// Add plugin JARs to buildscript classpath
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    
+    dependencies {
+        // Direct references to React Native gradle plugin JARs
+        def rnPluginDir = file("../node_modules/@react-native/gradle-plugin")
+        if (rnPluginDir.exists()) {
+            classpath files(
+                "${rnPluginDir}/settings-plugin/build/libs/settings-plugin.jar",
+                "${rnPluginDir}/react-native-gradle-plugin/build/libs/react-native-gradle-plugin.jar",
+                "${rnPluginDir}/shared/build/libs/shared.jar"
+            )
+        }
+        
+        // Required dependencies for the React Native plugin
+        classpath 'com.google.code.gson:gson:2.10.1'
+        classpath 'com.google.guava:guava:31.1-jre'
+        classpath 'com.squareup:javapoet:1.13.0'
+    }
+}
+
+// Apply the settings plugin
+apply plugin: "com.facebook.react.settings"
+
+rootProject.name = 'SquashTrainingApp'
+include ':app'
+
+// Native modules
+include ':react-native-vector-icons'
+project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+
+include ':react-native-sqlite-storage'
+project(':react-native-sqlite-storage').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sqlite-storage/platforms/android-native')
+
+include ':react-native-screens'
+project(':react-native-screens').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-screens/android')
+
+include ':react-native-safe-area-context'
+project(':react-native-safe-area-context').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-safe-area-context/android')
+
+include ':react-native-linear-gradient'
+project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
+
+include ':react-native-svg'
+project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
+
+include ':@react-native-community_slider'
+project(':@react-native-community_slider').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/slider/android')

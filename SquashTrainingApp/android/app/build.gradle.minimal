@@ -1,0 +1,107 @@
+apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
+
+// Apply vector icons fonts
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+
+android {
+    namespace 'com.squashtrainingapp'
+    compileSdk rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    ndkVersion rootProject.ext.ndkVersion
+
+    defaultConfig {
+        applicationId "com.squashtrainingapp"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        
+        // Required for React Native
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "false"
+        buildConfigField "boolean", "IS_HERMES_ENABLED", "true"
+    }
+    
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+    
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.debug
+        }
+    }
+    
+    packagingOptions {
+        pickFirst "**/libc++_shared.so"
+        pickFirst "**/libjsc.so"
+        pickFirst "**/libhermes.so"
+        pickFirst "**/libreact_nativemodule_core.so"
+    }
+}
+
+dependencies {
+    implementation "com.facebook.react:react-native:${rootProject.ext.reactNativeVersion}"
+    implementation "com.facebook.react:hermes-engine:${rootProject.ext.reactNativeVersion}"
+    
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.kotlinVersion}"
+    
+    // Native modules
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-sqlite-storage')
+    
+    // Android dependencies
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    
+    // JSC (if not using Hermes)
+    // implementation "org.webkit:android-jsc:+"
+}
+
+// Create bundle tasks
+task bundleDebugJsAndAssets(type: Exec) {
+    workingDir "$rootDir/../.."
+    
+    doFirst {
+        file("$buildDir/../src/main/assets/").mkdirs()
+    }
+    
+    if (System.properties['os.name'].toLowerCase().contains('windows')) {
+        commandLine 'cmd', '/c', 'node', 'node_modules/react-native/cli.js', 'bundle', '--platform', 'android', '--dev', 'true', '--entry-file', 'index.js', '--bundle-output', 'android/app/src/main/assets/index.android.bundle', '--assets-dest', 'android/app/src/main/res'
+    } else {
+        commandLine 'node', 'node_modules/react-native/cli.js', 'bundle', '--platform', 'android', '--dev', 'true', '--entry-file', 'index.js', '--bundle-output', 'android/app/src/main/assets/index.android.bundle', '--assets-dest', 'android/app/src/main/res'
+    }
+}
+
+task bundleReleaseJsAndAssets(type: Exec) {
+    workingDir "$rootDir/../.."
+    
+    doFirst {
+        file("$buildDir/../src/main/assets/").mkdirs()
+    }
+    
+    if (System.properties['os.name'].toLowerCase().contains('windows')) {
+        commandLine 'cmd', '/c', 'node', 'node_modules/react-native/cli.js', 'bundle', '--platform', 'android', '--dev', 'false', '--entry-file', 'index.js', '--bundle-output', 'android/app/src/main/assets/index.android.bundle', '--assets-dest', 'android/app/src/main/res', '--minify', 'true'
+    } else {
+        commandLine 'node', 'node_modules/react-native/cli.js', 'bundle', '--platform', 'android', '--dev', 'false', '--entry-file', 'index.js', '--bundle-output', 'android/app/src/main/assets/index.android.bundle', '--assets-dest', 'android/app/src/main/res', '--minify', 'true'
+    }
+}
+
+// Hook bundle tasks to build
+android.applicationVariants.all { variant ->
+    def targetName = variant.name.capitalize()
+    def bundleTask = variant.buildType.name == 'release' ? bundleReleaseJsAndAssets : bundleDebugJsAndAssets
+    
+    tasks.findByName("merge${targetName}Assets")?.dependsOn(bundleTask)
+}

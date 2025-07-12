@@ -1,0 +1,48 @@
+// Bypass React Native 0.80+ plugin system
+// This configuration manually handles what the plugin would do
+
+rootProject.name = 'SquashTrainingApp'
+include ':app'
+
+// Manual autolinking for React Native modules
+def modulesDir = new File(rootProject.projectDir, '../node_modules')
+
+// Core React Native Android modules that need to be linked
+def reactNativeModules = [
+    '@react-native/gradle-plugin',
+    'react-native-vector-icons',
+    'react-native-sqlite-storage'
+]
+
+// Function to find Android project in a node module
+def findAndroidProject = { moduleName ->
+    def basePath = new File(modulesDir, moduleName)
+    
+    // Check for android folder
+    def androidPath = new File(basePath, 'android')
+    if (androidPath.exists() && new File(androidPath, 'build.gradle').exists()) {
+        return androidPath
+    }
+    
+    // Check root for build.gradle (some modules have it at root)
+    if (new File(basePath, 'build.gradle').exists()) {
+        return basePath
+    }
+    
+    return null
+}
+
+// Include native modules that have Android projects
+reactNativeModules.each { moduleName ->
+    def projectDir = findAndroidProject(moduleName)
+    if (projectDir != null) {
+        def projectName = ":${moduleName.replace('/', '_').replace('@', '').replace('-', '_')}"
+        
+        // Only include actual Android library projects, not build tools
+        if (!moduleName.contains('gradle-plugin')) {
+            include projectName
+            project(projectName).projectDir = projectDir
+            println "Linked Android module: ${projectName} -> ${projectDir.path}"
+        }
+    }
+}
