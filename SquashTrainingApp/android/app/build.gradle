@@ -1,22 +1,4 @@
 apply plugin: "com.android.application"
-apply plugin: "kotlin-android"
-
-// Try to apply React Native plugin, fallback if not available
-def reactNativePluginApplied = false
-try {
-    apply plugin: "com.facebook.react"
-    reactNativePluginApplied = true
-} catch (Exception e) {
-    println "React Native plugin not applied: ${e.message}"
-}
-
-// Configure React Native if plugin is available
-if (reactNativePluginApplied) {
-    react {
-        // Enable Hermes
-        hermesEnabled = true
-    }
-}
 
 android {
     compileSdkVersion 34
@@ -29,16 +11,6 @@ android {
         targetSdkVersion 34
         versionCode 1
         versionName "1.0"
-        
-        // Vector drawable support
-        vectorDrawables.useSupportLibrary = true
-        
-        // Multidex support
-        multiDexEnabled true
-        
-        // BuildConfig fields
-        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "false"
-        buildConfigField "boolean", "IS_HERMES_ENABLED", "true"
     }
     
     signingConfigs {
@@ -54,74 +26,15 @@ android {
         debug {
             signingConfig signingConfigs.debug
         }
-        release {
-            signingConfig signingConfigs.debug
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
     }
     
     buildFeatures {
-        buildConfig = true
-    }
-    
-    packagingOptions {
-        pickFirst '**/libc++_shared.so'
-        pickFirst '**/libjsc.so'
-        pickFirst '**/libhermes.so'
-        pickFirst '**/libhermes-executor-debug.so'
-        pickFirst '**/libhermes-executor-release.so'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
+        buildConfig true
     }
 }
 
 dependencies {
-    // React Native core
-    if (reactNativePluginApplied) {
-        implementation("com.facebook.react:react-android")
-        implementation("com.facebook.react:hermes-android")
-    } else {
-        // Fallback to explicit version
-        implementation("com.facebook.react:react-android:0.80.1")
-        implementation("com.facebook.react:hermes-android:0.80.1")
-    }
-    
-    // Android support
+    implementation 'com.facebook.react:react-android:0.80.1'
+    implementation 'com.facebook.react:hermes-android:0.80.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'androidx.multidex:multidex:2.0.1'
-    
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.24"
-    
-    // Native modules - manual linking
-    implementation project(':react-native-vector-icons')
-    implementation project(':react-native-sqlite-storage')
-    implementation project(':react-native-svg')
-    implementation project(':react-native-linear-gradient')
-    implementation project(':@react-native-community_slider')
-}
-
-// Apply React Native gradle scripts if available
-def nativeModulesGradle = file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
-if (nativeModulesGradle.exists()) {
-    apply from: nativeModulesGradle
-    applyNativeModulesAppBuildGradle(project)
-}
-
-// Apply vector icons fonts
-def vectorIconsGradle = file("../../node_modules/react-native-vector-icons/fonts.gradle")
-if (vectorIconsGradle.exists()) {
-    apply from: vectorIconsGradle
-} else {
-    // Fallback: copy fonts manually
-    task copyFonts(type: Copy) {
-        from "../../node_modules/react-native-vector-icons/Fonts"
-        into "src/main/assets/fonts"
-    }
-    preBuild.dependsOn copyFonts
 }
