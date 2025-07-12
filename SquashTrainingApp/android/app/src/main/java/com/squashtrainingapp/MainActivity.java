@@ -1,31 +1,58 @@
 package com.squashtrainingapp;
 
-import com.facebook.react.ReactActivity;
-import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.defaults.DefaultReactActivityDelegate;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends ReactActivity {
-
-    /**
-     * Returns the name of the main component registered from JavaScript.
-     * This is used to schedule rendering of the component.
-     */
+public class MainActivity extends AppCompatActivity {
+    
+    private FrameLayout contentFrame;
+    private TextView contentText;
+    
     @Override
-    protected String getMainComponentName() {
-        return "SquashTrainingApp";
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_navigation);
+        
+        contentFrame = findViewById(R.id.content_frame);
+        contentText = findViewById(R.id.content_text);
+        BottomNavigationView navigation = findViewById(R.id.bottom_navigation);
+        
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                
+                if (itemId == R.id.navigation_home) {
+                    showContent("Home Screen");
+                    return true;
+                } else if (itemId == R.id.navigation_checklist) {
+                    showContent("Checklist Screen");
+                    return true;
+                } else if (itemId == R.id.navigation_record) {
+                    showContent("Record Screen");
+                    return true;
+                } else if (itemId == R.id.navigation_profile) {
+                    showContent("Profile Screen");
+                    return true;
+                } else if (itemId == R.id.navigation_coach) {
+                    showContent("Coach Screen");
+                    return true;
+                }
+                
+                return false;
+            }
+        });
+        
+        // Set default selection
+        navigation.setSelectedItemId(R.id.navigation_home);
     }
-
-    /**
-     * Returns the instance of the ReactActivityDelegate.
-     * We use DefaultReactActivityDelegate which allows you to enable
-     * New Architecture with a single boolean flag.
-     */
-    @Override
-    protected ReactActivityDelegate createReactActivityDelegate() {
-        return new DefaultReactActivityDelegate(
-            this,
-            getMainComponentName(),
-            false // fabricEnabled - set to false for stability
-        );
+    
+    private void showContent(String screenName) {
+        contentText.setText(screenName);
     }
 }

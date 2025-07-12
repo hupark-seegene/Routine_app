@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_background">
+    
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        app:layout_constraintTop_toTopOf="parent">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SQUASH TRAINING"
+            android:textColor="@color/volt_green"
+            android:textSize="28sp"
+            android:textStyle="bold"/>
+            
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Advanced Player Development"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+    
+    <!-- Main Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toBottomOf="parent">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            
+            <!-- Quick Stats Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/card_background"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Today's Progress"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+                    
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 of 5 exercises completed"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    android:layout_marginTop="8dp"/>
+            </LinearLayout>
+            
+            <!-- Action Buttons -->
+            <Button
+                android:id="@+id/startTrainingButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="START TRAINING"
+                style="@style/VoltButton"
+                android:layout_marginBottom="12dp"/>
+                
+            <Button
+                android:id="@+id/viewProgramButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="VIEW PROGRAM"
+                style="@style/VoltButton"
+                android:backgroundTint="@color/dark_surface"
+                android:textColor="@color/volt_green"
+                android:layout_marginBottom="12dp"/>
+                
+            <Button
+                android:id="@+id/aiCoachButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AI COACH"
+                style="@style/VoltButton"
+                android:backgroundTint="@color/dark_surface"
+                android:textColor="@color/volt_green"/>
+        </LinearLayout>
+    </ScrollView>
+    
+</androidx.constraintlayout.widget.ConstraintLayout>

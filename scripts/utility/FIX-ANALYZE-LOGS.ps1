@@ -416,9 +416,9 @@ function Get-ComponentFromError {
 function Show-ErrorSummary {
     param($Errors)
     
-    Write-Host "`n╔════════════════════════════════════════╗" -ForegroundColor Red
-    Write-Host "║         ERROR ANALYSIS SUMMARY         ║" -ForegroundColor Red
-    Write-Host "╚════════════════════════════════════════╝" -ForegroundColor Red
+    Write-Host "`n========================================" -ForegroundColor Red
+    Write-Host "         ERROR ANALYSIS SUMMARY         " -ForegroundColor Red
+    Write-Host "========================================" -ForegroundColor Red
     
     if ($Errors.Count -eq 0) {
         Write-Host "`n✅ No errors found in logs!" -ForegroundColor Green
@@ -464,9 +464,9 @@ function Show-ErrorSummary {
 function Show-FixRecommendations {
     param($Errors)
     
-    Write-Host "`n╔════════════════════════════════════════╗" -ForegroundColor Green
-    Write-Host "║        FIX RECOMMENDATIONS             ║" -ForegroundColor Green
-    Write-Host "╚════════════════════════════════════════╝" -ForegroundColor Green
+    Write-Host "`n========================================" -ForegroundColor Green
+    Write-Host "        FIX RECOMMENDATIONS             " -ForegroundColor Green
+    Write-Host "========================================" -ForegroundColor Green
     
     $recommendedFixes = @{}
     $fixPriority = @()
@@ -520,9 +520,9 @@ function Apply-AutoFixes {
     
     if (-not $AutoFix) { return }
     
-    Write-Host "`n╔════════════════════════════════════════╗" -ForegroundColor Magenta
-    Write-Host "║          APPLYING AUTO-FIXES           ║" -ForegroundColor Magenta
-    Write-Host "╚════════════════════════════════════════╝" -ForegroundColor Magenta
+    Write-Host "`n========================================" -ForegroundColor Magenta
+    Write-Host "          APPLYING AUTO-FIXES           " -ForegroundColor Magenta
+    Write-Host "========================================" -ForegroundColor Magenta
     
     $appliedFixes = @()
     
@@ -585,8 +585,8 @@ function Save-DebugReport {
 # MAIN EXECUTION
 # ========================================
 
-Write-Host "`n🔍 SQUASH TRAINING APP - LOG ANALYZER" -ForegroundColor Cyan
-Write-Host "════════════════════════════════════════" -ForegroundColor Cyan
+Write-Host "`nSQUASH TRAINING APP - LOG ANALYZER" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
 
 # Get log content
 $logContent = Get-LogContent
@@ -623,13 +623,13 @@ if ($AutoFix -and $errors.Count -gt 0) {
 Save-DebugReport -Errors $errors -StackTraces $stackTraces -AppliedFixes $appliedFixes
 
 # Show final summary
-Write-Host "`n════════════════════════════════════════" -ForegroundColor DarkGray
+Write-Host "`n========================================" -ForegroundColor DarkGray
 if ($errors.Count -eq 0) {
     Write-Host "✅ No errors found - app appears to be running well!" -ForegroundColor Green
 } else {
     $highSeverity = @($errors | Where-Object { $_.Severity -eq "High" }).Count
-    Write-Host "⚠️  Found $($errors.Count) errors ($highSeverity high severity)" -ForegroundColor Yellow
+    Write-Host "WARNING: Found $($errors.Count) errors ($highSeverity high severity)" -ForegroundColor Yellow
     Write-Host "Run with -AutoFix to apply automatic fixes" -ForegroundColor Gray
 }
 
-Write-Host "════════════════════════════════════════" -ForegroundColor DarkGray
+Write-Host "========================================" -ForegroundColor DarkGray
