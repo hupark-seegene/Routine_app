@@ -97,7 +97,7 @@ $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot"
 $env:ANDROID_HOME = "$env:LOCALAPPDATA\Android\Sdk"
 $env:Path = "$env:JAVA_HOME\bin;$env:ANDROID_HOME\platform-tools;$env:ANDROID_HOME\emulator;$env:Path"
 
-$ProjectRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
+$ProjectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $AppDir = Join-Path $ProjectRoot "SquashTrainingApp"
 $AndroidDir = Join-Path $AppDir "android"
 $ADB = "$env:ANDROID_HOME\platform-tools\adb.exe"
@@ -130,8 +130,8 @@ function Write-DomainLog {
     }
     
     $timestamp = Get-Date -Format "HH:mm:ss"
-    $domainColor = $colors[$Domain] ?? "White"
-    $levelColor = $levelColors[$Level] ?? "Gray"
+    $domainColor = if ($colors.ContainsKey($Domain)) { $colors[$Domain] } else { "White" }
+    $levelColor = if ($levelColors.ContainsKey($Level)) { $levelColors[$Level] } else { "Gray" }
     
     Write-Host "[$timestamp] " -NoNewline -ForegroundColor DarkGray
     Write-Host "[$Domain] " -NoNewline -ForegroundColor $domainColor
@@ -174,6 +174,12 @@ function Invoke-BuildPhase {
     $buildStart = Get-Date
     
     try {
+        # Ensure directory exists
+        if (-not (Test-Path $AndroidDir)) {
+            Write-DomainLog "BuildDomain" "Android directory not found: $AndroidDir" "Error"
+            return $false
+        }
+        
         Push-Location $AndroidDir
         
         # Create minimal build configuration to bypass React Native 0.80+ issues
@@ -553,9 +559,9 @@ function Invoke-DebugPhase {
 function Show-IterationSummary {
     $state = $global:DDDState
     
-    Write-Host "`n╔════════════════════════════════════════╗" -ForegroundColor Cyan
-    Write-Host "║        ITERATION SUMMARY               ║" -ForegroundColor Cyan
-    Write-Host "╚════════════════════════════════════════╝" -ForegroundColor Cyan
+    Write-Host "`n========================================" -ForegroundColor Cyan
+    Write-Host "        ITERATION SUMMARY               " -ForegroundColor Cyan
+    Write-Host "========================================" -ForegroundColor Cyan
     
     Write-Host "`nIteration: $($state.BuildDomain.CurrentIteration)/$MaxIterations" -ForegroundColor White
     
@@ -605,10 +611,10 @@ function Check-SuccessCriteria {
 # MAIN ITERATION LOOP
 # ========================================
 
-Write-Host "`n╔════════════════════════════════════════════════╗" -ForegroundColor Green
-Write-Host "║   SQUASH TRAINING APP - DDD ITERATION SYSTEM   ║" -ForegroundColor Green
-Write-Host "║          Target: Zero Failures                  ║" -ForegroundColor Green
-Write-Host "╚════════════════════════════════════════════════╝" -ForegroundColor Green
+Write-Host "`n================================================" -ForegroundColor Green
+Write-Host "   SQUASH TRAINING APP - DDD ITERATION SYSTEM   " -ForegroundColor Green
+Write-Host "          Target: Zero Failures                  " -ForegroundColor Green
+Write-Host "================================================" -ForegroundColor Green
 
 # Check emulator
 if (-not (Get-DeviceStatus)) {
@@ -621,9 +627,9 @@ for ($i = 1; $i -le $MaxIterations; $i++) {
     Update-DDDState "BuildDomain" "CurrentIteration" $i
     Update-DDDState "BuildDomain" "TotalBuilds" ($global:DDDState.BuildDomain.TotalBuilds + 1)
     
-    Write-Host "`n════════════════════════════════════════" -ForegroundColor DarkGray
+    Write-Host "`n========================================" -ForegroundColor DarkGray
     Write-DomainLog "IterationDomain" "Starting Iteration $i of $MaxIterations" "Info"
-    Write-Host "════════════════════════════════════════" -ForegroundColor DarkGray
+    Write-Host "========================================" -ForegroundColor DarkGray
     
     $iterationStart = Get-Date
     $metroJob = $null
@@ -708,6 +714,6 @@ if ($global:DDDState.IterationDomain.TargetAchieved) {
     Write-Host "Review the logs and apply manual fixes before running again" -ForegroundColor Yellow
 }
 
-Write-Host "`n════════════════════════════════════════" -ForegroundColor DarkGray
+Write-Host "`n========================================" -ForegroundColor DarkGray
 Write-Host "Build automation complete!" -ForegroundColor Cyan
-Write-Host "════════════════════════════════════════" -ForegroundColor DarkGray
+Write-Host "========================================" -ForegroundColor DarkGray

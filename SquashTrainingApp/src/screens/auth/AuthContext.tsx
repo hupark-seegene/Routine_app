@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '../../utils/SQLiteAsyncStorage';
-import { DEV_MODE_ENABLED } from '@env';
+import { DEV_MODE_ENABLED, DEV_USERNAME, DEV_PASSWORD_HASH } from '@env';
 import { encrypt, decrypt } from '../../utils/crypto';
 import { devError } from '../../utils/environment';
 
@@ -17,10 +17,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AUTH_STORAGE_KEY = 'dev_auth';
 const API_KEY_STORAGE_KEY = 'dev_api_key';
 
-// Developer credentials (in production, these should be on a secure server)
+// Developer credentials loaded from environment variables
 const DEV_CREDENTIALS = {
-  username: 'hupark',
-  passwordHash: '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', // rhksflwk1!
+  username: DEV_USERNAME,
+  passwordHash: DEV_PASSWORD_HASH,
 };
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

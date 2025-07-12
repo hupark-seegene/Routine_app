@@ -81,10 +81,8 @@ SquashTrainingApp/
 ### Developer Mode Access
 1. Go to Profile tab
 2. Tap app version text 5 times
-3. Login with:
-   - Username: `hupark`
-   - Password: `rhksflwk1!`
-   - Your OpenAI API key
+3. Login with credentials stored in `.env` file
+4. Enter your OpenAI API key
 
 ## 빌드 시스템 현황
 

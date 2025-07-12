@@ -84,9 +84,7 @@ A comprehensive training application for intermediate to advanced squash players
 ### Developer Mode Access
 1. Go to Profile tab
 2. Tap the app version text 5 times
-3. Login with:
-   - Username: `hupark`
-   - Password: `rhksflwk1!`
+3. Login with credentials stored in `.env` file
    - Your OpenAI API key
 
 **Developer Features:**

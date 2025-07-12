@@ -174,9 +174,7 @@ cd android
 
 1. Go to Profile tab
 2. Tap app version text 5 times
-3. Login with:
-   - Username: `hupark`
-   - Password: `rhksflwk1!`
+3. Login with credentials stored in `.env` file
    - OpenAI API key: Your key
 
 ## 📦 Build Output
