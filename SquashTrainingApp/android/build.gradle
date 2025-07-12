@@ -8,6 +8,7 @@ buildscript {
         kotlinVersion = "1.9.24"
     }
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
     }
@@ -18,12 +19,18 @@ buildscript {
     }
 }
 
-apply plugin: "com.facebook.react.rootproject"
+try {
+    apply plugin: "com.facebook.react.rootproject"
+} catch (Exception e) {
+    println "React Native root plugin not applied: ${e.message}"
+}
 
 allprojects {
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
         maven { url "https://www.jitpack.io" }
+        maven { url "$rootDir/../node_modules/react-native/android" }
     }
 }

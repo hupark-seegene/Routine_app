@@ -1,28 +1,16 @@
 apply plugin: "com.android.application"
-apply plugin: "com.facebook.react"
-apply plugin: "kotlin-android"
-
-react {
-    // Enable Hermes
-    hermesEnabled = true
-}
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion 34
+    buildToolsVersion "34.0.0"
     namespace "com.squashtrainingapp"
     
     defaultConfig {
         applicationId "com.squashtrainingapp"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 24
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
-        
-        // Vector drawable support
-        vectorDrawables.useSupportLibrary = true
-        
-        // Multidex support
         multiDexEnabled true
     }
     
@@ -42,42 +30,28 @@ android {
     }
     
     buildFeatures {
-        buildConfig = true
+        buildConfig true
     }
     
     packagingOptions {
         pickFirst '**/libc++_shared.so'
         pickFirst '**/libjsc.so'
         pickFirst '**/libhermes.so'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
     }
 }
 
 dependencies {
-    // React Native core
-    implementation("com.facebook.react:react-android")
-    implementation("com.facebook.react:hermes-android")
-    
-    // Android support
+    implementation 'com.facebook.react:react-android:0.80.1'
+    implementation 'com.facebook.react:hermes-android:0.80.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.multidex:multidex:2.0.1'
-    
-    // Native modules (manual linking for those that need it)
-    implementation project(':react-native-vector-icons')
-    implementation project(':react-native-sqlite-storage')
-    implementation project(':react-native-svg')
-    implementation project(':react-native-linear-gradient')
-    implementation project(':@react-native-community_slider')
-    
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 }
 
-// Apply React Native gradle scripts
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+// Copy fonts for vector icons
+task copyFonts(type: Copy) {
+    from "../node_modules/react-native-vector-icons/Fonts"
+    into "src/main/assets/fonts"
+}
+
+preBuild.dependsOn copyFonts

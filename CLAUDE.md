@@ -331,7 +331,65 @@ The project follows a feature-based architecture:
 - Follow existing dark theme design patterns
 - Maintain offline-first approach with SQLite
 - Test on real Android devices for performance
-- 
+
+## Git Workflow - IMPORTANT
+
+**ALWAYS commit and push changes after completing any task or set of changes.**
+
+### 1. Quick Git Commands
+```bash
+# Check status
+git status
+
+# Add all changes
+git add .
+
+# Commit with descriptive message
+git commit -m "your commit message"
+
+# Push to GitHub
+git push origin main
+```
+
+### 2. Automated Git Workflow (RECOMMENDED)
+After any significant task completion, automatically run:
+
+```bash
+# One-liner for quick commits
+git add . && git commit -m "task: brief description of changes" && git push origin main
+```
+
+### 3. Commit Message Format
+Use conventional commit format:
+- `feat: add new feature`
+- `fix: resolve bug in component`
+- `docs: update documentation`
+- `refactor: restructure code without functionality change`
+- `style: formatting and style changes`
+- `test: add or update tests`
+- `build: changes to build configuration`
+
+### 4. When to Commit & Push
+**ALWAYS commit after:**
+- Completing any user-requested task
+- Adding new features or components
+- Fixing bugs or issues
+- Updating documentation
+- Refactoring code
+- Build configuration changes
+- Any file modifications
+
+### 5. GitHub CLI Integration
+If GitHub CLI is available, can also use:
+```bash
+# Check authentication
+gh auth status
+
+# Quick push with PR creation
+gh repo sync
+```
+
+**Remember: Version control is critical - commit early, commit often!**
 
 ## Build Troubleshooting
 
