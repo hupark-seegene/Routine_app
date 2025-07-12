@@ -1,2 +1,28 @@
 rootProject.name = 'SquashTrainingApp'
+
+// Try to apply native modules, fallback to manual if not available
+def nativeModulesGradle = file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
+if (nativeModulesGradle.exists()) {
+    apply from: nativeModulesGradle
+    applyNativeModulesSettingsGradle(settings)
+} else {
+    println "Native modules gradle not found, using manual configuration"
+}
+
 include ':app'
+
+// Manually include native modules
+include ':react-native-vector-icons'
+project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+
+include ':react-native-sqlite-storage'
+project(':react-native-sqlite-storage').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sqlite-storage/android')
+
+include ':react-native-svg'
+project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
+
+include ':react-native-linear-gradient'
+project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
+
+include ':@react-native-community_slider'
+project(':@react-native-community_slider').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/slider/android')

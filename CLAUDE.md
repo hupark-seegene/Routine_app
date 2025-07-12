@@ -391,6 +391,168 @@ gh repo sync
 
 **Remember: Version control is critical - commit early, commit often!**
 
+## PowerShell Build Scripts Management (DDD Approach)
+
+### **Domain-Driven Design for Build Management**
+
+**IMPORTANT: Use DDD principles to organize and manage the 30+ PowerShell build scripts systematically.**
+
+#### **1. Primary Build Domains**
+
+##### **🎯 Production Domain (Root Level)**
+```powershell
+# Primary production-ready scripts
+FINAL-RUN.ps1                # ✅ ONE-CLICK COMPLETE SOLUTION
+MCP-FULL-AUTOMATION.ps1       # ✅ MCP-integrated automation
+```
+
+##### **🚀 Build Automation Domain (android/)**
+```powershell
+# Core automation pipeline
+build-and-run.ps1            # ✅ Full automated build & deploy
+WORKING-POWERSHELL-BUILD.ps1  # ✅ Verified working build
+quick-run.ps1                # ✅ Interactive menu system
+install-apk.ps1              # ✅ Quick deployment only
+```
+
+##### **🛠️ Development Domain**
+```powershell
+# Development and debugging tools
+DEBUG.ps1, SIMPLE-DEBUG.ps1, ULTIMATE-DEBUG.ps1
+fix-android-studio.ps1, FOOLPROOF-BUILD.ps1
+build-simple.ps1, instant-debug.ps1
+```
+
+##### **📚 Legacy Domain**
+```powershell
+# Historical evolution scripts (learning purposes)
+Various build attempts, version iterations
+Plugin-specific workarounds, experimental approaches
+```
+
+#### **2. Script Selection Strategy (DDD-Based)**
+
+##### **For New Users:**
+1. **Start with Production Domain**: `.\FINAL-RUN.ps1`
+2. **If issues occur**: `android\quick-run.ps1` (interactive menu)
+3. **Last resort**: `android\WORKING-POWERSHELL-BUILD.ps1`
+
+##### **For Development:**
+1. **Daily workflow**: `android\build-and-run.ps1 -LaunchApp`
+2. **Quick testing**: `android\install-apk.ps1 -Launch`
+3. **Build only**: `android\build-simple.ps1 -AutoInstall`
+
+##### **For Troubleshooting:**
+1. **Android Studio issues**: `android\fix-android-studio.ps1`
+2. **Multiple approaches**: `android\FOOLPROOF-BUILD.ps1`
+3. **Environment setup**: `android\setup-env.ps1`
+
+#### **3. Script Maturity Levels**
+
+```
+🏆 PRODUCTION READY (Use These First)
+  ├── FINAL-RUN.ps1
+  ├── WORKING-POWERSHELL-BUILD.ps1
+  ├── build-and-run.ps1
+  └── quick-run.ps1
+
+🚀 ADVANCED AUTOMATION (Power Users)
+  ├── MCP-FULL-AUTOMATION.ps1
+  ├── install-apk.ps1
+  └── build-simple.ps1
+
+🛠️ DEVELOPMENT TOOLS (Debugging)
+  ├── fix-android-studio.ps1
+  ├── FOOLPROOF-BUILD.ps1
+  └── Various debug scripts
+
+📚 LEGACY/EXPERIMENTAL (Historical)
+  └── 20+ evolution scripts
+```
+
+#### **4. DDD Bounded Contexts**
+
+##### **Build Context**
+- **Responsibility**: APK generation, gradle management
+- **Key Scripts**: WORKING-POWERSHELL-BUILD.ps1, build-simple.ps1
+- **Entities**: Gradle wrapper, React Native plugin, APK output
+
+##### **Deployment Context**
+- **Responsibility**: Device detection, installation, app launching  
+- **Key Scripts**: install-apk.ps1, build-and-run.ps1
+- **Entities**: ADB devices, APK packages, Metro bundler
+
+##### **Automation Context**
+- **Responsibility**: End-to-end workflows, user experience
+- **Key Scripts**: FINAL-RUN.ps1, quick-run.ps1, MCP-FULL-AUTOMATION.ps1
+- **Entities**: Complete pipelines, interactive menus, error handling
+
+##### **Environment Context**
+- **Responsibility**: Setup, configuration, troubleshooting
+- **Key Scripts**: fix-android-studio.ps1, setup-env.ps1, verify-setup.ps1
+- **Entities**: Java paths, Android SDK, environment variables
+
+#### **5. Script Aggregates (DDD Pattern)**
+
+##### **BuildAggregate**
+```powershell
+# Root aggregate for build operations
+WORKING-POWERSHELL-BUILD.ps1  # Aggregate root
+├── build-simple.ps1          # Entity
+├── build-debug.ps1           # Entity  
+└── build-bypass.ps1          # Entity
+```
+
+##### **AutomationAggregate**
+```powershell
+# Root aggregate for automation
+FINAL-RUN.ps1                 # Aggregate root
+├── build-and-run.ps1         # Entity
+├── START-EMULATOR.ps1        # Entity
+└── install-apk.ps1           # Entity
+```
+
+#### **6. Domain Services**
+
+##### **BuildService**
+- Handles React Native 0.80+ gradle plugin issues
+- Manages environment variable setup
+- Provides cross-platform build support
+
+##### **DeploymentService**  
+- Manages device detection and selection
+- Handles APK installation and launching
+- Provides Metro bundler integration
+
+##### **AutomationService**
+- Orchestrates complete build-to-run pipelines
+- Provides user interaction and menu systems
+- Handles error recovery and retry logic
+
+#### **7. Best Practices for Script Management**
+
+##### **DDD Principles Applied:**
+1. **Ubiquitous Language**: Use consistent naming (build-, install-, debug-, fix-)
+2. **Bounded Contexts**: Separate concerns (build vs deploy vs automation)
+3. **Aggregates**: Group related scripts with clear ownership
+4. **Domain Services**: Extract cross-cutting concerns
+5. **Repository Pattern**: Organize scripts by domain and maturity
+
+##### **Usage Guidelines:**
+1. **Always start with Production Ready scripts**
+2. **Use interactive menus when uncertain** (quick-run.ps1)
+3. **Escalate to troubleshooting scripts only when needed**
+4. **Document script evolution in project_plan.md**
+5. **Maintain script maturity classification**
+
+##### **Script Evolution:**
+- New scripts should follow DDD naming conventions
+- Legacy scripts preserved for learning and reference
+- Production scripts thoroughly tested and documented
+- Experimental scripts clearly marked as such
+
+This DDD approach ensures systematic management of the extensive build script ecosystem while maintaining clear separation of concerns and user guidance.
+
 ## Build Troubleshooting
 
 ### ✅ SUCCESS: PowerShell Build Solution (2025-07-12)
