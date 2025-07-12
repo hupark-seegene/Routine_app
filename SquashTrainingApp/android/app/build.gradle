@@ -3,6 +3,7 @@ apply plugin: "com.android.application"
 android {
     compileSdkVersion 34
     buildToolsVersion "34.0.0"
+    
     namespace "com.squashtrainingapp"
     
     defaultConfig {
@@ -31,10 +32,21 @@ android {
     buildFeatures {
         buildConfig true
     }
+    
+    packagingOptions {
+        pickFirst "**/libc++_shared.so"
+        pickFirst "**/libjsc.so"
+    }
 }
 
 dependencies {
-    implementation 'com.facebook.react:react-android:0.80.1'
-    implementation 'com.facebook.react:hermes-android:0.80.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.google.android.material:material:1.9.0'
+    
+    // Add React Native manually from node_modules
+    implementation fileTree(dir: "../../node_modules/react-native/android/com/facebook/react", include: ['*.aar'])
+    
+    // Add a placeholder for now to avoid dependency issues
+    implementation 'com.android.support:appcompat-v7:28.0.0'
 }
