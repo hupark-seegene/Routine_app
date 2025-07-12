@@ -1,7 +1,5 @@
 package com.squashtrainingapp;
 
-import android.content.Intent;
-
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -34,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 } else if (itemId == R.id.navigation_checklist) {
                     showContent("Checklist Screen");
-                    // Launch ChecklistActivity
-                    Intent intent = new Intent(MainActivity.this, ChecklistActivity.class);
-                    startActivity(intent);
                     return true;
                 } else if (itemId == R.id.navigation_record) {
                     showContent("Record Screen");
@@ -61,4 +56,3 @@ public class MainActivity extends AppCompatActivity {
         contentText.setText(screenName);
     }
 }
-

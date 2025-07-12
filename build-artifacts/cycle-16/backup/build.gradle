@@ -10,8 +10,8 @@ android {
         applicationId "com.squashtrainingapp"
         minSdkVersion 24
         targetSdkVersion 34
-        versionCode 17
-        versionName "1.0.16"
+        versionCode 16
+        versionName "1.0.15"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     
@@ -63,6 +63,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
-
 
 
