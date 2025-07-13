@@ -163,17 +163,25 @@ if (!(Test-Path $APK_PATH)) {
     exit 1
 }
 
-# Check emulator again
+# Check emulator again and get device ID
 $devices = & $ADB devices 2>&1
-if ($devices -notmatch "device") {
+$deviceLines = $devices | Where-Object { $_ -match "device$" -and $_ -notmatch "List of devices" }
+if ($deviceLines.Count -eq 0) {
     Write-TestLog "No emulator/device connected!" "FAIL"
     Write-TestLog "Device list: $devices" "INFO"
     Write-TestLog "Please start an emulator first" "INFO"
     exit 1
 }
 
-& $ADB uninstall $PACKAGE_NAME 2>&1 | Out-Null
-$installResult = & $ADB install $APK_PATH 2>&1
+# Get first device ID
+$deviceId = ($deviceLines[0] -split "`t")[0]
+Write-TestLog "Using device: $deviceId" "INFO"
+
+# Use -s flag for all ADB commands from now on
+$global:ADB_CMD = "$ADB -s $deviceId"
+
+& $global:ADB_CMD uninstall $PACKAGE_NAME 2>&1 | Out-Null
+$installResult = & $global:ADB_CMD install $APK_PATH 2>&1
 $installOutput = $installResult -join "`n"
 if ($installOutput -match "Success") {
     Write-TestLog "APK installed successfully" "PASS"

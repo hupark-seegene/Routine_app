@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="250dp"
+    android:viewportWidth="200"
+    android:viewportHeight="250">
+    
+    <!-- Body -->
+    <path
+        android:name="body"
+        android:fillColor="#FF6B6B"
+        android:pathData="M100,120 C100,120 80,140 80,170 L80,200 L120,200 L120,170 C120,140 100,120 100,120" />
+    
+    <!-- Head -->
+    <path
+        android:name="head"
+        android:fillColor="#FFD93D"
+        android:pathData="M100,60 A30,30 0 1,1 100,120 A30,30 0 1,1 100,60" />
+    
+    <!-- Left Arm with Racket -->
+    <path
+        android:name="left_arm"
+        android:fillColor="#FFD93D"
+        android:pathData="M80,130 L50,110 L40,100" />
+    
+    <!-- Right Arm -->
+    <path
+        android:name="right_arm"
+        android:fillColor="#FFD93D"
+        android:pathData="M120,130 L150,110 L160,100" />
+    
+    <!-- Racket Head -->
+    <path
+        android:name="racket_head"
+        android:strokeColor="#000000"
+        android:strokeWidth="3"
+        android:fillColor="#C9FF00"
+        android:pathData="M160,100 L160,70 Q160,50 180,50 Q200,50 200,70 L200,100 Q200,120 180,120 Q160,120 160,100" />
+    
+    <!-- Racket Strings -->
+    <path
+        android:name="racket_strings"
+        android:strokeColor="#333333"
+        android:strokeWidth="1"
+        android:pathData="M165,60 L195,60 M165,70 L195,70 M165,80 L195,80 M165,90 L195,90 M165,100 L195,100 M165,110 L195,110
+                         M170,55 L170,115 M180,55 L180,115 M190,55 L190,115" />
+    
+    <!-- Racket Handle -->
+    <path
+        android:name="racket_handle"
+        android:fillColor="#8B4513"
+        android:pathData="M155,100 L160,100 L160,130 L155,130 Z" />
+    
+    <!-- Eyes -->
+    <circle
+        android:name="left_eye"
+        android:fillColor="#000000"
+        android:cx="90"
+        android:cy="80"
+        android:r="3" />
+    
+    <circle
+        android:name="right_eye"
+        android:fillColor="#000000"
+        android:cx="110"
+        android:cy="80"
+        android:r="3" />
+    
+    <!-- Smile -->
+    <path
+        android:name="smile"
+        android:strokeColor="#000000"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M85,95 Q100,105 115,95" />
+    
+    <!-- Legs -->
+    <path
+        android:name="left_leg"
+        android:fillColor="#FFD93D"
+        android:pathData="M90,200 L85,230 L80,240 L90,240 L95,230 L95,200" />
+    
+    <path
+        android:name="right_leg"
+        android:fillColor="#FFD93D"
+        android:pathData="M105,200 L105,230 L100,240 L110,240 L115,230 L110,200" />
+    
+    <!-- Shoes -->
+    <path
+        android:name="left_shoe"
+        android:fillColor="#333333"
+        android:pathData="M75,240 L95,240 L95,245 L75,245 Z" />
+    
+    <path
+        android:name="right_shoe"
+        android:fillColor="#333333"
+        android:pathData="M100,240 L120,240 L120,245 L100,245 Z" />
+    
+    <!-- Squash Ball -->
+    <circle
+        android:name="squash_ball"
+        android:fillColor="#000000"
+        android:cx="50"
+        android:cy="150"
+        android:r="8" />
+</vector>

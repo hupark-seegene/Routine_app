@@ -5,3 +5,9 @@
 [00:14:58] [PASS] Emulator is running
 [00:14:58] [INFO] Installing APK...
 [00:14:58] [FAIL] APK installation failed!
+[00:18:34] [TEST] ========================================
+[00:18:34] [TEST] COMPREHENSIVE APP TEST v1.0.28
+[00:18:34] [TEST] ========================================
+[00:18:34] [INFO] Installing APK...
+[00:18:34] [FAIL] APK installation failed!
+[00:18:34] [FAIL] Error: adb.exe: more than one device/emulator

@@ -1,0 +1,25 @@
+﻿CYCLE 029 BUILD REPORT
+================================
+Date: 2025-07-14 00:43:36
+Version: 1.0.29
+APK Size: 5.27 MB
+Build Time: 3.2084824s
+Screenshots: 4
+
+NAVIGATION FIX:
+- Updated MainActivity to use setOnItemSelectedListener
+- Removed navigation reset in onResume
+- Tested multiple Y coordinates for compatibility
+
+FEATURES TESTED:
+[FAIL] Navigation tabs
+[FAIL] History button
+[OK] App launch
+[OK] Data persistence
+
+ARTIFACTS:
+- APK: C:\git\routine_app\build-artifacts\cycle-029\squash-training-v029.apk
+- Screenshots: C:\git\routine_app\build-artifacts\cycle-029\screenshots
+- Logs: C:\git\routine_app\build-artifacts\cycle-029\logs
+
+STATUS: FAILED - Navigation needs fix

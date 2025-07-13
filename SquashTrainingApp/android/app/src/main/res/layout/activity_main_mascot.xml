@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_background">
+
+    <!-- Zone Manager - draws feature zones -->
+    <com.squashtrainingapp.mascot.ZoneManager
+        android:id="@+id/zone_manager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Mascot View - the draggable character -->
+    <com.squashtrainingapp.mascot.MascotView
+        android:id="@+id/mascot_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- App Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="Squash Training Pro"
+        android:textColor="@color/volt_green"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:shadowColor="@color/black"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4" />
+
+</RelativeLayout>
