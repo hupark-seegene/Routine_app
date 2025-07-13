@@ -1,0 +1,7 @@
+﻿[00:14:58] [TEST] ========================================
+[00:14:58] [TEST] COMPREHENSIVE APP TEST v1.0.28
+[00:14:58] [TEST] ========================================
+[00:14:58] [INFO] Checking emulator status...
+[00:14:58] [PASS] Emulator is running
+[00:14:58] [INFO] Installing APK...
+[00:14:58] [FAIL] APK installation failed!
