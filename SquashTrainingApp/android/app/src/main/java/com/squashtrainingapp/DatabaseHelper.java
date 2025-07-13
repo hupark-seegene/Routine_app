@@ -251,6 +251,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(TABLE_USER, values, KEY_USER_ID + " = ?", new String[]{"1"});
     }
     
+        
+    // Get all records
+    public List<Record> getAllRecords() {
+        List<Record> records = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_RECORDS + " ORDER BY " + KEY_RECORD_DATE + " DESC";
+        
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        
+        if (cursor.moveToFirst()) {
+            do {
+                Record record = new Record();
+                record.id = cursor.getInt(cursor.getColumnIndex(KEY_RECORD_ID));
+                record.exerciseName = cursor.getString(cursor.getColumnIndex(KEY_RECORD_EXERCISE));
+                record.sets = cursor.getInt(cursor.getColumnIndex(KEY_RECORD_SETS));
+                record.reps = cursor.getInt(cursor.getColumnIndex(KEY_RECORD_REPS));
+                record.duration = cursor.getInt(cursor.getColumnIndex(KEY_RECORD_DURATION));
+                record.intensity = cursor.getInt(cursor.getColumnIndex(KEY_RECORD_INTENSITY));
+                record.condition = cursor.getInt(cursor.getColumnIndex(KEY_RECORD_CONDITION));
+                record.fatigue = cursor.getInt(cursor.getColumnIndex(KEY_RECORD_FATIGUE));
+                record.memo = cursor.getString(cursor.getColumnIndex(KEY_RECORD_MEMO));
+                record.date = cursor.getString(cursor.getColumnIndex(KEY_RECORD_DATE));
+                records.add(record);
+            } while (cursor.moveToNext());
+        }
+        
+        cursor.close();
+        return records;
+    }
+    
+    // Delete record
+    public void deleteRecord(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_RECORDS, KEY_RECORD_ID + " = ?", new String[]{String.valueOf(id)});
+    }
+    
     // Inner classes
     public static class Exercise {
         public int id;
@@ -268,5 +304,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         public int totalCalories;
         public float totalHours;
         public int currentStreak;
+    }    
+    public static class Record {
+        public int id;
+        public String exerciseName;
+        public int sets;
+        public int reps;
+        public int duration;
+        public int intensity;
+        public int condition;
+        public int fatigue;
+        public String memo;
+        public String date;
     }
 }

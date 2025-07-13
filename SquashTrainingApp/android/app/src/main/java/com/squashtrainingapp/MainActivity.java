@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -66,8 +67,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         
-        // Set default selection
+                // Set default selection
         navigation.setSelectedItemId(R.id.navigation_home);
+        
+        // History button
+        Button historyButton = findViewById(R.id.history_button);
+        if (historyButton != null) {
+            historyButton.setOnClickListener(v -> {
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
+            });
+        }
     }
     
     @Override

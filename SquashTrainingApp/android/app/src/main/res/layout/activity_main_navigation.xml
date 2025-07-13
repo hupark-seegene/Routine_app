@@ -17,15 +17,33 @@
         app:layout_constraintEnd_toEndOf="parent">
         
         <!-- Temporary content display -->
-        <TextView
-            android:id="@+id/content_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Home Screen"
-            android:textColor="@color/text_primary"
-            android:textSize="24sp"
-            android:textStyle="bold"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            
+            <TextView
+                android:id="@+id/content_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home Screen"
+                android:textColor="@color/text_primary"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+                
+            <!-- History Button -->
+            <Button
+                android:id="@+id/history_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="VIEW WORKOUT HISTORY"
+                android:textColor="@color/dark_background"
+                android:backgroundTint="@color/volt_green"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="32dp"/>
+        </LinearLayout>
             
     </FrameLayout>
     
