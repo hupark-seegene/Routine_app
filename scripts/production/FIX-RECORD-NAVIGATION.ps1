@@ -1,3 +1,28 @@
+<#
+.SYNOPSIS
+    Fix Record Navigation Issue
+    
+.DESCRIPTION
+    Fix the Record screen navigation by updating MainActivity 
+    to keep the current activity instead of starting new ones
+#>
+
+$ErrorActionPreference = "Continue"
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
+# Configuration
+$ProjectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$AppDir = Join-Path $ProjectRoot "SquashTrainingApp"
+$MainActivityPath = Join-Path $AppDir "android\app\src\main\java\com\squashtrainingapp\MainActivity.java"
+$BackupPath = Join-Path $AppDir "android\app\src\main\java\com\squashtrainingapp\MainActivity.java.backup"
+
+Write-Host "Fixing Record Navigation Issue..." -ForegroundColor Cyan
+
+# Backup original
+Copy-Item $MainActivityPath $BackupPath -Force
+
+# Fix MainActivity to handle navigation properly
+$mainActivityContent = @'
 package com.squashtrainingapp;
 
 import android.content.Intent;
@@ -75,3 +100,34 @@ public class MainActivity extends AppCompatActivity {
         contentText.setText(screenName);
     }
 }
+'@
+
+# Write the fixed MainActivity
+[System.IO.File]::WriteAllText($MainActivityPath, $mainActivityContent)
+
+Write-Host "MainActivity updated successfully!" -ForegroundColor Green
+
+# Now rebuild the APK
+Write-Host "Rebuilding APK with navigation fix..." -ForegroundColor Cyan
+
+Set-Location $AppDir\android
+$buildResult = & .\gradlew.bat assembleDebug 2>&1
+
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "APK built successfully!" -ForegroundColor Green
+    
+    # Get APK size
+    $apkPath = Join-Path $AppDir "android\app\build\outputs\apk\debug\app-debug.apk"
+    if (Test-Path $apkPath) {
+        $apkSize = [math]::Round((Get-Item $apkPath).Length / 1MB, 2)
+        Write-Host "APK Size: $apkSize MB" -ForegroundColor Cyan
+    }
+} else {
+    Write-Host "Build failed!" -ForegroundColor Red
+    Write-Host $buildResult
+}
+
+Set-Location $ProjectRoot
+
+Write-Host "`nNavigation fix complete!" -ForegroundColor Green
+Write-Host "The Record screen should now work properly when tapped." -ForegroundColor Yellow
