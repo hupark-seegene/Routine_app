@@ -83,10 +83,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Reset to home when returning from other activities
-        if (navigation != null) {
-            navigation.setSelectedItemId(R.id.navigation_home);
-        }
+        // Keep current navigation selection when returning from other activities
+        // Don't reset to home - let user maintain their navigation context
     }
     
     private void showContent(String screenName) {
