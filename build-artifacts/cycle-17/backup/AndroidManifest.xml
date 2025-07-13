@@ -18,14 +18,9 @@
             </intent-filter>
         </activity>        
         <activity
-            android:name=".RecordActivity"
-            android:label="Record"
-            android:theme="@style/AppTheme"/>        
-        <activity
             android:name=".ChecklistActivity"
             android:label="Checklist"
             android:theme="@style/AppTheme"/>
     </application>
 </manifest>
-
 

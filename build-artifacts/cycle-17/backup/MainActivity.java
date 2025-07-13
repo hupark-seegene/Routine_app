@@ -40,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 } else if (itemId == R.id.navigation_record) {
                     showContent("Record Screen");
-                    // Launch RecordActivity
-                    Intent intent = new Intent(MainActivity.this, RecordActivity.class);
-                    startActivity(intent);
                     return true;
                 } else if (itemId == R.id.navigation_profile) {
                     showContent("Profile Screen");
@@ -64,5 +61,4 @@ public class MainActivity extends AppCompatActivity {
         contentText.setText(screenName);
     }
 }
-
 

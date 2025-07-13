@@ -641,7 +641,7 @@ function Create-RecordLayout {
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Notes & Observations"
+                    android:text="Notes &amp; Observations"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:layout_marginBottom="10dp"/>
