@@ -23,6 +23,11 @@
             android:exported="true"
             android:theme="@style/AppTheme"/>        
         <activity
+            android:name=".ProfileActivity"
+            android:label="Profile"
+            android:exported="true"
+            android:theme="@style/AppTheme"/>        
+        <activity
             android:name=".ChecklistActivity"
             android:label="Checklist"
             android:theme="@style/AppTheme"/>

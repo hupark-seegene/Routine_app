@@ -465,3 +465,244 @@ adb uninstall com.squashtrainingapp
 - **Testing**: Direct activity launch working
 - **Features Complete**: Home, Checklist, Record screens
 - **Progress**: 17/50 cycles (34%)
+
+---
+
+## 📚 CYCLE 17 COMPLETE IMPLEMENTATION REFERENCE
+
+### 🔧 Critical Environment Setup (MUST USE FOR ALL FUTURE CYCLES)
+
+#### WSL + Windows ADB Configuration
+```powershell
+# PowerShell Environment Variables
+$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot"
+$env:ANDROID_HOME = "$env:LOCALAPPDATA\Android\Sdk"
+$env:Path = "$env:JAVA_HOME\bin;$env:ANDROID_HOME\platform-tools;$env:ANDROID_HOME\emulator;$env:Path"
+
+# ADB Path from WSL (CRITICAL!)
+$ADB = "/mnt/c/Users/hwpar/AppData/Local/Android/Sdk/platform-tools/adb.exe"
+
+# Emulator
+$EMULATOR = "$env:ANDROID_HOME\emulator\emulator.exe"
+$AVD_NAME = "Pixel_6"  # API 33
+```
+
+#### Emulator Connection Check
+```powershell
+function Test-EmulatorStatus {
+    try {
+        $devices = & $ADB devices 2>&1
+        if ($devices -match "emulator.*device$") {
+            return $true
+        }
+        return $false
+    }
+    catch {
+        return $false
+    }
+}
+```
+
+### 📱 RecordActivity Implementation (Cycle 17)
+
+#### RecordActivity.java
+```java
+package com.squashtrainingapp;
+
+import android.os.Bundle;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class RecordActivity extends AppCompatActivity {
+    private EditText exerciseNameInput, setsInput, repsInput, durationInput, memoInput;
+    private SeekBar intensitySlider, conditionSlider, fatigueSlider;
+    private TextView intensityValue, conditionValue, fatigueValue;
+    private Button saveButton;
+    private TabHost tabHost;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_record);
+        
+        initializeViews();
+        setupTabs();
+        setupSliders();
+        setupSaveButton();
+    }
+    
+    private void setupTabs() {
+        tabHost.setup();
+        
+        TabHost.TabSpec exerciseTab = tabHost.newTabSpec("Exercise");
+        exerciseTab.setContent(R.id.exercise_tab);
+        exerciseTab.setIndicator("Exercise");
+        tabHost.addTab(exerciseTab);
+        
+        TabHost.TabSpec ratingsTab = tabHost.newTabSpec("Ratings");
+        ratingsTab.setContent(R.id.ratings_tab);
+        ratingsTab.setIndicator("Ratings");
+        tabHost.addTab(ratingsTab);
+        
+        TabHost.TabSpec memoTab = tabHost.newTabSpec("Memo");
+        memoTab.setContent(R.id.memo_tab);
+        memoTab.setIndicator("Memo");
+        tabHost.addTab(memoTab);
+    }
+    
+    private void setupSliders() {
+        // Slider listeners update value text (e.g., "7/10")
+        intensitySlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                intensityValue.setText(progress + "/10");
+            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+    }
+}
+```
+
+#### activity_record.xml Structure
+```xml
+<TabHost>
+    <LinearLayout>
+        <TextView text="RECORD WORKOUT" />
+        <TabWidget />
+        <FrameLayout>
+            <!-- Exercise Tab -->
+            <ScrollView id="exercise_tab">
+                <EditText hint="Exercise Name" />
+                <EditText hint="Sets" inputType="number" />
+                <EditText hint="Reps" inputType="number" />
+                <EditText hint="Duration" inputType="number" />
+            </ScrollView>
+            
+            <!-- Ratings Tab -->
+            <ScrollView id="ratings_tab">
+                <TextView text="Intensity" />
+                <SeekBar max="10" progress="5" />
+                <TextView text="Physical Condition" />
+                <SeekBar max="10" progress="5" />
+                <TextView text="Fatigue Level" />
+                <SeekBar max="10" progress="5" />
+            </ScrollView>
+            
+            <!-- Memo Tab -->
+            <LinearLayout id="memo_tab">
+                <EditText hint="Add notes..." inputType="textMultiLine" />
+            </LinearLayout>
+        </FrameLayout>
+        <Button text="SAVE RECORD" backgroundTint="@color/volt_green" />
+    </LinearLayout>
+</TabHost>
+```
+
+### 🔍 MainActivity Navigation Fix (CRITICAL!)
+
+```java
+// MainActivity.java - Navigation handling
+else if (itemId == R.id.navigation_record) {
+    Intent intent = new Intent(MainActivity.this, RecordActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    startActivity(intent);
+    // Don't finish MainActivity - IMPORTANT!
+    return true;
+}
+
+@Override
+protected void onResume() {
+    super.onResume();
+    // Reset to home when returning from other activities
+    if (navigation != null) {
+        navigation.setSelectedItemId(R.id.navigation_home);
+    }
+}
+```
+
+### 📋 AndroidManifest.xml Requirements
+
+```xml
+<!-- MUST export activities for direct launch testing -->
+<activity
+    android:name=".RecordActivity"
+    android:label="Record"
+    android:exported="true"
+    android:theme="@style/AppTheme"/>
+```
+
+### 🧪 Testing Commands & Coordinates
+
+#### Direct Activity Launch
+```powershell
+# Launch RecordActivity directly (requires exported="true")
+& $ADB shell am start -n com.squashtrainingapp/.RecordActivity
+
+# Launch MainActivity
+& $ADB shell am start -n com.squashtrainingapp/.MainActivity
+```
+
+#### RecordActivity Tab & Input Coordinates
+```powershell
+# Tab Navigation (Y=257)
+& $ADB shell input tap 118 257   # Exercise tab
+& $ADB shell input tap 353 257   # Ratings tab  
+& $ADB shell input tap 588 257   # Memo tab
+
+# Exercise Form Inputs
+& $ADB shell input tap 540 410   # Exercise name field
+& $ADB shell input tap 180 555   # Sets field
+& $ADB shell input tap 520 555   # Reps field
+& $ADB shell input tap 350 700   # Duration field
+
+# Rating Sliders (swipe for adjustment)
+& $ADB shell input swipe 100 680 600 680 500  # Intensity
+& $ADB shell input swipe 100 880 500 880 500  # Condition
+& $ADB shell input swipe 100 1080 300 1080 500  # Fatigue
+
+# Save Button
+& $ADB shell input tap 540 1450
+```
+
+### 🎨 Color Resources (colors.xml)
+```xml
+<color name="volt_green">#C9FF00</color>
+<color name="dark_background">#0D0D0D</color>
+<color name="dark_surface">#1A1A1A</color>
+<color name="text_primary">#FFFFFF</color>
+<color name="text_secondary">#B3B3B3</color>
+```
+
+### ✅ Successful Build Process
+1. Use [System.IO.File]::WriteAllText() instead of Set-Content (avoids BOM)
+2. Escape XML special characters (&amp; instead of &)
+3. Export activities in manifest for testing
+4. Use Windows ADB path from WSL
+5. Test with direct activity launch first
+
+---
+
+### Cycle 18 Results (v1.0.18) - 2025-07-13 20:54:00 - ✅ PROFILE SCREEN COMPLETE
+- **Build**: Success (4s) - Fixed XML and emoji encoding issues
+- **APK Size**: 5.27MB
+- **ProfileScreen**: ✅ Fully implemented and tested
+- **Features Implemented**:
+  - ✅ User profile header (name, level, avatar)
+  - ✅ Experience bar with visual progress (750/1000 XP)
+  - ✅ Stats grid (sessions, calories, hours, streak)
+  - ✅ Achievement badges and recent accomplishments
+  - ✅ Settings button (placeholder)
+  - ✅ Dark theme with volt green accents
+- **Navigation**: Working from bottom tab
+- **Screenshots**: Profile screen and navigation captured
+- **Next**: CoachScreen implementation (Cycle 19)
+
+### Current Status - Cycle 18 Complete (2025-07-13 20:55)
+- **Emulator**: Pixel 6 API 33 running successfully
+- **Testing**: Direct activity launch and tab navigation working
+- **Features Complete**: Home, Checklist, Record, Profile screens
+- **Progress**: 18/50 cycles (36%)
+- **Key Learning**: Remove emojis from XML/Java to avoid encoding issues
+
+---

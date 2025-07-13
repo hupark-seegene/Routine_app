@@ -47,7 +47,11 @@ public class MainActivity extends AppCompatActivity {
                     // Don't finish MainActivity
                     return true;
                 } else if (itemId == R.id.navigation_profile) {
-                    showContent("Profile Screen");
+                    // Start ProfileActivity with proper flags
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    // Don't finish MainActivity
                     return true;
                 } else if (itemId == R.id.navigation_coach) {
                     showContent("Coach Screen");
