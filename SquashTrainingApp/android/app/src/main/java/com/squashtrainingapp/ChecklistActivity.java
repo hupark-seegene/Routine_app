@@ -1,86 +1,93 @@
 package com.squashtrainingapp;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ChecklistActivity extends AppCompatActivity {
     
-    private RecyclerView exerciseRecyclerView;
-    private ExerciseAdapter exerciseAdapter;
-    private List<Exercise> exerciseList;
-    private TextView completionText;
-    private int completedCount = 0;
+    private RecyclerView recyclerView;
+    private ExerciseAdapter adapter;
+    private DatabaseHelper databaseHelper;
+    private List<DatabaseHelper.Exercise> exercises;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checklist);
         
-        // Initialize views
-        exerciseRecyclerView = findViewById(R.id.exercise_recycler_view);
-        completionText = findViewById(R.id.completion_text);
+        databaseHelper = DatabaseHelper.getInstance(this);
         
-        // Setup RecyclerView
-        exerciseList = getMockExercises();
-        exerciseAdapter = new ExerciseAdapter(exerciseList, new ExerciseAdapter.OnExerciseCheckListener() {
-            @Override
-            public void onExerciseChecked(int position, boolean isChecked) {
-                exerciseList.get(position).setCompleted(isChecked);
-                updateCompletionStatus();
+        recyclerView = findViewById(R.id.exercise_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        
+        loadExercises();
+    }
+    
+    private void loadExercises() {
+        exercises = databaseHelper.getAllExercises();
+        adapter = new ExerciseAdapter();
+        recyclerView.setAdapter(adapter);
+    }
+    
+    private class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHolder> {
+        
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_exercise, parent, false);
+            return new ViewHolder(view);
+        }
+        
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            DatabaseHelper.Exercise exercise = exercises.get(position);
+            holder.exerciseName.setText(exercise.name);
+            holder.exerciseCategory.setText(exercise.category);
+            holder.checkbox.setChecked(exercise.isChecked);
+            
+            holder.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                exercise.isChecked = isChecked;
+                databaseHelper.updateExerciseChecked(exercise.id, isChecked);
                 
-                String message = isChecked ? "Exercise completed!" : "Exercise unchecked";
-                Toast.makeText(ChecklistActivity.this, message, Toast.LENGTH_SHORT).show();
-            }
-        });
-        
-        exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        exerciseRecyclerView.setAdapter(exerciseAdapter);
-        
-        updateCompletionStatus();
-    }
-    
-    private void updateCompletionStatus() {
-        completedCount = 0;
-        for (Exercise exercise : exerciseList) {
-            if (exercise.isCompleted()) {
-                completedCount++;
-            }
+                if (isChecked) {
+                    Toast.makeText(ChecklistActivity.this, 
+                        exercise.name + " completed!", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
         
-        String status = "Completed: " + completedCount + " / " + exerciseList.size();
-        completionText.setText(status);
+        @Override
+        public int getItemCount() {
+            return exercises.size();
+        }
         
-        if (completedCount == exerciseList.size()) {
-            completionText.setTextColor(getColor(R.color.volt_green));
-        } else {
-            completionText.setTextColor(getColor(R.color.text_primary));
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView exerciseName;
+            TextView exerciseCategory;
+            CheckBox checkbox;
+            
+            ViewHolder(View itemView) {
+                super(itemView);
+                exerciseName = itemView.findViewById(R.id.exercise_name);
+                exerciseCategory = itemView.findViewById(R.id.exercise_category);
+                checkbox = itemView.findViewById(R.id.exercise_checkbox);
+            }
         }
     }
     
-    private List<Exercise> getMockExercises() {
-        List<Exercise> exercises = new ArrayList<>();
-        
-        // Skill exercises
-        exercises.add(new Exercise("Straight Drive", "Skill", 3, 10, 0));
-        exercises.add(new Exercise("Cross Court Drive", "Skill", 3, 10, 0));
-        exercises.add(new Exercise("Boast Practice", "Skill", 2, 15, 0));
-        
-        // Cardio exercises
-        exercises.add(new Exercise("Court Sprints", "Cardio", 0, 0, 20));
-        
-        // Fitness exercises
-        exercises.add(new Exercise("Lunges", "Fitness", 3, 15, 0));
-        
-        // Strength exercises
-        exercises.add(new Exercise("Core Rotation", "Strength", 3, 20, 0));
-        
-        return exercises;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh data when returning to this screen
+        loadExercises();
     }
 }

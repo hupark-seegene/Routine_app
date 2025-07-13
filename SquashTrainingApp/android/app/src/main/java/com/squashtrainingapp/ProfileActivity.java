@@ -30,20 +30,34 @@ public class ProfileActivity extends AppCompatActivity {
     // Settings button
     private Button settingsButton;
     
-    // Mock data
+    // User data
     private String userName = "Alex Player";
-    private int userLevel = 12;
-    private int currentExp = 750;
+    private int userLevel = 1;
+    private int currentExp = 0;
     private int maxExp = 1000;
-    private int totalSessions = 147;
-    private int totalCalories = 42580;
-    private int totalHours = 89;
-    private int currentStreak = 7;
+    private int totalSessions = 0;
+    private int totalCalories = 0;
+    private int totalHours = 0;
+    private int currentStreak = 0;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        
+        // Load from database
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(this);
+        DatabaseHelper.User user = dbHelper.getUser();
+        
+        // Update UI with database values
+        userName = user.name;
+        userLevel = user.level;
+        currentExp = user.experience;
+        maxExp = 1000;
+        totalSessions = user.totalSessions;
+        totalCalories = user.totalCalories;
+        totalHours = Math.round(user.totalHours);
+        currentStreak = user.currentStreak;
         
         initializeViews();
         loadUserData();

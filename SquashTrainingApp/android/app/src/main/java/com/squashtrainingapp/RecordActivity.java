@@ -144,44 +144,46 @@ public class RecordActivity extends AppCompatActivity {
     }
     
     private void saveRecord() {
-        String exerciseName = exerciseNameInput.getText().toString();
-        String sets = setsInput.getText().toString();
-        String reps = repsInput.getText().toString();
-        String duration = durationInput.getText().toString();
-        String memo = memoInput.getText().toString();
+        String exerciseName = exerciseNameInput.getText().toString().trim();
+        String setsText = setsInput.getText().toString().trim();
+        String repsText = repsInput.getText().toString().trim();
+        String durationText = durationInput.getText().toString().trim();
+        String memo = memoInput.getText().toString().trim();
         
-        int intensity = intensitySlider.getProgress();
-        int condition = conditionSlider.getProgress();
-        int fatigue = fatigueSlider.getProgress();
-        
-        // Validation
         if (exerciseName.isEmpty()) {
             Toast.makeText(this, "Please enter exercise name", Toast.LENGTH_SHORT).show();
             return;
         }
         
-        // Create record string for display
-        String record = String.format(
-            "Exercise: %s\nSets: %s, Reps: %s, Duration: %s\nIntensity: %d/10, Condition: %d/10, Fatigue: %d/10\nMemo: %s",
-            exerciseName, sets.isEmpty() ? "-" : sets, reps.isEmpty() ? "-" : reps, duration.isEmpty() ? "-" : duration,
-            intensity, condition, fatigue, memo.isEmpty() ? "No memo" : memo
-        );
+        int sets = setsText.isEmpty() ? 0 : Integer.parseInt(setsText);
+        int reps = repsText.isEmpty() ? 0 : Integer.parseInt(repsText);
+        int duration = durationText.isEmpty() ? 0 : Integer.parseInt(durationText);
+        int intensity = intensitySlider.getProgress();
+        int condition = conditionSlider.getProgress();
+        int fatigue = fatigueSlider.getProgress();
         
-        Toast.makeText(this, "Record saved!\n" + record, Toast.LENGTH_LONG).show();
+        // Save to database
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(this);
+        long recordId = dbHelper.insertRecord(exerciseName, sets, reps, duration, 
+                                             intensity, condition, fatigue, memo);
         
-        // Clear form
-        clearForm();
-    }
-    
-    private void clearForm() {
-        exerciseNameInput.setText("");
-        setsInput.setText("");
-        repsInput.setText("");
-        durationInput.setText("");
-        memoInput.setText("");
-        intensitySlider.setProgress(5);
-        conditionSlider.setProgress(5);
-        fatigueSlider.setProgress(5);
-        tabHost.setCurrentTab(0);
+        if (recordId > 0) {
+            Toast.makeText(this, "Workout saved successfully!", Toast.LENGTH_LONG).show();
+            
+            // Clear form
+            exerciseNameInput.setText("");
+            setsInput.setText("");
+            repsInput.setText("");
+            durationInput.setText("");
+            memoInput.setText("");
+            intensitySlider.setProgress(5);
+            conditionSlider.setProgress(5);
+            fatigueSlider.setProgress(5);
+            
+            // Go back to first tab
+            tabHost.setCurrentTab(0);
+        } else {
+            Toast.makeText(this, "Error saving workout", Toast.LENGTH_SHORT).show();
+        }
     }
 }
