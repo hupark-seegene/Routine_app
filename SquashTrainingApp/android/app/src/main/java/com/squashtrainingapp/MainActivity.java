@@ -54,7 +54,11 @@ public class MainActivity extends AppCompatActivity {
                     // Don't finish MainActivity
                     return true;
                 } else if (itemId == R.id.navigation_coach) {
-                    showContent("Coach Screen");
+                    // Start CoachActivity with proper flags
+                    Intent intent = new Intent(MainActivity.this, CoachActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    // Don't finish MainActivity
                     return true;
                 }
                 

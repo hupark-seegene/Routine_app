@@ -30,8 +30,12 @@
         <activity
             android:name=".ChecklistActivity"
             android:label="Checklist"
+            android:exported="true"
+            android:theme="@style/AppTheme"/>        
+        <activity
+            android:name=".CoachActivity"
+            android:label="Coach"
+            android:exported="true"
             android:theme="@style/AppTheme"/>
     </application>
 </manifest>
-
-
