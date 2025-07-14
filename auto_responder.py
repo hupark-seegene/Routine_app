@@ -1,36 +1,165 @@
+#!/usr/bin/env python3
+"""
+Windows Auto Responder for Claude Code
+Claude Code 인스턴스의 프롬프트를 모니터링하고 자동으로 응답
+"""
+
 import subprocess
 import time
 import sys
 import os
-
+import pyautogui
+import pygetwindow as gw
+from typing import Optional
 
 class WindowsAutoResponder:
     def __init__(self):
         self.project_root = r"C:\Git\Routine_app"
-
-    def monitor_claude(self, worker_id=1):
-        """Claude Code 모니터링 및 자동 응답"""
-        worker_path = os.path.join(os.path.dirname(self.project_root), f"worker-{worker_id}")
-
-        print(f"🤖 Worker {worker_id} 자동 응답 시스템 시작...")
-
-        # PowerShell 스크립트로 자동 응답
-        ps_script = """
-        while ($true) {
-            Start-Sleep -Seconds 2
-            # 여기에 자동 응답 로직 추가
-            Write-Host "Monitoring..."
+        self.response_mappings = {
+            "Yes, and don't ask again": "2",
+            "(Y/n)": "Y",
+            "Continue?": "Y",
+            "Proceed?": "Y"
         }
+        
+    def find_claude_windows(self) -> list:
+        """Claude Code 관련 윈도우 찾기"""
+        windows = []
+        try:
+            all_windows = gw.getAllTitles()
+            for title in all_windows:
+                if any(keyword in title.lower() for keyword in ['claude', 'terminal', 'powershell', 'cmd']):
+                    windows.append(title)
+        except Exception as e:
+            print(f"윈도우 검색 오류: {e}")
+        return windows
+    
+    def monitor_tmux_session(self, session_name: str = "squash-automation"):
+        """Tmux 세션 모니터링 (WSL 환경)"""
+        print(f"🤖 Tmux 세션 '{session_name}' 모니터링 시작...")
+        
+        while True:
+            try:
+                # Tmux pane의 내용 캡처
+                capture_cmd = f"tmux capture-pane -t {session_name} -p"
+                result = subprocess.run(
+                    ["wsl", "bash", "-c", capture_cmd],
+                    capture_output=True,
+                    text=True
+                )
+                
+                if result.returncode == 0:
+                    content = result.stdout
+                    
+                    # 프롬프트 패턴 확인
+                    if "1. Yes  2. Yes, and don't ask again" in content:
+                        print("✅ 번호 선택 프롬프트 감지 - '2' 전송")
+                        send_cmd = f"tmux send-keys -t {session_name} '2' Enter"
+                        subprocess.run(["wsl", "bash", "-c", send_cmd])
+                        time.sleep(1)
+                        
+                    elif "(Y/n)" in content or "(y/N)" in content:
+                        print("✅ Y/n 프롬프트 감지 - 'Y' 전송")
+                        send_cmd = f"tmux send-keys -t {session_name} 'Y' Enter"
+                        subprocess.run(["wsl", "bash", "-c", send_cmd])
+                        time.sleep(1)
+                        
+                    elif "rate limit" in content.lower():
+                        print("⏸️ Rate limit 감지 - 대기 중...")
+                        time.sleep(60)  # 1분 대기
+                
+            except Exception as e:
+                print(f"모니터링 오류: {e}")
+                
+            time.sleep(2)  # 2초마다 확인
+    
+    def monitor_worker(self, worker_id: int = 1):
+        """특정 워커 모니터링"""
+        worker_path = os.path.join(os.path.dirname(self.project_root), f"worker-{worker_id}")
+        
+        print(f"🤖 Worker {worker_id} 자동 응답 시스템 시작...")
+        print(f"   경로: {worker_path}")
+        
+        # PowerShell 스크립트로 자동 응답
+        ps_script = f"""
+        $WorkerPath = "{worker_path}"
+        $LogFile = "$WorkerPath\\auto_responder.log"
+        
+        Write-Host "Starting auto responder for Worker {worker_id}..."
+        
+        while ($true) {{
+            Start-Sleep -Seconds 2
+            
+            # 활성 프로세스 확인
+            $claudeProcesses = Get-Process | Where-Object {{ $_.ProcessName -like "*claude*" }}
+            
+            if ($claudeProcesses) {{
+                Add-Content -Path $LogFile -Value "$(Get-Date): Claude processes found"
+                
+                # 여기에 구체적인 윈도우 자동화 로직 추가
+                # 예: Send-Keys, UI Automation 등
+            }}
+            
+            Write-Host "." -NoNewline
+        }}
         """
+        
+        # PowerShell 실행
+        try:
+            subprocess.run(["powershell", "-Command", ps_script], cwd=worker_path)
+        except KeyboardInterrupt:
+            print("\n자동 응답 시스템 종료")
+    
+    def create_monitoring_script(self):
+        """모니터링 배치 스크립트 생성"""
+        script_content = """@echo off
+echo === Claude Code Auto Responder ===
+echo.
 
-        # 실행
-        subprocess.run(["powershell", "-Command", ps_script], cwd=worker_path)
+:MENU
+echo 1. Monitor Tmux Session (WSL)
+echo 2. Monitor Worker 1
+echo 3. Monitor Worker 2
+echo 4. Monitor Worker 3
+echo 5. Exit
+echo.
+set /p choice=Select option: 
 
+if %choice%==1 python "%~dp0auto_responder.py" tmux
+if %choice%==2 python "%~dp0auto_responder.py" worker 1
+if %choice%==3 python "%~dp0auto_responder.py" worker 2
+if %choice%==4 python "%~dp0auto_responder.py" worker 3
+if %choice%==5 exit
+
+goto MENU
+"""
+        
+        script_path = os.path.join(self.project_root, "start_auto_responder.bat")
+        with open(script_path, "w") as f:
+            f.write(script_content)
+        
+        print(f"✅ 모니터링 스크립트 생성: {script_path}")
+
+def main():
+    responder = WindowsAutoResponder()
+    
+    if len(sys.argv) < 2:
+        print("사용법:")
+        print("  python auto_responder.py tmux           # Tmux 세션 모니터링")
+        print("  python auto_responder.py worker [id]    # 특정 워커 모니터링")
+        print("")
+        responder.create_monitoring_script()
+        return
+    
+    mode = sys.argv[1]
+    
+    if mode == "tmux":
+        responder.monitor_tmux_session()
+    elif mode == "worker":
+        worker_id = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+        responder.monitor_worker(worker_id)
+    else:
+        print(f"알 수 없는 모드: {mode}")
 
 if __name__ == "__main__":
-    responder = WindowsAutoResponder()
-    if len(sys.argv) > 1:
-        worker_id = int(sys.argv[1])
-        responder.monitor_claude(worker_id)
-    else:
-        responder.monitor_claude()
+    main()

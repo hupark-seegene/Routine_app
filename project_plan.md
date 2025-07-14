@@ -1125,3 +1125,75 @@ This design transforms the app from a standard utility into an interactive compa
   - Material Design UI with dark theme
 - **Build**: Success (app-release-unsigned.apk)
 - **Next**: ddd003 - Add workout scheduling functionality
+
+---
+
+## 🚀 다중 에이전트 자동화 시스템 구축 (2025-07-15)
+
+### 구현된 시스템들:
+
+#### 1. **Tmux 기반 연속 빌드 자동화**
+- **위치**: `SquashTrainingApp/scripts/production/tmux-automation/`
+- **구성요소**:
+  - TMUX-SETUP.sh: 멀티 윈도우 tmux 환경 초기화
+  - TMUX-AUTOMATION-CONTROLLER.ps1: 50+ 빌드 사이클 오케스트레이터
+  - TMUX-BUILD-WORKER.ps1: Android APK 빌드 (DDD 버전관리)
+  - TMUX-TEST-WORKER.ps1: 에뮬레이터 자동 테스트
+  - TMUX-DEBUG-WORKER.ps1: 실패 분석 및 자동 수정
+  - TMUX-MONITOR.ps1: 실시간 대시보드
+- **특징**: 병렬 처리, 상태 지속성, 백그라운드 실행
+
+#### 2. **Python 기반 다중 Claude Code 오케스트레이터**
+- **위치**: 프로젝트 루트 (`C:\Git\Routine_app`)
+- **구성요소**:
+  - orchestrator.py: Claude Opus 4 (계획) + Sonnet 4 (실행) 조합
+  - auto_responder.py: 프롬프트 자동 응답 시스템
+  - setup_claude.py: 환경 설정 및 인증 확인
+- **특징**: Git worktree 활용, 병렬 작업 실행, 자동 병합
+
+#### 3. **PyCharm 통합**
+- Run Configurations 생성:
+  - Orchestrator
+  - Auto Responder
+  - Setup Claude
+- 터미널에서 바로 실행 가능
+
+### 사용 방법:
+
+1. **Tmux 자동화 (WSL)**:
+   ```bash
+   cd SquashTrainingApp/scripts/production/tmux-automation
+   ./TMUX-SETUP.sh
+   ./attach.sh
+   # controller 윈도우에서: ./launch-automation.sh
+   ```
+
+2. **Python 오케스트레이터 (Windows)**:
+   ```bash
+   # 설정 확인
+   python setup_claude.py
+   
+   # 의존성 설치
+   pip install -r requirements.txt
+   
+   # 오케스트레이터 실행
+   python orchestrator.py
+   ```
+
+3. **자동 응답 시스템**:
+   ```bash
+   # Tmux 세션 모니터링
+   python auto_responder.py tmux
+   
+   # 특정 워커 모니터링
+   python auto_responder.py worker 1
+   ```
+
+### 핵심 혁신:
+- **두 개의 독립적인 Claude Code 인스턴스** 협업
+- **자동 프롬프트 응답**으로 무인 실행
+- **실시간 모니터링**과 상태 추적
+- **Git worktree**로 병렬 개발
+- **백그라운드 실행** 지원
+
+이 시스템으로 50회 이상의 빌드-테스트-디버그 사이클을 완전 자동화할 수 있습니다.
