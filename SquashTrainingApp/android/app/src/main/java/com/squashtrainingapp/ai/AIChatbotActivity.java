@@ -67,8 +67,9 @@ public class AIChatbotActivity extends AppCompatActivity implements
     }
     
     private void setupVoiceRecognition() {
-        voiceManager = new VoiceRecognitionManager(this);
-        voiceManager.setVoiceRecognitionListener(this);
+        // Temporarily disabled to avoid permission issues
+        // voiceManager = new VoiceRecognitionManager(this);
+        // voiceManager.setVoiceRecognitionListener(this);
     }
     
     private void setupAIEngine() {
@@ -80,10 +81,8 @@ public class AIChatbotActivity extends AppCompatActivity implements
         sendButton.setOnClickListener(v -> sendMessage());
         
         voiceButton.setOnClickListener(v -> {
-            if (!isProcessing) {
-                voiceManager.startListening();
-                voiceButton.setImageResource(R.drawable.ic_mic_active);
-            }
+            // Temporarily disabled
+            Toast.makeText(this, "Voice input temporarily disabled", Toast.LENGTH_SHORT).show();
         });
         
         inputEditText.setOnEditorActionListener((v, actionId, event) -> {
@@ -180,7 +179,7 @@ public class AIChatbotActivity extends AppCompatActivity implements
     public void onResponse(String response) {
         runOnUiThread(() -> {
             addMessage(response, ChatMessage.MessageType.AI);
-            voiceManager.speak(response);
+            // voiceManager.speak(response); // Temporarily disabled
             isProcessing = false;
             progressBar.setVisibility(View.GONE);
         });
@@ -198,8 +197,8 @@ public class AIChatbotActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (voiceManager != null) {
-            voiceManager.destroy();
-        }
+        // if (voiceManager != null) {
+        //     voiceManager.destroy();
+        // }
     }
 }

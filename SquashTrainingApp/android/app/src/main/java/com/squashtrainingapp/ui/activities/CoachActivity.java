@@ -90,7 +90,9 @@ public class CoachActivity extends AppCompatActivity {
         });
         
         askAiButton.setOnClickListener(v -> {
-            android.widget.Toast.makeText(this, "AI Coach coming soon! (OpenAI integration)", android.widget.Toast.LENGTH_LONG).show();
+            // Launch AI Chatbot Activity
+            android.content.Intent intent = new android.content.Intent(this, com.squashtrainingapp.ai.AIChatbotActivity.class);
+            startActivity(intent);
         });
     }
 }

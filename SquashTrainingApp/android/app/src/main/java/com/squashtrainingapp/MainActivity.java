@@ -53,7 +53,8 @@ public class MainActivity extends Activity implements
         initializeViews();
         checkAudioPermission();
         setupMascotInteraction();
-        setupVoiceRecognition();
+        // Temporarily disabled to prevent blocking navigation
+        // setupVoiceRecognition();
     }
     
     private void initializeViews() {
@@ -151,10 +152,8 @@ public class MainActivity extends Activity implements
     }
     
     private void activateVoiceRecognition() {
-        if (voiceManager != null) {
-            showVoiceOverlay();
-            voiceManager.startListening();
-        }
+        // Temporarily disabled
+        Toast.makeText(this, "Voice recognition temporarily disabled", Toast.LENGTH_SHORT).show();
     }
     
     private void showVoiceOverlay() {
@@ -211,6 +210,9 @@ public class MainActivity extends Activity implements
     }
     
     private void navigateToZone(String zoneName) {
+        // Always hide voice overlay before navigating
+        hideVoiceOverlay();
+        
         Intent intent = null;
         
         switch (zoneName.toLowerCase()) {
@@ -289,8 +291,15 @@ public class MainActivity extends Activity implements
     @Override
     public void onError(String error) {
         Log.e(TAG, "Voice recognition error: " + error);
-        voiceStatusText.setText("Error: " + error);
-        new Handler().postDelayed(this::hideVoiceOverlay, 2000);
+        // Don't show overlay for permission errors
+        if (!error.contains("permissions")) {
+            voiceStatusText.setText("Error: " + error);
+            showVoiceOverlay();
+            new Handler().postDelayed(this::hideVoiceOverlay, 2000);
+        } else {
+            // Just log permission errors
+            Log.w(TAG, "Voice permissions not granted");
+        }
     }
     
     @Override
