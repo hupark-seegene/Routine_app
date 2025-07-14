@@ -6,6 +6,15 @@ echo ====================================
 echo Quick Start - Multi-Agent System
 echo ====================================
 echo.
+echo 이 스크립트는 다음을 자동으로 수행합니다:
+echo 1. Python 환경 문제 해결
+echo 2. 필수 패키지 설치
+echo 3. PyCharm 터미널 자동 설정
+echo 4. 자동 응답 시스템 시작
+echo.
+echo 시작하려면 Enter를 누르세요...
+pause >nul
+echo.
 
 :: 1. 환경 복구 실행
 echo [1/3] 환경 복구 중...
