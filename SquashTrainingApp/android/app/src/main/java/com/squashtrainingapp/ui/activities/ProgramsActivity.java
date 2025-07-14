@@ -43,6 +43,13 @@ public class ProgramsActivity extends AppCompatActivity implements ProgramAdapte
         ImageView backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
         
+        // Schedule button
+        ImageView scheduleButton = findViewById(R.id.schedule_button);
+        scheduleButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ProgramsActivity.this, ScheduleActivity.class);
+            startActivity(intent);
+        });
+        
         // Title
         TextView titleText = findViewById(R.id.title_text);
         titleText.setText("TRAINING PROGRAMS");

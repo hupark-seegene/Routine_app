@@ -7,7 +7,7 @@ public final class DatabaseContract {
     
     // Database Info
     public static final String DATABASE_NAME = "squashTraining.db";
-    public static final int DATABASE_VERSION = 2; // Incremented for new tables
+    public static final int DATABASE_VERSION = 3; // Incremented for workout sessions
     
     // Table Names
     public static final String TABLE_EXERCISES = "exercises";
@@ -15,6 +15,7 @@ public final class DatabaseContract {
     public static final String TABLE_USER = "user";
     public static final String TABLE_TRAINING_PROGRAMS = "training_programs";
     public static final String TABLE_PROGRAM_ENROLLMENTS = "program_enrollments";
+    public static final String TABLE_WORKOUT_SESSIONS = "workout_sessions";
     
     // Common columns
     public static final String COLUMN_ID = "id";
@@ -67,6 +68,16 @@ public final class DatabaseContract {
     public static final String COLUMN_ENROLLMENT_LAST_ACTIVITY = "last_activity_date";
     public static final String COLUMN_ENROLLMENT_CREATED_AT = "created_at";
     public static final String COLUMN_ENROLLMENT_UPDATED_AT = "updated_at";
+    
+    // Workout Sessions Table Columns
+    public static final String COLUMN_SESSION_PROGRAM_ID = "program_id";
+    public static final String COLUMN_SESSION_NAME = "session_name";
+    public static final String COLUMN_SESSION_SCHEDULED_DATE = "scheduled_date";
+    public static final String COLUMN_SESSION_DURATION_MINUTES = "duration_minutes";
+    public static final String COLUMN_SESSION_STATUS = "status";
+    public static final String COLUMN_SESSION_NOTES = "notes";
+    public static final String COLUMN_SESSION_CREATED_AT = "created_at";
+    public static final String COLUMN_SESSION_UPDATED_AT = "updated_at";
     
     // SQL Create Statements
     public static final String SQL_CREATE_EXERCISES = "CREATE TABLE " + TABLE_EXERCISES +
@@ -137,10 +148,26 @@ public final class DatabaseContract {
             "FOREIGN KEY(" + COLUMN_ENROLLMENT_PROGRAM_ID + ") REFERENCES " + TABLE_TRAINING_PROGRAMS + "(" + COLUMN_ID + ")" +
             ")";
     
+    // SQL Create Workout Sessions Table
+    public static final String SQL_CREATE_WORKOUT_SESSIONS = "CREATE TABLE " + TABLE_WORKOUT_SESSIONS +
+            "(" +
+            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            COLUMN_SESSION_PROGRAM_ID + " INTEGER," +
+            COLUMN_SESSION_NAME + " TEXT NOT NULL," +
+            COLUMN_SESSION_SCHEDULED_DATE + " DATETIME NOT NULL," +
+            COLUMN_SESSION_DURATION_MINUTES + " INTEGER DEFAULT 60," +
+            COLUMN_SESSION_STATUS + " TEXT DEFAULT 'scheduled'," +
+            COLUMN_SESSION_NOTES + " TEXT," +
+            COLUMN_SESSION_CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP," +
+            COLUMN_SESSION_UPDATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP," +
+            "FOREIGN KEY(" + COLUMN_SESSION_PROGRAM_ID + ") REFERENCES " + TABLE_TRAINING_PROGRAMS + "(" + COLUMN_ID + ")" +
+            ")";
+    
     // SQL Delete Statements
     public static final String SQL_DELETE_EXERCISES = "DROP TABLE IF EXISTS " + TABLE_EXERCISES;
     public static final String SQL_DELETE_RECORDS = "DROP TABLE IF EXISTS " + TABLE_RECORDS;
     public static final String SQL_DELETE_USER = "DROP TABLE IF EXISTS " + TABLE_USER;
     public static final String SQL_DELETE_TRAINING_PROGRAMS = "DROP TABLE IF EXISTS " + TABLE_TRAINING_PROGRAMS;
     public static final String SQL_DELETE_PROGRAM_ENROLLMENTS = "DROP TABLE IF EXISTS " + TABLE_PROGRAM_ENROLLMENTS;
+    public static final String SQL_DELETE_WORKOUT_SESSIONS = "DROP TABLE IF EXISTS " + TABLE_WORKOUT_SESSIONS;
 }

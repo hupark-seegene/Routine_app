@@ -83,5 +83,11 @@
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
+        <activity
+            android:name=".ui.activities.ScheduleActivity"
+            android:label="Schedule Workout"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
     </application>
 </manifest>
