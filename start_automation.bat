@@ -14,8 +14,7 @@ if %errorLevel% neq 0 (
     echo [ERROR] 필요한 패키지가 설치되지 않았습니다.
     echo fix_environment.bat을 먼저 실행하세요.
     echo.
-    set /p choice="지금 환경을 복구하시겠습니까? (Y/n): "
-    if /i "%choice%"=="n" goto :end
+    echo 자동으로 환경을 복구합니다...
     call fix_environment.bat
 )
 
@@ -26,31 +25,17 @@ if %errorLevel% neq 0 (
     echo [WARNING] PyCharm이 실행되지 않았습니다.
     echo Routine_app 프로젝트를 PyCharm에서 열어주세요.
     echo.
-    echo 계속 진행하시겠습니까?
-    set /p choice="(Y/n): "
-    if /i "%choice%"=="n" goto :end
+    echo PyCharm 미실행 상태에서 계속 진행합니다...
 )
 
-:: 3. 실행 모드 선택
-echo [3/4] 실행 모드 선택...
+:: 3. 자동 실행 모드
+echo [3/4] 자동 실행 모드...
 echo.
-echo 실행 모드를 선택하세요:
-echo 1. 전체 자동화 (PyCharm 터미널 + 자동 응답)
-echo 2. PyCharm 터미널 설정만
-echo 3. 자동 응답 시스템만
-echo 4. 테스트 모드
-echo 5. 취소
+echo 자동으로 전체 자동화 모드를 시작합니다:
+echo - PyCharm 터미널 자동 설정
+echo - 자동 응답 시스템 활성화
 echo.
-set /p mode="선택 (1-5): "
-
-if "%mode%"=="1" goto :full_automation
-if "%mode%"=="2" goto :terminal_only
-if "%mode%"=="3" goto :responder_only
-if "%mode%"=="4" goto :test_mode
-if "%mode%"=="5" goto :end
-
-echo 잘못된 선택입니다.
-goto :end
+goto :full_automation
 
 :full_automation
 echo [4/4] 전체 자동화 시스템 시작 중...
@@ -59,8 +44,8 @@ echo 1. PyCharm 터미널 자동 설정을 시작합니다...
 echo 2. 5초 후 자동 응답 시스템이 시작됩니다...
 echo 3. 두 시스템이 동시에 실행됩니다...
 echo.
-echo 준비되셨으면 Enter를 누르세요...
-pause >nul
+echo 자동으로 시작합니다... (3초 후)
+timeout /t 3 /nobreak >nul
 
 :: 터미널 설정 시작
 start "PyCharm Controller" python pycharm_terminal_controller.py
@@ -80,8 +65,8 @@ goto :end
 :terminal_only
 echo [4/4] PyCharm 터미널 설정 시작 중...
 echo.
-echo 준비되셨으면 Enter를 누르세요...
-pause >nul
+echo 자동으로 시작합니다... (3초 후)
+timeout /t 3 /nobreak >nul
 
 python pycharm_terminal_controller.py
 goto :end
@@ -109,13 +94,10 @@ echo ====================================
 echo 시스템 종료
 echo ====================================
 echo.
-echo 백그라운드 프로세스를 종료하시겠습니까?
-set /p choice="(Y/n): "
-if /i "%choice%"=="y" (
-    taskkill /F /FI "WINDOWTITLE eq PyCharm Controller" 2>nul
-    taskkill /F /FI "WINDOWTITLE eq Auto Responder" 2>nul
-    echo ✓ 백그라운드 프로세스 종료됨
-)
+echo 백그라운드 프로세스를 유지합니다 (자동화 계속 실행)
+echo 수동 종료가 필요한 경우:
+echo   taskkill /F /FI "WINDOWTITLE eq PyCharm Controller"
+echo   taskkill /F /FI "WINDOWTITLE eq Auto Responder"
 echo.
 echo 사용해 주셔서 감사합니다!
-pause
+echo 자동화 시스템이 백그라운드에서 실행 중입니다.

@@ -12,8 +12,8 @@ net session >nul 2>&1
 if %errorLevel% neq 0 (
     echo [WARNING] 관리자 권한으로 실행하는 것이 좋습니다.
     echo 우클릭 - "관리자 권한으로 실행"
+    echo 계속 진행합니다...
     echo.
-    pause
 )
 
 :: 1. 기존 가상환경 정리
@@ -31,7 +31,7 @@ if %errorLevel% neq 0 (
     echo [ERROR] Python이 설치되지 않았거나 PATH에 없습니다.
     echo Python 3.8 이상을 설치하고 PATH에 추가하세요.
     echo https://python.org/downloads/
-    pause
+    echo 자동 종료합니다.
     exit /b 1
 )
 
@@ -112,12 +112,8 @@ echo 환경 설정 완료!
 echo ====================================
 echo.
 
-:: 테스트 실행
-echo 시스템 테스트를 실행하시겠습니까?
-set /p choice="(Y/n): "
-if /i "%choice%"=="n" goto :end
-if /i "%choice%"=="no" goto :end
-
+:: 자동 테스트 실행
+echo 자동으로 시스템 테스트를 실행합니다...
 echo.
 echo 시스템 테스트 실행 중...
 python test_terminal_setup.py
@@ -137,4 +133,4 @@ echo 3. 자동 응답 시스템:
 echo    python auto_responder.py monitor
 echo ====================================
 echo.
-pause
+echo 환경 설정이 완료되었습니다.

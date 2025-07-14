@@ -18,6 +18,7 @@ from datetime import datetime
 class PyCharmTerminalController:
     def __init__(self):
         self.project_root = r"C:\Git\Routine_app"
+        self.squash_app_root = r"C:\Git\Routine_app\SquashTrainingApp"
         self.terminals = {}
         self.pycharm_process = None
         self.response_queue = queue.Queue()
@@ -183,6 +184,7 @@ class MultiAgentOrchestrator:
     def __init__(self):
         self.terminal_controller = PyCharmTerminalController()
         self.project_root = r"C:\Git\Routine_app"
+        self.squash_app_root = r"C:\Git\Routine_app\SquashTrainingApp"
         
     def prepare_environment(self):
         """환경 준비"""
@@ -243,7 +245,7 @@ class MultiAgentOrchestrator:
                 'rename': True,
                 'commands': [
                     'echo "🧠 Lead Agent (Opus 4) Ready"',
-                    'cd C:\\Git\\Routine_app',
+                    'cd C:\\Git\\Routine_app\\SquashTrainingApp',
                     # 'claude --model opus'  # 실제 실행시 주석 해제
                 ],
                 'command_delay': 1.0
@@ -253,7 +255,7 @@ class MultiAgentOrchestrator:
                 'rename': True,
                 'commands': [
                     'echo "🔨 Worker 1 (Sonnet 4) Ready"',
-                    'cd C:\\Git\\worker-1',
+                    'cd C:\\Git\\Routine_app\\SquashTrainingApp',
                     # 'claude --model sonnet'  # 실제 실행시 주석 해제
                 ],
                 'command_delay': 1.0
@@ -263,7 +265,7 @@ class MultiAgentOrchestrator:
                 'rename': True,
                 'commands': [
                     'echo "🔧 Worker 2 (Sonnet 4) Ready"',
-                    'cd C:\\Git\\worker-2',
+                    'cd C:\\Git\\Routine_app\\SquashTrainingApp',
                     # 'claude --model sonnet'  # 실제 실행시 주석 해제
                 ],
                 'command_delay': 1.0
@@ -273,7 +275,7 @@ class MultiAgentOrchestrator:
                 'rename': True,
                 'commands': [
                     'echo "⚙️ Worker 3 (Sonnet 4) Ready"',
-                    'cd C:\\Git\\worker-3',
+                    'cd C:\\Git\\Routine_app\\SquashTrainingApp',
                     # 'claude --model sonnet'  # 실제 실행시 주석 해제
                 ],
                 'command_delay': 1.0
