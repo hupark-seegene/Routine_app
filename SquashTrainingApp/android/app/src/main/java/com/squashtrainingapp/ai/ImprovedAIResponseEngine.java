@@ -12,12 +12,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import android.os.Handler;
 
 public class ImprovedAIResponseEngine extends AIResponseEngine {
     private static final String TAG = "ImprovedAIResponseEngine";
     
     private Context context;
     private boolean isKorean = false;
+    private ExecutorService executorService;
+    private Handler mainHandler;
+    private OpenAIClient openAIClient;
+    private AIResponseListener listener;
     
     // Enhanced Korean responses
     private static final String[] KOREAN_GREETING_RESPONSES = {
@@ -105,7 +110,16 @@ public class ImprovedAIResponseEngine extends AIResponseEngine {
     public ImprovedAIResponseEngine(Context context) {
         super(context);
         this.context = context;
+        this.executorService = Executors.newSingleThreadExecutor();
+        this.mainHandler = new Handler(Looper.getMainLooper());
+        this.openAIClient = new OpenAIClient(context);
         checkLanguagePreference();
+    }
+    
+    @Override
+    public void setAIResponseListener(AIResponseListener listener) {
+        super.setAIResponseListener(listener);
+        this.listener = listener;
     }
     
     private void checkLanguagePreference() {
@@ -122,7 +136,60 @@ public class ImprovedAIResponseEngine extends AIResponseEngine {
     }
     
     @Override
-    protected String generateLocalResponse(String userInput) {
+    public void getResponse(String userInput) {
+        // Try OpenAI first if available
+        if (openAIClient.hasApiKey()) {
+            openAIClient.sendMessage(userInput, new OpenAIClient.OpenAICallback() {
+                @Override
+                public void onSuccess(String response) {
+                    mainHandler.post(() -> {
+                        if (listener != null) {
+                            listener.onResponse(response);
+                        }
+                    });
+                }
+                
+                @Override
+                public void onError(String error) {
+                    // Fallback to local response on error
+                    Log.w(TAG, "OpenAI error, falling back to local: " + error);
+                    executorService.execute(() -> {
+                        String response = generateImprovedLocalResponse(userInput);
+                        mainHandler.post(() -> {
+                            if (listener != null) {
+                                listener.onResponse(response);
+                            }
+                        });
+                    });
+                }
+            });
+        } else {
+            // Use local response generation
+            executorService.execute(() -> {
+                try {
+                    // Simulate processing time
+                    Thread.sleep(1000);
+                    
+                    String response = generateImprovedLocalResponse(userInput);
+                    
+                    mainHandler.post(() -> {
+                        if (listener != null) {
+                            listener.onResponse(response);
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e(TAG, "Error generating response", e);
+                    mainHandler.post(() -> {
+                        if (listener != null) {
+                            listener.onAIError(e.getMessage());
+                        }
+                    });
+                }
+            });
+        }
+    }
+    
+    private String generateImprovedLocalResponse(String userInput) {
         String input = userInput.toLowerCase();
         Random random = new Random();
         

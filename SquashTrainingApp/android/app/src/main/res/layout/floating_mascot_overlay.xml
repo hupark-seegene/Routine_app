@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/floating_mascot_container"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_gravity="bottom|end"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="140dp"
+    android:elevation="12dp">
+
+    <!-- Animated Mascot -->
+    <com.squashtrainingapp.mascot.AnimatedMascotView
+        android:id="@+id/animated_mascot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- Pulse animation background -->
+    <View
+        android:id="@+id/pulse_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/pulse_animation"
+        android:visibility="gone" />
+
+</FrameLayout>

@@ -21,6 +21,9 @@ import com.squashtrainingapp.ui.activities.CoachActivity;
 import com.squashtrainingapp.ui.activities.ProfileActivity;
 import com.squashtrainingapp.ui.activities.RecordActivity;
 import com.squashtrainingapp.ui.activities.SettingsActivity;
+import com.squashtrainingapp.mascot.AnimatedMascotView;
+import android.view.ViewGroup;
+import android.view.LayoutInflater;
 
 public class ModernMainActivity extends AppCompatActivity implements 
         VoiceRecognitionManager.VoiceRecognitionListener {
@@ -31,6 +34,8 @@ public class ModernMainActivity extends AppCompatActivity implements
     private FloatingActionButton voiceFab;
     private VoiceRecognitionManager voiceManager;
     private ImprovedAIResponseEngine aiEngine;
+    private AnimatedMascotView animatedMascot;
+    private ViewGroup floatingMascotContainer;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,7 @@ public class ModernMainActivity extends AppCompatActivity implements
         setupViews();
         setupBottomNavigation();
         setupVoiceFeatures();
+        setupFloatingMascot();
         loadDailyTip();
     }
     
@@ -129,6 +135,29 @@ public class ModernMainActivity extends AppCompatActivity implements
         }
     }
     
+    private void setupFloatingMascot() {
+        // Inflate floating mascot overlay
+        LayoutInflater inflater = LayoutInflater.from(this);
+        floatingMascotContainer = (ViewGroup) inflater.inflate(
+            R.layout.floating_mascot_overlay, null
+        );
+        
+        animatedMascot = floatingMascotContainer.findViewById(R.id.animated_mascot);
+        
+        // Add click listener to mascot
+        animatedMascot.setOnClickListener(v -> {
+            // Start voice command when mascot is clicked
+            if (checkVoicePermission()) {
+                startVoiceCommand();
+                animatedMascot.startListeningAnimation();
+            }
+        });
+        
+        // Add mascot to the root view
+        ViewGroup rootView = findViewById(android.R.id.content);
+        rootView.addView(floatingMascotContainer);
+    }
+    
     private void loadDailyTip() {
         // Get a random tip from the AI engine
         String[] tips = {
@@ -147,12 +176,18 @@ public class ModernMainActivity extends AppCompatActivity implements
     @Override
     public void onResults(String recognizedText) {
         voiceFab.setImageResource(R.drawable.ic_mic);
+        if (animatedMascot != null) {
+            animatedMascot.stopListeningAnimation();
+        }
         processVoiceCommand(recognizedText);
     }
     
     @Override
     public void onError(String error) {
         voiceFab.setImageResource(R.drawable.ic_mic);
+        if (animatedMascot != null) {
+            animatedMascot.stopListeningAnimation();
+        }
         Toast.makeText(this, getString(R.string.voice_error, error), Toast.LENGTH_SHORT).show();
     }
     
@@ -164,6 +199,9 @@ public class ModernMainActivity extends AppCompatActivity implements
     @Override
     public void onEndOfSpeech() {
         voiceFab.setImageResource(R.drawable.ic_mic);
+        if (animatedMascot != null) {
+            animatedMascot.stopListeningAnimation();
+        }
     }
     
     private void processVoiceCommand(String command) {
