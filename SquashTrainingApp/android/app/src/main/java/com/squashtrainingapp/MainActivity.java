@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -21,7 +23,7 @@ import com.squashtrainingapp.ui.activities.RecordActivity;
 import com.squashtrainingapp.ui.activities.ProfileActivity;
 import com.squashtrainingapp.ui.activities.CoachActivity;
 import com.squashtrainingapp.ui.activities.HistoryActivity;
-import com.squashtrainingapp.ui.activities.SettingsActivity;
+import com.squashtrainingapp.ui.widgets.VoiceWaveView;
 
 public class MainActivity extends AppCompatActivity implements 
         MascotView.OnMascotInteractionListener,
@@ -35,6 +37,12 @@ public class MainActivity extends AppCompatActivity implements
     private AnimationController animationController;
     private VoiceRecognitionManager voiceManager;
     private DragHandler dragHandler;
+    
+    // Voice overlay components
+    private View voiceOverlay;
+    private VoiceWaveView voiceWaveView;
+    private TextView voiceStatusText;
+    private TextView recognizedText;
     
     private boolean isVoiceActive = false;
     private Handler navigationHandler = new Handler();
@@ -56,6 +64,23 @@ public class MainActivity extends AppCompatActivity implements
     private void initializeViews() {
         mascotView = findViewById(R.id.mascot_view);
         zoneManager = findViewById(R.id.zone_manager);
+        
+        // Voice overlay
+        voiceOverlay = findViewById(R.id.voice_overlay);
+        voiceWaveView = findViewById(R.id.voice_wave_view);
+        voiceStatusText = findViewById(R.id.voice_status_text);
+        recognizedText = findViewById(R.id.recognized_text);
+        
+        // Cancel voice button
+        View cancelVoice = findViewById(R.id.cancel_voice);
+        if (cancelVoice != null) {
+            cancelVoice.setOnClickListener(v -> cancelVoiceRecognition());
+        }
+        
+        // Click overlay to cancel
+        if (voiceOverlay != null) {
+            voiceOverlay.setOnClickListener(v -> cancelVoiceRecognition());
+        }
     }
     
     private void setupMascot() {
@@ -149,13 +174,8 @@ public class MainActivity extends AppCompatActivity implements
                     intent = new Intent(this, CoachActivity.class);
                     break;
                 case "settings":
-                    if (SettingsActivity.class != null) {
-                        intent = new Intent(this, SettingsActivity.class);
-                    } else {
-                        showToast("Settings coming soon!");
-                        return;
-                    }
-                    break;
+                    showToast("Settings coming soon!");
+                    return;
             }
             
             if (intent != null) {
@@ -167,42 +187,110 @@ public class MainActivity extends AppCompatActivity implements
     
     private void startVoiceRecognition() {
         isVoiceActive = true;
+        
+        // Show voice overlay
+        if (voiceOverlay != null) {
+            voiceOverlay.setVisibility(View.VISIBLE);
+            voiceOverlay.setAlpha(0f);
+            voiceOverlay.animate()
+                .alpha(1f)
+                .setDuration(300)
+                .start();
+        }
+        
+        // Start wave animation
+        if (voiceWaveView != null) {
+            voiceWaveView.startAnimation();
+        }
+        
+        // Update status
+        if (voiceStatusText != null) {
+            voiceStatusText.setText("Listening...");
+        }
+        
+        if (recognizedText != null) {
+            recognizedText.setText("");
+        }
+        
+        // Start voice recognition
         voiceManager.startListening();
-        showToast("Listening... Say a command!");
+    }
+    
+    private void cancelVoiceRecognition() {
+        isVoiceActive = false;
+        voiceManager.stopListening();
+        
+        // Hide overlay with animation
+        if (voiceOverlay != null) {
+            voiceOverlay.animate()
+                .alpha(0f)
+                .setDuration(300)
+                .withEndAction(() -> voiceOverlay.setVisibility(View.GONE))
+                .start();
+        }
+        
+        // Stop wave animation
+        if (voiceWaveView != null) {
+            voiceWaveView.stopAnimation();
+        }
     }
     
     // VoiceRecognitionListener methods
     @Override
-    public void onResults(String recognizedText) {
+    public void onResults(String recognized) {
         isVoiceActive = false;
         
-        // Parse the voice command
-        VoiceCommands.Command command = VoiceCommands.parseCommand(recognizedText);
-        
-        if (command.type != VoiceCommands.CommandType.UNKNOWN) {
-            handleVoiceCommand(command);
-        } else {
-            // Open AI chatbot for natural conversation
-            Intent intent = new Intent(this, AIChatbotActivity.class);
-            intent.putExtra("initial_message", recognizedText);
-            startActivity(intent);
+        // Show recognized text
+        if (recognizedText != null) {
+            recognizedText.setText(recognized);
         }
+        
+        // Update status
+        if (voiceStatusText != null) {
+            voiceStatusText.setText("Processing...");
+        }
+        
+        // Parse the voice command
+        VoiceCommands.Command command = VoiceCommands.parseCommand(recognized);
+        
+        // Delay to show the recognized text
+        navigationHandler.postDelayed(() -> {
+            cancelVoiceRecognition();
+            
+            if (command.type != VoiceCommands.CommandType.UNKNOWN) {
+                handleVoiceCommand(command);
+            } else {
+                // Open AI chatbot for natural conversation
+                Intent intent = new Intent(this, AIChatbotActivity.class);
+                intent.putExtra("initial_message", recognized);
+                startActivity(intent);
+            }
+        }, 1000);
     }
     
     @Override
     public void onError(String error) {
         isVoiceActive = false;
-        showToast("Voice error: " + error);
+        
+        if (voiceStatusText != null) {
+            voiceStatusText.setText("Error: " + error);
+        }
+        
+        navigationHandler.postDelayed(this::cancelVoiceRecognition, 2000);
     }
     
     @Override
     public void onReadyForSpeech() {
-        // Voice recognition ready
+        if (voiceStatusText != null) {
+            voiceStatusText.setText("Speak now...");
+        }
     }
     
     @Override
     public void onEndOfSpeech() {
-        // Speech ended
+        if (voiceStatusText != null) {
+            voiceStatusText.setText("Processing...");
+        }
     }
     
     private void handleVoiceCommand(VoiceCommands.Command command) {

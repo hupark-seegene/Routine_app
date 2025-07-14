@@ -65,7 +65,7 @@ public class ChecklistActivity extends AppCompatActivity {
                 
                 if (isChecked) {
                     Toast.makeText(ChecklistActivity.this, 
-                        exercise.name + " completed!", Toast.LENGTH_SHORT).show();
+                        exercise.getName() + " completed!", Toast.LENGTH_SHORT).show();
                 }
             });
         }

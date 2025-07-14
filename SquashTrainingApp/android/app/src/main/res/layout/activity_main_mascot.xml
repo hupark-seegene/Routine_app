@@ -31,4 +31,7 @@
         android:shadowDy="2"
         android:shadowRadius="4" />
 
+    <!-- Voice Recognition Overlay -->
+    <include layout="@layout/voice_recognition_overlay" />
+
 </RelativeLayout>

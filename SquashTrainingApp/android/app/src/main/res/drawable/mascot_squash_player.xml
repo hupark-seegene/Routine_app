@@ -52,19 +52,15 @@
         android:pathData="M155,100 L160,100 L160,130 L155,130 Z" />
     
     <!-- Eyes -->
-    <circle
+    <path
         android:name="left_eye"
         android:fillColor="#000000"
-        android:cx="90"
-        android:cy="80"
-        android:r="3" />
+        android:pathData="M87,80 A3,3 0 1,1 93,80 A3,3 0 1,1 87,80" />
     
-    <circle
+    <path
         android:name="right_eye"
         android:fillColor="#000000"
-        android:cx="110"
-        android:cy="80"
-        android:r="3" />
+        android:pathData="M107,80 A3,3 0 1,1 113,80 A3,3 0 1,1 107,80" />
     
     <!-- Smile -->
     <path
@@ -97,10 +93,8 @@
         android:pathData="M100,240 L120,240 L120,245 L100,245 Z" />
     
     <!-- Squash Ball -->
-    <circle
+    <path
         android:name="squash_ball"
         android:fillColor="#000000"
-        android:cx="50"
-        android:cy="150"
-        android:r="8" />
+        android:pathData="M42,150 A8,8 0 1,1 58,150 A8,8 0 1,1 42,150" />
 </vector>

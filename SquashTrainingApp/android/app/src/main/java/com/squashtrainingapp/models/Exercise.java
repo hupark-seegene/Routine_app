@@ -60,4 +60,12 @@ public class Exercise {
                 return "📌";
         }
     }
+    
+    public String getDisplayText() {
+        return category + " - " + description;
+    }
+    
+    public boolean isCompleted() {
+        return isChecked;
+    }
 }

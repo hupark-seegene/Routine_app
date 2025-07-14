@@ -59,6 +59,19 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     
+    // Voice Recognition - removed as it's causing issues
+    
+    // Animation
+    implementation 'com.airbnb.android:lottie:6.0.0'
+    
+    // AI Chat & Networking
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    
+    // Enhanced UI
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    
     // Test dependencies
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

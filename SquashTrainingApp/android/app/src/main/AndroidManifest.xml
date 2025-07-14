@@ -1,4 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".MainApplication"
@@ -16,31 +21,44 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>        
+        </activity>
+        
         <activity
-            android:name=".RecordActivity"
+            android:name=".ui.activities.RecordActivity"
             android:label="Record"
-            android:exported="true"
-            android:theme="@style/AppTheme"/>        
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
         <activity
-            android:name=".ProfileActivity"
+            android:name=".ui.activities.ProfileActivity"
             android:label="Profile"
-            android:exported="true"
-            android:theme="@style/AppTheme"/>        
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
         <activity
-            android:name=".ChecklistActivity"
+            android:name=".ui.activities.ChecklistActivity"
             android:label="Checklist"
-            android:exported="true"
-            android:theme="@style/AppTheme"/>        
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
         <activity
-            android:name=".CoachActivity"
+            android:name=".ui.activities.CoachActivity"
             android:label="Coach"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/AppTheme"/>
+            
         <activity
-            android:name=".HistoryActivity"
+            android:name=".ui.activities.HistoryActivity"
             android:label="History"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ai.AIChatbotActivity"
+            android:label="AI Coach Chat"
+            android:exported="false"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"/>
+            
     </application>
 </manifest>

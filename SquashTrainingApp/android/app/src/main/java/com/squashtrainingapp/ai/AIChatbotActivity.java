@@ -50,6 +50,12 @@ public class AIChatbotActivity extends AppCompatActivity implements
         sendButton = findViewById(R.id.send_button);
         voiceButton = findViewById(R.id.voice_button);
         progressBar = findViewById(R.id.progress_bar);
+        
+        // Back button
+        View backButton = findViewById(R.id.back_button);
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> finish());
+        }
     }
     
     private void setupRecyclerView() {
@@ -180,8 +186,8 @@ public class AIChatbotActivity extends AppCompatActivity implements
         });
     }
     
-    @Override
-    public void onError(String error) {
+    // This method is now named differently to avoid conflict with VoiceRecognitionListener.onError
+    public void onAIError(String error) {
         runOnUiThread(() -> {
             addMessage("I'm having trouble processing that. Please try again.", ChatMessage.MessageType.AI);
             isProcessing = false;

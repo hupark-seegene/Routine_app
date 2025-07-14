@@ -19,6 +19,7 @@ public class AIResponseEngine {
     private Handler mainHandler;
     private AIResponseListener listener;
     private Random random;
+    private OpenAIClient openAIClient;
     
     // Local responses for when API is not available
     private static final String[] GREETING_RESPONSES = {
@@ -53,7 +54,7 @@ public class AIResponseEngine {
     
     public interface AIResponseListener {
         void onResponse(String response);
-        void onError(String error);
+        void onAIError(String error);
     }
     
     public AIResponseEngine(Context context) {
@@ -62,6 +63,7 @@ public class AIResponseEngine {
         this.executorService = Executors.newSingleThreadExecutor();
         this.mainHandler = new Handler(Looper.getMainLooper());
         this.random = new Random();
+        this.openAIClient = new OpenAIClient(context);
     }
     
     public void setAIResponseListener(AIResponseListener listener) {
@@ -69,27 +71,56 @@ public class AIResponseEngine {
     }
     
     public void getResponse(String userInput) {
-        executorService.execute(() -> {
-            try {
-                // Simulate processing time
-                Thread.sleep(1000);
+        // Try OpenAI first if available
+        if (openAIClient.hasApiKey()) {
+            openAIClient.sendMessage(userInput, new OpenAIClient.OpenAICallback() {
+                @Override
+                public void onSuccess(String response) {
+                    mainHandler.post(() -> {
+                        if (listener != null) {
+                            listener.onResponse(response);
+                        }
+                    });
+                }
                 
-                String response = generateLocalResponse(userInput);
-                
-                mainHandler.post(() -> {
-                    if (listener != null) {
-                        listener.onResponse(response);
-                    }
-                });
-            } catch (Exception e) {
-                Log.e(TAG, "Error generating response", e);
-                mainHandler.post(() -> {
-                    if (listener != null) {
-                        listener.onError(e.getMessage());
-                    }
-                });
-            }
-        });
+                @Override
+                public void onError(String error) {
+                    // Fallback to local response on error
+                    Log.w(TAG, "OpenAI error, falling back to local: " + error);
+                    executorService.execute(() -> {
+                        String response = generateLocalResponse(userInput);
+                        mainHandler.post(() -> {
+                            if (listener != null) {
+                                listener.onResponse(response);
+                            }
+                        });
+                    });
+                }
+            });
+        } else {
+            // Use local response generation
+            executorService.execute(() -> {
+                try {
+                    // Simulate processing time
+                    Thread.sleep(1000);
+                    
+                    String response = generateLocalResponse(userInput);
+                    
+                    mainHandler.post(() -> {
+                        if (listener != null) {
+                            listener.onResponse(response);
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e(TAG, "Error generating response", e);
+                    mainHandler.post(() -> {
+                        if (listener != null) {
+                            listener.onAIError(e.getMessage());
+                        }
+                    });
+                }
+            });
+        }
     }
     
     private String generateLocalResponse(String userInput) {
@@ -135,21 +166,9 @@ public class AIResponseEngine {
     }
     
     private String generateProgressResponse() {
-        try {
-            User user = databaseHelper.getUser();
-            if (user != null) {
-                return String.format("You've completed %d workouts totaling %d hours of training! " +
-                        "You're currently level %d with %d XP. Keep up the great work!",
-                        user.getTotalSessions(),
-                        user.getTotalHours(), 
-                        user.getLevel(),
-                        user.getExperience());
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error getting user stats", e);
-        }
-        
-        return "Keep tracking your workouts to see your progress. Every session counts!";
+        // For now, return a generic response
+        // TODO: Implement user stats retrieval
+        return "Keep tracking your workouts to see your progress. Every session counts! You're doing great!";
     }
     
     public void shutdown() {
