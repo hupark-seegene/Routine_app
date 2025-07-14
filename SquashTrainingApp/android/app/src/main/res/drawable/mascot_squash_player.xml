@@ -5,96 +5,167 @@
     android:viewportWidth="200"
     android:viewportHeight="250">
     
-    <!-- Body -->
+    <!-- Shadow -->
     <path
-        android:name="body"
-        android:fillColor="#FF6B6B"
-        android:pathData="M100,120 C100,120 80,140 80,170 L80,200 L120,200 L120,170 C120,140 100,120 100,120" />
+        android:name="shadow"
+        android:fillColor="#20000000"
+        android:pathData="M70,245 A40,10 0 0,0 130,245 A40,10 0 0,0 70,245" />
     
-    <!-- Head -->
+    <!-- Hair -->
+    <path
+        android:name="hair"
+        android:fillColor="#4A3C28"
+        android:pathData="M100,50 C75,50 70,70 70,80 C70,70 75,55 100,55 C125,55 130,70 130,80 C130,70 125,50 100,50 Z" />
+    
+    <!-- Head with better shape -->
     <path
         android:name="head"
-        android:fillColor="#FFD93D"
-        android:pathData="M100,60 A30,30 0 1,1 100,120 A30,30 0 1,1 100,60" />
+        android:fillColor="#FFB38A"
+        android:pathData="M100,55 C115,55 125,65 125,85 C125,105 115,115 100,115 C85,115 75,105 75,85 C75,65 85,55 100,55 Z" />
     
-    <!-- Left Arm with Racket -->
+    <!-- Headband -->
+    <path
+        android:name="headband"
+        android:fillColor="#8FE51F"
+        android:pathData="M72,75 L128,75 L128,82 L72,82 Z" />
+    
+    <!-- Sport Shirt with volt green -->
+    <path
+        android:name="shirt"
+        android:fillColor="#8FE51F"
+        android:pathData="M100,115 C100,115 75,125 75,145 L75,185 C75,195 80,200 90,200 L110,200 C120,200 125,195 125,185 L125,145 C125,125 100,115 100,115 Z" />
+    
+    <!-- Shirt Details -->
+    <path
+        android:name="shirt_collar"
+        android:fillColor="#7ACC16"
+        android:pathData="M100,115 C90,115 85,120 85,125 L85,130 L115,130 L115,125 C115,120 110,115 100,115 Z" />
+    
+    <!-- Shorts -->
+    <path
+        android:name="shorts"
+        android:fillColor="#1A1A1A"
+        android:pathData="M85,185 L85,205 L95,205 L95,195 L105,195 L105,205 L115,205 L115,185 Z" />
+    
+    <!-- Left Arm with better shape -->
     <path
         android:name="left_arm"
-        android:fillColor="#FFD93D"
-        android:pathData="M80,130 L50,110 L40,100" />
+        android:fillColor="#FFB38A"
+        android:strokeWidth="10"
+        android:strokeLineCap="round"
+        android:pathData="M82,130 Q60,115 45,105 Q35,100 30,95" />
     
-    <!-- Right Arm -->
+    <!-- Right Arm holding racket -->
     <path
         android:name="right_arm"
-        android:fillColor="#FFD93D"
-        android:pathData="M120,130 L150,110 L160,100" />
+        android:fillColor="#FFB38A"
+        android:strokeWidth="10"
+        android:strokeLineCap="round"
+        android:pathData="M118,130 Q140,115 155,105 Q165,100 170,95" />
     
-    <!-- Racket Head -->
+    <!-- Professional Racket Head -->
     <path
-        android:name="racket_head"
-        android:strokeColor="#000000"
-        android:strokeWidth="3"
-        android:fillColor="#C9FF00"
-        android:pathData="M160,100 L160,70 Q160,50 180,50 Q200,50 200,70 L200,100 Q200,120 180,120 Q160,120 160,100" />
+        android:name="racket_frame"
+        android:fillColor="#2C2C2C"
+        android:pathData="M165,95 L165,65 Q165,45 185,45 Q205,45 205,65 L205,95 Q205,115 185,115 Q165,115 165,95 Z" />
     
-    <!-- Racket Strings -->
+    <!-- Racket Inner -->
+    <path
+        android:name="racket_inner"
+        android:fillColor="#FFFFFF"
+        android:pathData="M170,95 L170,70 Q170,55 185,55 Q200,55 200,70 L200,95 Q200,110 185,110 Q170,110 170,95 Z" />
+    
+    <!-- Racket Strings Grid -->
     <path
         android:name="racket_strings"
-        android:strokeColor="#333333"
-        android:strokeWidth="1"
-        android:pathData="M165,60 L195,60 M165,70 L195,70 M165,80 L195,80 M165,90 L195,90 M165,100 L195,100 M165,110 L195,110
-                         M170,55 L170,115 M180,55 L180,115 M190,55 L190,115" />
+        android:strokeColor="#666666"
+        android:strokeWidth="0.8"
+        android:pathData="M175,60 L195,60 M175,65 L195,65 M175,70 L195,70 M175,75 L195,75 M175,80 L195,80 M175,85 L195,85 M175,90 L195,90 M175,95 L195,95 M175,100 L195,100 M175,105 L195,105
+                         M175,60 L175,105 M180,57 L180,108 M185,55 L185,110 M190,57 L190,108 M195,60 L195,105" />
     
-    <!-- Racket Handle -->
+    <!-- Racket Handle with grip -->
     <path
         android:name="racket_handle"
         android:fillColor="#8B4513"
-        android:pathData="M155,100 L160,100 L160,130 L155,130 Z" />
+        android:pathData="M160,95 L165,95 L165,130 L160,130 Z" />
     
-    <!-- Eyes -->
+    <!-- Handle Grip Pattern -->
+    <path
+        android:name="handle_grip"
+        android:strokeColor="#654321"
+        android:strokeWidth="0.5"
+        android:pathData="M160,100 L165,100 M160,105 L165,105 M160,110 L165,110 M160,115 L165,115 M160,120 L165,120 M160,125 L165,125" />
+    
+    <!-- Eyes with expression -->
     <path
         android:name="left_eye"
         android:fillColor="#000000"
-        android:pathData="M87,80 A3,3 0 1,1 93,80 A3,3 0 1,1 87,80" />
+        android:pathData="M88,80 C88,78 90,76 92,76 C94,76 96,78 96,80 C96,82 94,84 92,84 C90,84 88,82 88,80 Z" />
     
     <path
         android:name="right_eye"
         android:fillColor="#000000"
-        android:pathData="M107,80 A3,3 0 1,1 113,80 A3,3 0 1,1 107,80" />
+        android:pathData="M104,80 C104,78 106,76 108,76 C110,76 112,78 112,80 C112,82 110,84 108,84 C106,84 104,82 104,80 Z" />
     
-    <!-- Smile -->
+    <!-- Eye sparkles -->
+    <path
+        android:name="eye_sparkles"
+        android:fillColor="#FFFFFF"
+        android:pathData="M91,79 A1,1 0 1,1 93,79 A1,1 0 1,1 91,79 M107,79 A1,1 0 1,1 109,79 A1,1 0 1,1 107,79" />
+    
+    <!-- Confident Smile -->
     <path
         android:name="smile"
         android:strokeColor="#000000"
-        android:strokeWidth="2"
+        android:strokeWidth="2.5"
         android:strokeLineCap="round"
         android:pathData="M85,95 Q100,105 115,95" />
     
-    <!-- Legs -->
+    <!-- Legs with muscle definition -->
     <path
         android:name="left_leg"
-        android:fillColor="#FFD93D"
-        android:pathData="M90,200 L85,230 L80,240 L90,240 L95,230 L95,200" />
+        android:fillColor="#FFB38A"
+        android:pathData="M92,205 L88,225 L85,235 L85,240 L95,240 L95,235 L97,225 L95,205 Z" />
     
     <path
         android:name="right_leg"
-        android:fillColor="#FFD93D"
-        android:pathData="M105,200 L105,230 L100,240 L110,240 L115,230 L110,200" />
+        android:fillColor="#FFB38A"
+        android:pathData="M105,205 L103,225 L105,235 L105,240 L115,240 L115,235 L112,225 L108,205 Z" />
     
-    <!-- Shoes -->
+    <!-- Professional Sport Shoes -->
     <path
         android:name="left_shoe"
-        android:fillColor="#333333"
-        android:pathData="M75,240 L95,240 L95,245 L75,245 Z" />
+        android:fillColor="#FF0000"
+        android:pathData="M80,238 L100,238 L100,245 L80,245 Q75,242 80,238 Z" />
     
     <path
         android:name="right_shoe"
-        android:fillColor="#333333"
-        android:pathData="M100,240 L120,240 L120,245 L100,245 Z" />
+        android:fillColor="#FF0000"
+        android:pathData="M100,238 L120,238 Q125,242 120,245 L100,245 Z" />
     
-    <!-- Squash Ball -->
+    <!-- Shoe Details -->
+    <path
+        android:name="shoe_stripes"
+        android:fillColor="#FFFFFF"
+        android:pathData="M85,240 L95,240 L95,241 L85,241 Z M105,240 L115,240 L115,241 L105,241 Z" />
+    
+    <!-- Dynamic Squash Ball -->
     <path
         android:name="squash_ball"
         android:fillColor="#000000"
-        android:pathData="M42,150 A8,8 0 1,1 58,150 A8,8 0 1,1 42,150" />
+        android:pathData="M35,155 A10,10 0 1,1 55,155 A10,10 0 1,1 35,155" />
+    
+    <!-- Ball motion lines -->
+    <path
+        android:name="motion_lines"
+        android:strokeColor="#80000000"
+        android:strokeWidth="1"
+        android:strokeLineCap="round"
+        android:pathData="M30,150 L20,150 M30,155 L15,155 M30,160 L20,160" />
+    
+    <!-- Sweat drops for action -->
+    <path
+        android:name="sweat"
+        android:fillColor="#87CEEB"
+        android:pathData="M70,70 Q68,75 70,78 Q72,75 70,70 M125,85 Q123,90 125,93 Q127,90 125,85" />
 </vector>

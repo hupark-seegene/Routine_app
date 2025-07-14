@@ -95,6 +95,22 @@ public class ZoneManager extends View {
         dragHandler.initializeZones(w, h);
     }
     
+    // Update mascot position for highlighting
+    public void updateMascotPosition(float x, float y) {
+        if (dragHandler != null) {
+            dragHandler.updatePosition(x, y);
+            invalidate(); // Redraw to update highlight
+        }
+    }
+    
+    // Check which zone is at the given position
+    public String checkZoneAtPosition(float x, float y) {
+        if (dragHandler != null) {
+            return dragHandler.getZoneAt(x, y);
+        }
+        return null;
+    }
+    
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

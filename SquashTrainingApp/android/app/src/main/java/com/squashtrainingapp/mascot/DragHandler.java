@@ -132,4 +132,14 @@ public class DragHandler {
     public RectF getZoneBounds(String zoneName) {
         return featureZones.get(zoneName);
     }
+    
+    // Get the zone at a specific position
+    public String getZoneAt(float x, float y) {
+        for (Map.Entry<String, RectF> entry : featureZones.entrySet()) {
+            if (entry.getValue().contains(x, y)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
 }
