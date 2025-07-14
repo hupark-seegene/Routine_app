@@ -118,6 +118,16 @@
 
             </LinearLayout>
 
+            <!-- Training Programs Button -->
+            <Button
+                android:id="@+id/training_programs_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Training Programs"
+                style="@style/PrimaryButton"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:drawableTint="@color/white" />
+
         </LinearLayout>
 
     </FrameLayout>

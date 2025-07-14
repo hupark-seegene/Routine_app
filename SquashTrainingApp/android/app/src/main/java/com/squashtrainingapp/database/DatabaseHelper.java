@@ -33,6 +33,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(DatabaseContract.SQL_CREATE_EXERCISES);
         db.execSQL(DatabaseContract.SQL_CREATE_RECORDS);
         db.execSQL(DatabaseContract.SQL_CREATE_USER);
+        db.execSQL(DatabaseContract.SQL_CREATE_TRAINING_PROGRAMS);
+        db.execSQL(DatabaseContract.SQL_CREATE_PROGRAM_ENROLLMENTS);
         
         // Insert initial data
         insertInitialData(db);
@@ -41,6 +43,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop existing tables
+        db.execSQL(DatabaseContract.SQL_DELETE_PROGRAM_ENROLLMENTS);
+        db.execSQL(DatabaseContract.SQL_DELETE_TRAINING_PROGRAMS);
         db.execSQL(DatabaseContract.SQL_DELETE_EXERCISES);
         db.execSQL(DatabaseContract.SQL_DELETE_RECORDS);
         db.execSQL(DatabaseContract.SQL_DELETE_USER);

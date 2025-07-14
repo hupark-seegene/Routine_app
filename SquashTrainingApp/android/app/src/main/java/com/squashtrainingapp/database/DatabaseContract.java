@@ -7,12 +7,14 @@ public final class DatabaseContract {
     
     // Database Info
     public static final String DATABASE_NAME = "squashTraining.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2; // Incremented for new tables
     
     // Table Names
     public static final String TABLE_EXERCISES = "exercises";
     public static final String TABLE_RECORDS = "records";
     public static final String TABLE_USER = "user";
+    public static final String TABLE_TRAINING_PROGRAMS = "training_programs";
+    public static final String TABLE_PROGRAM_ENROLLMENTS = "program_enrollments";
     
     // Common columns
     public static final String COLUMN_ID = "id";
@@ -42,6 +44,29 @@ public final class DatabaseContract {
     public static final String COLUMN_USER_CALORIES = "total_calories";
     public static final String COLUMN_USER_HOURS = "total_hours";
     public static final String COLUMN_USER_STREAK = "current_streak";
+    
+    // Training Programs Table Columns
+    public static final String COLUMN_PROGRAM_NAME = "name";
+    public static final String COLUMN_PROGRAM_DESCRIPTION = "description";
+    public static final String COLUMN_PROGRAM_DURATION_WEEKS = "duration_weeks";
+    public static final String COLUMN_PROGRAM_DIFFICULTY = "difficulty";
+    public static final String COLUMN_PROGRAM_TYPE = "type";
+    public static final String COLUMN_PROGRAM_IMAGE_URL = "image_url";
+    public static final String COLUMN_PROGRAM_CREATED_AT = "created_at";
+    public static final String COLUMN_PROGRAM_UPDATED_AT = "updated_at";
+    
+    // Program Enrollments Table Columns
+    public static final String COLUMN_ENROLLMENT_USER_ID = "user_id";
+    public static final String COLUMN_ENROLLMENT_PROGRAM_ID = "program_id";
+    public static final String COLUMN_ENROLLMENT_START_DATE = "start_date";
+    public static final String COLUMN_ENROLLMENT_END_DATE = "end_date";
+    public static final String COLUMN_ENROLLMENT_CURRENT_WEEK = "current_week";
+    public static final String COLUMN_ENROLLMENT_CURRENT_DAY = "current_day";
+    public static final String COLUMN_ENROLLMENT_PROGRESS = "progress_percentage";
+    public static final String COLUMN_ENROLLMENT_STATUS = "status";
+    public static final String COLUMN_ENROLLMENT_LAST_ACTIVITY = "last_activity_date";
+    public static final String COLUMN_ENROLLMENT_CREATED_AT = "created_at";
+    public static final String COLUMN_ENROLLMENT_UPDATED_AT = "updated_at";
     
     // SQL Create Statements
     public static final String SQL_CREATE_EXERCISES = "CREATE TABLE " + TABLE_EXERCISES +
@@ -79,8 +104,43 @@ public final class DatabaseContract {
             COLUMN_USER_STREAK + " INTEGER DEFAULT 0" +
             ")";
     
+    // SQL Create Training Programs Table
+    public static final String SQL_CREATE_TRAINING_PROGRAMS = "CREATE TABLE " + TABLE_TRAINING_PROGRAMS +
+            "(" +
+            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            COLUMN_PROGRAM_NAME + " TEXT NOT NULL," +
+            COLUMN_PROGRAM_DESCRIPTION + " TEXT," +
+            COLUMN_PROGRAM_DURATION_WEEKS + " INTEGER," +
+            COLUMN_PROGRAM_DIFFICULTY + " TEXT," +
+            COLUMN_PROGRAM_TYPE + " TEXT," +
+            COLUMN_PROGRAM_IMAGE_URL + " TEXT," +
+            COLUMN_PROGRAM_CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP," +
+            COLUMN_PROGRAM_UPDATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
+            ")";
+    
+    // SQL Create Program Enrollments Table
+    public static final String SQL_CREATE_PROGRAM_ENROLLMENTS = "CREATE TABLE " + TABLE_PROGRAM_ENROLLMENTS +
+            "(" +
+            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            COLUMN_ENROLLMENT_USER_ID + " INTEGER," +
+            COLUMN_ENROLLMENT_PROGRAM_ID + " INTEGER," +
+            COLUMN_ENROLLMENT_START_DATE + " DATETIME," +
+            COLUMN_ENROLLMENT_END_DATE + " DATETIME," +
+            COLUMN_ENROLLMENT_CURRENT_WEEK + " INTEGER DEFAULT 1," +
+            COLUMN_ENROLLMENT_CURRENT_DAY + " INTEGER DEFAULT 1," +
+            COLUMN_ENROLLMENT_PROGRESS + " REAL DEFAULT 0," +
+            COLUMN_ENROLLMENT_STATUS + " TEXT DEFAULT 'Active'," +
+            COLUMN_ENROLLMENT_LAST_ACTIVITY + " DATETIME," +
+            COLUMN_ENROLLMENT_CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP," +
+            COLUMN_ENROLLMENT_UPDATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP," +
+            "FOREIGN KEY(" + COLUMN_ENROLLMENT_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_ID + ")," +
+            "FOREIGN KEY(" + COLUMN_ENROLLMENT_PROGRAM_ID + ") REFERENCES " + TABLE_TRAINING_PROGRAMS + "(" + COLUMN_ID + ")" +
+            ")";
+    
     // SQL Delete Statements
     public static final String SQL_DELETE_EXERCISES = "DROP TABLE IF EXISTS " + TABLE_EXERCISES;
     public static final String SQL_DELETE_RECORDS = "DROP TABLE IF EXISTS " + TABLE_RECORDS;
     public static final String SQL_DELETE_USER = "DROP TABLE IF EXISTS " + TABLE_USER;
+    public static final String SQL_DELETE_TRAINING_PROGRAMS = "DROP TABLE IF EXISTS " + TABLE_TRAINING_PROGRAMS;
+    public static final String SQL_DELETE_PROGRAM_ENROLLMENTS = "DROP TABLE IF EXISTS " + TABLE_PROGRAM_ENROLLMENTS;
 }

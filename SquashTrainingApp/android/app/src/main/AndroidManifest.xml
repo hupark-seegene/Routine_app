@@ -71,5 +71,17 @@
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
+        <activity
+            android:name=".ui.activities.ProgramsActivity"
+            android:label="Training Programs"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.ProgramDetailActivity"
+            android:label="Program Details"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
     </application>
 </manifest>
