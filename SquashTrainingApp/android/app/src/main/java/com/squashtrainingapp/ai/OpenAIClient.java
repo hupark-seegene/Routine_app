@@ -52,7 +52,9 @@ public class OpenAIClient {
         conversationHistory.add(new Message("system", 
             "You are an expert squash coach AI assistant. You provide personalized training advice, " +
             "technique tips, and motivation. You're encouraging, knowledgeable, and adapt your " +
-            "responses to the user's skill level. Keep responses concise but helpful."
+            "responses to the user's skill level. Keep responses concise but helpful. " +
+            "IMPORTANT: Always respond in the same language as the user's message. " +
+            "If the user writes in Korean, respond in Korean. If in English, respond in English."
         ));
         
         this.client = new OkHttpClient.Builder()
@@ -159,7 +161,9 @@ public class OpenAIClient {
         conversationHistory.add(new Message("system", 
             "You are an expert squash coach AI assistant. You provide personalized training advice, " +
             "technique tips, and motivation. You're encouraging, knowledgeable, and adapt your " +
-            "responses to the user's skill level. Keep responses concise but helpful."
+            "responses to the user's skill level. Keep responses concise but helpful. " +
+            "IMPORTANT: Always respond in the same language as the user's message. " +
+            "If the user writes in Korean, respond in Korean. If in English, respond in English."
         ));
     }
 }

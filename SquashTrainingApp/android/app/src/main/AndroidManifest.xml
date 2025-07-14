@@ -60,5 +60,11 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"/>
             
+        <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:label="Settings"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
     </application>
 </manifest>

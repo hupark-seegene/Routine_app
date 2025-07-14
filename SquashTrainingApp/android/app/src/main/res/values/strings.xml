@@ -1,3 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SquashTrainingApp</string>
+    <string name="app_name">Squash Training Pro</string>
+    
+    <!-- Main Screen -->
+    <string name="drag_hint">Drag me to a zone or hold me to talk!</string>
+    <string name="voice_recognition_disabled">Voice recognition temporarily disabled</string>
+    
+    <!-- Navigation -->
+    <string name="profile">Profile</string>
+    <string name="checklist">Checklist</string>
+    <string name="ai_coach">AI Coach</string>
+    <string name="record">Record</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+    
+    <!-- Profile -->
+    <string name="your_stats">YOUR STATS</string>
+    <string name="sessions">Sessions</string>
+    <string name="calories">Calories</string>
+    <string name="hours">Hours</string>
+    <string name="days_streak">days Streak</string>
+    <string name="achievements">ACHIEVEMENTS</string>
+    <string name="completed_7_day_streak">Completed 7-Day Streak!</string>
+    <string name="first_workout">First Workout</string>
+    <string name="week_warrior">Week Warrior</string>
+    <string name="century_club">Century Club</string>
+    <string name="level">Level</string>
+    
+    <!-- Coach -->
+    <string name="daily_tip">Daily Tip</string>
+    <string name="technique_advice">Technique Advice</string>
+    <string name="motivational_quote">Motivational Quote</string>
+    <string name="workout_suggestion">Workout Suggestion</string>
+    <string name="refresh_tips">Refresh Tips</string>
+    <string name="ask_ai_coach">Ask AI Coach</string>
+    <string name="tips_refreshed">Tips refreshed!</string>
+    
+    <!-- AI Chat -->
+    <string name="ai_coach_chat">AI Coach Chat</string>
+    <string name="type_your_message">Type your message...</string>
+    <string name="voice_input_temporarily_disabled">Voice input temporarily disabled</string>
+    <string name="voice_input_not_available">Voice input not available</string>
+    <string name="voice_input_enabled">Voice input enabled!</string>
+    <string name="voice_input_disabled_use_text">Voice input disabled. You can still type your questions</string>
+    <string name="welcome_message">Hello! I\'m your AI squash coach. How can I help you today?</string>
+    <string name="processing_error">I\'m having trouble processing that. Please try again.</string>
+    
+    <!-- Settings -->
+    <string name="language">Language</string>
+    <string name="auto">Auto</string>
+    <string name="korean">Korean</string>
+    <string name="english">English</string>
+    <string name="ai_settings">AI Settings</string>
+    <string name="openai_api_key">OpenAI API Key</string>
+    <string name="configured">Configured</string>
+    <string name="not_configured">Not configured</string>
+    <string name="general">General</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="sound_effects">Sound Effects</string>
+    <string name="vibration">Vibration</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="about">About</string>
+    <string name="cache_cleared">Cache cleared successfully</string>
+    <string name="api_key_saved">API key saved successfully</string>
+    <string name="api_key_removed">API key removed</string>
+    <string name="language_changed">Language changed. Restart app to apply.</string>
+    <string name="enter_api_key">Enter your OpenAI API key</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="remove">Remove</string>
+    <string name="about_text">Squash Training Pro\nVersion 1.0.0\n\nYour AI-powered squash training companion.\n\n© 2025 Squash Training Pro</string>
+    
+    <!-- Permissions -->
+    <string name="audio_permission_required">Audio permission is required for voice commands</string>
+    <string name="voice_commands_enabled">Voice commands enabled! Hold the mascot to speak</string>
+    <string name="voice_commands_disabled">Voice commands disabled. You can still use all other features</string>
+    
+    <!-- Voice Commands -->
+    <string name="listening">Listening...</string>
+    <string name="speak_now">Speak now...</string>
+    <string name="processing">Processing...</string>
+    <string name="tap_to_cancel">TAP TO CANCEL</string>
+    <string name="voice_error">Voice error: %1$s</string>
+    
+    <!-- Record -->
+    <string name="start_training">Start Training</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="stop">Stop</string>
+    <string name="save_session">Save Session</string>
+    <string name="discard">Discard</string>
+    <string name="session_saved">Session saved!</string>
+    <string name="duration">Duration</string>
+    <string name="calories_burned">Calories Burned</string>
+    
+    <!-- Checklist -->
+    <string name="daily_goals">Daily Goals</string>
+    <string name="warm_up">Warm Up</string>
+    <string name="main_workout">Main Workout</string>
+    <string name="cool_down">Cool Down</string>
+    <string name="hydration">Hydration</string>
+    <string name="completed">Completed</string>
+    <string name="pending">Pending</string>
+    
+    <!-- History -->
+    <string name="no_sessions_yet">No sessions yet</string>
+    <string name="total_sessions">Total Sessions</string>
+    <string name="total_time">Total Time</string>
+    <string name="average_duration">Average Duration</string>
+    <string name="this_week">This Week</string>
+    <string name="this_month">This Month</string>
+    <string name="all_time">All Time</string>
 </resources>

@@ -45,7 +45,7 @@ public class AIChatbotActivity extends AppCompatActivity implements
         setupListeners();
         
         // Welcome message
-        addMessage("Hello! I'm your AI squash coach. How can I help you today?", ChatMessage.MessageType.AI);
+        addMessage(getString(R.string.welcome_message), ChatMessage.MessageType.AI);
     }
     
     private void initializeViews() {
@@ -80,7 +80,7 @@ public class AIChatbotActivity extends AppCompatActivity implements
     }
     
     private void setupAIEngine() {
-        aiEngine = new AIResponseEngine(this);
+        aiEngine = new ImprovedAIResponseEngine(this);
         aiEngine.setAIResponseListener(this);
     }
     

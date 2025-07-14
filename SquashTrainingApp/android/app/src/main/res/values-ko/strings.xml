@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">스쿼시 트레이닝 프로</string>
+    
+    <!-- Main Screen -->
+    <string name="drag_hint">나를 영역으로 드래그하거나 길게 눌러서 대화해요!</string>
+    <string name="voice_recognition_disabled">음성 인식이 일시적으로 비활성화되었습니다</string>
+    
+    <!-- Navigation -->
+    <string name="profile">프로필</string>
+    <string name="checklist">체크리스트</string>
+    <string name="ai_coach">AI 코치</string>
+    <string name="record">기록</string>
+    <string name="history">히스토리</string>
+    <string name="settings">설정</string>
+    
+    <!-- Profile -->
+    <string name="your_stats">당신의 통계</string>
+    <string name="sessions">세션</string>
+    <string name="calories">칼로리</string>
+    <string name="hours">시간</string>
+    <string name="days_streak">일 연속</string>
+    <string name="achievements">업적</string>
+    <string name="completed_7_day_streak">7일 연속 달성!</string>
+    <string name="first_workout">첫 운동</string>
+    <string name="week_warrior">주간 전사</string>
+    <string name="century_club">센추리 클럽</string>
+    <string name="level">레벨</string>
+    
+    <!-- Coach -->
+    <string name="daily_tip">오늘의 팁</string>
+    <string name="technique_advice">기술 조언</string>
+    <string name="motivational_quote">동기부여 문구</string>
+    <string name="workout_suggestion">운동 제안</string>
+    <string name="refresh_tips">팁 새로고침</string>
+    <string name="ask_ai_coach">AI 코치에게 물어보기</string>
+    <string name="tips_refreshed">팁이 새로고침되었습니다!</string>
+    
+    <!-- AI Chat -->
+    <string name="ai_coach_chat">AI 코치 채팅</string>
+    <string name="type_your_message">메시지를 입력하세요...</string>
+    <string name="voice_input_temporarily_disabled">음성 입력이 일시적으로 비활성화되었습니다</string>
+    <string name="voice_input_not_available">음성 입력을 사용할 수 없습니다</string>
+    <string name="voice_input_enabled">음성 입력이 활성화되었습니다!</string>
+    <string name="voice_input_disabled_use_text">음성 입력이 비활성화되었습니다. 텍스트로 질문할 수 있습니다</string>
+    <string name="welcome_message">안녕하세요! 저는 당신의 AI 스쿼시 코치입니다. 오늘 어떻게 도와드릴까요?</string>
+    <string name="processing_error">처리 중 문제가 발생했습니다. 다시 시도해주세요.</string>
+    
+    <!-- Settings -->
+    <string name="language">언어</string>
+    <string name="auto">자동</string>
+    <string name="korean">한국어</string>
+    <string name="english">영어</string>
+    <string name="ai_settings">AI 설정</string>
+    <string name="openai_api_key">OpenAI API 키</string>
+    <string name="configured">설정됨</string>
+    <string name="not_configured">설정 안 됨</string>
+    <string name="general">일반</string>
+    <string name="dark_theme">다크 테마</string>
+    <string name="sound_effects">효과음</string>
+    <string name="vibration">진동</string>
+    <string name="clear_cache">캐시 지우기</string>
+    <string name="about">정보</string>
+    <string name="cache_cleared">캐시가 성공적으로 지워졌습니다</string>
+    <string name="api_key_saved">API 키가 성공적으로 저장되었습니다</string>
+    <string name="api_key_removed">API 키가 제거되었습니다</string>
+    <string name="language_changed">언어가 변경되었습니다. 앱을 재시작하세요.</string>
+    <string name="enter_api_key">OpenAI API 키를 입력하세요</string>
+    <string name="save">저장</string>
+    <string name="cancel">취소</string>
+    <string name="remove">제거</string>
+    <string name="about_text">스쿼시 트레이닝 프로\n버전 1.0.0\n\nAI 기반 스쿼시 트레이닝 동반자\n\n© 2025 Squash Training Pro</string>
+    
+    <!-- Permissions -->
+    <string name="audio_permission_required">음성 명령을 위해 오디오 권한이 필요합니다</string>
+    <string name="voice_commands_enabled">음성 명령이 활성화되었습니다! 마스코트를 길게 눌러서 말하세요</string>
+    <string name="voice_commands_disabled">음성 명령이 비활성화되었습니다. 다른 모든 기능은 계속 사용할 수 있습니다</string>
+    
+    <!-- Voice Commands -->
+    <string name="listening">듣는 중...</string>
+    <string name="speak_now">지금 말하세요...</string>
+    <string name="processing">처리 중...</string>
+    <string name="tap_to_cancel">취소하려면 탭하세요</string>
+    <string name="voice_error">음성 오류: %1$s</string>
+    
+    <!-- Record -->
+    <string name="start_training">트레이닝 시작</string>
+    <string name="pause">일시정지</string>
+    <string name="resume">재개</string>
+    <string name="stop">정지</string>
+    <string name="save_session">세션 저장</string>
+    <string name="discard">취소</string>
+    <string name="session_saved">세션이 저장되었습니다!</string>
+    <string name="duration">지속시간</string>
+    <string name="calories_burned">소모 칼로리</string>
+    
+    <!-- Checklist -->
+    <string name="daily_goals">일일 목표</string>
+    <string name="warm_up">워밍업</string>
+    <string name="main_workout">메인 운동</string>
+    <string name="cool_down">쿨다운</string>
+    <string name="hydration">수분 보충</string>
+    <string name="completed">완료</string>
+    <string name="pending">대기중</string>
+    
+    <!-- History -->
+    <string name="no_sessions_yet">아직 세션이 없습니다</string>
+    <string name="total_sessions">전체 세션</string>
+    <string name="total_time">전체 시간</string>
+    <string name="average_duration">평균 지속시간</string>
+    <string name="this_week">이번 주</string>
+    <string name="this_month">이번 달</string>
+    <string name="all_time">전체</string>
+</resources>

@@ -261,8 +261,8 @@ public class MainActivity extends Activity implements
                 intent = new Intent(this, HistoryActivity.class);
                 break;
             case "settings":
-                Toast.makeText(this, "Settings coming soon!", Toast.LENGTH_SHORT).show();
-                return;
+                intent = new Intent(this, SettingsActivity.class);
+                break;
         }
         
         if (intent != null) {

@@ -1,17 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@color/dark_background</item>
-        <item name="android:colorPrimary">@color/volt_green</item>
-        <item name="android:colorPrimaryDark">@color/dark_surface</item>
-        <item name="android:colorAccent">@color/volt_green</item>
+    <!-- Modern Light Theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
     
-    <!-- Button style -->
+    <!-- Dark Theme -->
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/background_dark</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent_light</item>
+        <item name="android:textColorPrimary">@color/text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/background_dark</item>
+    </style>
+    
+    <!-- Modern Button Styles -->
+    <style name="PrimaryButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+    
+    <style name="OutlineButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/button_outline</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
+    
+    <!-- Modern Card Style -->
+    <style name="ModernCard">
+        <item name="android:background">@drawable/card_background</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:layout_margin">12dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+    
+    <!-- Bottom Navigation Style -->
+    <style name="BottomNavigationView">
+        <item name="android:background">@color/bottom_nav_background</item>
+        <item name="itemIconTint">@drawable/bottom_nav_selector</item>
+        <item name="itemTextColor">@drawable/bottom_nav_selector</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="android:elevation">8dp</item>
+    </style>
+    
+    <!-- Chat Bubble Styles -->
+    <style name="ChatBubbleUser">
+        <item name="android:background">@drawable/chat_bubble_user</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@color/chat_user_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginStart">48dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+    
+    <style name="ChatBubbleAI">
+        <item name="android:background">@drawable/chat_bubble_ai</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@color/chat_ai_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">48dp</item>
+    </style>
+    
+    <!-- Text Styles -->
+    <style name="TextHeadline">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="TextSubheading">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <style name="TextBody">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+    
+    <!-- Legacy styles (kept for compatibility) -->
     <style name="VoltButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@color/volt_green</item>
         <item name="android:textColor">@color/dark_background</item>
@@ -20,7 +119,6 @@
         <item name="android:paddingBottom">12dp</item>
     </style>
     
-    <!-- Card style -->
     <style name="CardStyle">
         <item name="android:background">@color/card_background</item>
         <item name="android:padding">16dp</item>

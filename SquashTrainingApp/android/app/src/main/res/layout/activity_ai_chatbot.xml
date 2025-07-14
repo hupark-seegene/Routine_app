@@ -2,15 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_background">
+    android:background="@color/background">
 
-    <!-- Header -->
+    <!-- Modern Header with Elevation -->
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/dark_surface"
-        android:padding="16dp">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/surface"
+        android:elevation="4dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
         <ImageView
             android:id="@+id/back_button"
@@ -18,16 +20,19 @@
             android:layout_height="24dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/ic_back"
+            android:tint="@color/text_primary"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="AI Coach Chat"
-            android:textColor="@color/volt_green"
+            android:text="@string/ai_coach_chat"
+            android:textColor="@color/text_primary"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:fontFamily="sans-serif-medium" />
 
     </RelativeLayout>
 
@@ -49,28 +54,30 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
-    <!-- Input Layout -->
+    <!-- Modern Input Layout with Card Design -->
     <LinearLayout
         android:id="@+id/input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/dark_surface"
+        android:background="@color/surface"
+        android:elevation="8dp"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="12dp">
 
         <EditText
             android:id="@+id/input_edit_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/rounded_background"
-            android:hint="Type your message..."
+            android:background="@drawable/input_field_background"
+            android:hint="@string/type_your_message"
             android:textColorHint="@color/text_secondary"
             android:textColor="@color/text_primary"
-            android:padding="12dp"
+            android:padding="16dp"
             android:maxLines="4"
-            android:inputType="textMultiLine|textCapSentences" />
+            android:inputType="textMultiLine|textCapSentences"
+            android:textSize="16sp" />
 
         <ImageButton
             android:id="@+id/voice_button"
@@ -79,7 +86,8 @@
             android:layout_marginStart="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_mic"
-            android:tint="@color/volt_green" />
+            android:tint="@color/primary"
+            android:padding="12dp" />
 
         <ImageButton
             android:id="@+id/send_button"
@@ -88,7 +96,8 @@
             android:layout_marginStart="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_send"
-            android:tint="@color/volt_green" />
+            android:tint="@color/primary"
+            android:padding="12dp" />
 
     </LinearLayout>
 
