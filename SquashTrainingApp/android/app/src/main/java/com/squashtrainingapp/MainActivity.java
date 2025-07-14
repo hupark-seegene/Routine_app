@@ -51,10 +51,8 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main_mascot);
         
         initializeViews();
-        checkAudioPermission();
         setupMascotInteraction();
-        // Temporarily disabled to prevent blocking navigation
-        // setupVoiceRecognition();
+        checkAudioPermission(); // This will setup voice recognition if permission granted
     }
     
     private void initializeViews() {
@@ -86,6 +84,9 @@ public class MainActivity extends Activity implements
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.RECORD_AUDIO},
                     PERMISSION_REQUEST_RECORD_AUDIO);
+        } else {
+            // Permission already granted, setup voice recognition
+            setupVoiceRecognition();
         }
     }
     
@@ -145,15 +146,42 @@ public class MainActivity extends Activity implements
     }
     
     private void setupVoiceRecognition() {
-        voiceManager = new VoiceRecognitionManager(this);
-        voiceManager.setVoiceRecognitionListener(this);
+        // Only setup if we have permission
+        if (ContextCompat.checkSelfPermission(this, 
+                Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            voiceManager = new VoiceRecognitionManager(this);
+            voiceManager.setVoiceRecognitionListener(this);
+            Log.d(TAG, "Voice recognition initialized");
+        } else {
+            Log.d(TAG, "Voice recognition not initialized - no permission");
+        }
         
         // VoiceCommands uses static methods, no initialization needed
     }
     
     private void activateVoiceRecognition() {
-        // Temporarily disabled
-        Toast.makeText(this, "Voice recognition temporarily disabled", Toast.LENGTH_SHORT).show();
+        // Check permission first
+        if (ContextCompat.checkSelfPermission(this, 
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            // Request permission if not granted
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    PERMISSION_REQUEST_RECORD_AUDIO);
+            return;
+        }
+        
+        // If we have permission and voice manager is initialized
+        if (voiceManager != null) {
+            showVoiceOverlay();
+            voiceManager.startListening();
+        } else {
+            // Try to initialize voice manager
+            setupVoiceRecognition();
+            if (voiceManager != null) {
+                showVoiceOverlay();
+                voiceManager.startListening();
+            }
+        }
     }
     
     private void showVoiceOverlay() {
@@ -319,9 +347,14 @@ public class MainActivity extends Activity implements
             if (grantResults.length > 0 && 
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "Audio permission granted");
+                // Setup voice recognition now that we have permission
+                setupVoiceRecognition();
+                Toast.makeText(this, 
+                        "Voice commands enabled! Hold the mascot to speak", 
+                        Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, 
-                        "Audio permission is required for voice commands", 
+                        "Voice commands disabled. You can still use all other features", 
                         Toast.LENGTH_LONG).show();
             }
         }

@@ -1,13 +1,16 @@
 package com.squashtrainingapp.ai;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -35,6 +38,13 @@ public class VoiceRecognitionManager implements RecognitionListener, TextToSpeec
     }
     
     private void initializeSpeechRecognizer() {
+        // Check permission first
+        if (ContextCompat.checkSelfPermission(activity, 
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            Log.w(TAG, "No RECORD_AUDIO permission - skipping speech recognizer initialization");
+            return;
+        }
+        
         if (SpeechRecognizer.isRecognitionAvailable(activity)) {
             speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity);
             speechRecognizer.setRecognitionListener(this);
@@ -45,8 +55,10 @@ public class VoiceRecognitionManager implements RecognitionListener, TextToSpeec
             recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
             recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
             recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
+            
+            Log.d(TAG, "Speech recognizer initialized successfully");
         } else {
-            Log.e(TAG, "Speech recognition not available");
+            Log.e(TAG, "Speech recognition not available on this device");
         }
     }
     

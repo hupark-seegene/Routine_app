@@ -1,5 +1,7 @@
 package com.squashtrainingapp.ai;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -8,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squashtrainingapp.R;
@@ -67,9 +71,12 @@ public class AIChatbotActivity extends AppCompatActivity implements
     }
     
     private void setupVoiceRecognition() {
-        // Temporarily disabled to avoid permission issues
-        // voiceManager = new VoiceRecognitionManager(this);
-        // voiceManager.setVoiceRecognitionListener(this);
+        // Check permission before initializing
+        if (ContextCompat.checkSelfPermission(this, 
+                Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            voiceManager = new VoiceRecognitionManager(this);
+            voiceManager.setVoiceRecognitionListener(this);
+        }
     }
     
     private void setupAIEngine() {
@@ -81,8 +88,30 @@ public class AIChatbotActivity extends AppCompatActivity implements
         sendButton.setOnClickListener(v -> sendMessage());
         
         voiceButton.setOnClickListener(v -> {
-            // Temporarily disabled
-            Toast.makeText(this, "Voice input temporarily disabled", Toast.LENGTH_SHORT).show();
+            if (!isProcessing) {
+                // Check permission first
+                if (ContextCompat.checkSelfPermission(this, 
+                        Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.RECORD_AUDIO},
+                            1001);
+                    return;
+                }
+                
+                if (voiceManager != null) {
+                    voiceManager.startListening();
+                    voiceButton.setImageResource(R.drawable.ic_mic_active);
+                } else {
+                    // Try to initialize
+                    setupVoiceRecognition();
+                    if (voiceManager != null) {
+                        voiceManager.startListening();
+                        voiceButton.setImageResource(R.drawable.ic_mic_active);
+                    } else {
+                        Toast.makeText(this, "Voice input not available", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
         });
         
         inputEditText.setOnEditorActionListener((v, actionId, event) -> {
@@ -179,7 +208,9 @@ public class AIChatbotActivity extends AppCompatActivity implements
     public void onResponse(String response) {
         runOnUiThread(() -> {
             addMessage(response, ChatMessage.MessageType.AI);
-            // voiceManager.speak(response); // Temporarily disabled
+            if (voiceManager != null) {
+                voiceManager.speak(response);
+            }
             isProcessing = false;
             progressBar.setVisibility(View.GONE);
         });
@@ -195,10 +226,28 @@ public class AIChatbotActivity extends AppCompatActivity implements
     }
     
     @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, 
+            int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1001) {
+            if (grantResults.length > 0 && 
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, setup voice recognition
+                setupVoiceRecognition();
+                Toast.makeText(this, "Voice input enabled!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, 
+                        "Voice input disabled. You can still type your questions", 
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        // if (voiceManager != null) {
-        //     voiceManager.destroy();
-        // }
+        if (voiceManager != null) {
+            voiceManager.destroy();
+        }
     }
 }
