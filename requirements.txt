@@ -1,4 +1,6 @@
-# Python dependencies for orchestrator
+# Python dependencies for orchestrator and terminal controller
 pyautogui>=0.9.54
 pygetwindow>=0.0.9
 python-dotenv>=1.0.0
+pywin32>=306
+psutil>=5.9.0
