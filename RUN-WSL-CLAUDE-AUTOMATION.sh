@@ -27,28 +27,28 @@ echo "터미널 생성 중..."
 
 # Terminal 1: 🧠 Claude4-Opus-Planner
 echo "터미널 1 생성: 🧠 Claude4-Opus-Planner"
-cmd.exe /c "wt new-tab --title \"🧠Claude4-Opus-Planner\" bash -c \"cd /mnt/c/Git/Routine_app/SquashTrainingApp && echo '🧠 Claude4-Opus-Planner - 계획 및 아키텍처 설계 담당' && echo '프로젝트 디렉토리: $(pwd)' && echo 'Claude Code 시작: claude --model claude-3-opus-20240229' && echo '' && bash\""
-sleep 2
+cmd.exe /c "wt new-tab --title \"🧠Claude4-Opus-Planner\" wsl"
+sleep 3
 
 # Terminal 2: 🔨 Claude4-Sonnet-Coder1
 echo "터미널 2 생성: 🔨 Claude4-Sonnet-Coder1"
-cmd.exe /c "wt new-tab --title \"🔨Claude4-Sonnet-Coder1\" bash -c \"cd /mnt/c/Git/Routine_app/SquashTrainingApp && echo '🔨 Claude4-Sonnet-Coder1 - 주요 코드 구현 담당' && echo '프로젝트 디렉토리: $(pwd)' && echo 'Claude Code 시작: claude --model claude-3-5-sonnet-20241022' && echo '' && bash\""
-sleep 2
+cmd.exe /c "wt new-tab --title \"🔨Claude4-Sonnet-Coder1\" wsl"
+sleep 3
 
 # Terminal 3: 🔧 Claude4-Sonnet-Coder2
 echo "터미널 3 생성: 🔧 Claude4-Sonnet-Coder2"
-cmd.exe /c "wt new-tab --title \"🔧Claude4-Sonnet-Coder2\" bash -c \"cd /mnt/c/Git/Routine_app/SquashTrainingApp && echo '🔧 Claude4-Sonnet-Coder2 - 테스트 및 디버깅 담당' && echo '프로젝트 디렉토리: $(pwd)' && echo 'Claude Code 시작: claude --model claude-3-5-sonnet-20241022' && echo '' && bash\""
-sleep 2
+cmd.exe /c "wt new-tab --title \"🔧Claude4-Sonnet-Coder2\" wsl"
+sleep 3
 
 # Terminal 4: ⚙️ Claude4-Sonnet-Coder3
 echo "터미널 4 생성: ⚙️ Claude4-Sonnet-Coder3"
-cmd.exe /c "wt new-tab --title \"⚙️Claude4-Sonnet-Coder3\" bash -c \"cd /mnt/c/Git/Routine_app/SquashTrainingApp && echo '⚙️ Claude4-Sonnet-Coder3 - 빌드 및 배포 담당' && echo '프로젝트 디렉토리: $(pwd)' && echo 'Claude Code 시작: claude --model claude-3-5-sonnet-20241022' && echo '' && bash\""
-sleep 2
+cmd.exe /c "wt new-tab --title \"⚙️Claude4-Sonnet-Coder3\" wsl"
+sleep 3
 
 # Terminal 5: 📊 Claude4-Sonnet-Monitor
 echo "터미널 5 생성: 📊 Claude4-Sonnet-Monitor"
-cmd.exe /c "wt new-tab --title \"📊Claude4-Sonnet-Monitor\" bash -c \"cd /mnt/c/Git/Routine_app/SquashTrainingApp && echo '📊 Claude4-Sonnet-Monitor - 모니터링 및 조정 담당' && echo '프로젝트 디렉토리: $(pwd)' && echo 'Claude Code 시작: claude --model claude-3-5-sonnet-20241022' && echo '' && bash\""
-sleep 2
+cmd.exe /c "wt new-tab --title \"📊Claude4-Sonnet-Monitor\" wsl"
+sleep 3
 
 echo ""
 echo "✅ 모든 터미널이 생성되었습니다!"
@@ -59,7 +59,12 @@ echo "=================================================="
 echo "🎯 Claude Code 시작 가이드"
 echo "=================================================="
 echo ""
-echo "각 터미널에서 다음 명령을 실행하세요:"
+echo "각 터미널에서 다음 명령을 순서대로 실행하세요:"
+echo ""
+echo "1. 먼저 프로젝트 디렉토리로 이동:"
+echo "   cd /mnt/c/Git/Routine_app/SquashTrainingApp"
+echo ""
+echo "2. Claude Code 시작:"
 echo ""
 echo "🧠 플래너 (Terminal 1):"
 echo "   claude --model claude-3-opus-20240229"
