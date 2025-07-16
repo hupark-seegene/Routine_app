@@ -31,27 +31,27 @@ echo ""
 
 # Terminal 1: 플래너
 echo "터미널 1: 🧠 Claude4-Opus-Planner"
-cmd.exe /c "wt new-tab --title \"🧠Claude4-Opus-Planner\" --startingDirectory \"C:\\Git\\Routine_app\" wsl"
+cmd.exe /c "wt new-tab --title \"🧠Claude4-Opus-Planner\" wsl -d Ubuntu --cd /mnt/c/Git/Routine_app"
 sleep 3
 
 # Terminal 2: 코더1
 echo "터미널 2: 🔨 Claude4-Sonnet-Coder1"
-cmd.exe /c "wt new-tab --title \"🔨Claude4-Sonnet-Coder1\" --startingDirectory \"C:\\Git\\Routine_app\" wsl"
+cmd.exe /c "wt new-tab --title \"🔨Claude4-Sonnet-Coder1\" wsl -d Ubuntu --cd /mnt/c/Git/Routine_app"
 sleep 3
 
 # Terminal 3: 코더2
 echo "터미널 3: 🔧 Claude4-Sonnet-Coder2"
-cmd.exe /c "wt new-tab --title \"🔧Claude4-Sonnet-Coder2\" --startingDirectory \"C:\\Git\\Routine_app\" wsl"
+cmd.exe /c "wt new-tab --title \"🔧Claude4-Sonnet-Coder2\" wsl -d Ubuntu --cd /mnt/c/Git/Routine_app"
 sleep 3
 
 # Terminal 4: 코더3
 echo "터미널 4: ⚙️ Claude4-Sonnet-Coder3"
-cmd.exe /c "wt new-tab --title \"⚙️Claude4-Sonnet-Coder3\" --startingDirectory \"C:\\Git\\Routine_app\" wsl"
+cmd.exe /c "wt new-tab --title \"⚙️Claude4-Sonnet-Coder3\" wsl -d Ubuntu --cd /mnt/c/Git/Routine_app"
 sleep 3
 
 # Terminal 5: 모니터
 echo "터미널 5: 📊 Claude4-Sonnet-Monitor"
-cmd.exe /c "wt new-tab --title \"📊Claude4-Sonnet-Monitor\" --startingDirectory \"C:\\Git\\Routine_app\" wsl"
+cmd.exe /c "wt new-tab --title \"📊Claude4-Sonnet-Monitor\" wsl -d Ubuntu --cd /mnt/c/Git/Routine_app"
 sleep 3
 
 echo ""
