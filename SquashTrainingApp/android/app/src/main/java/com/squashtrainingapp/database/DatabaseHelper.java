@@ -86,4 +86,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return userDao;
     }
+    
+    public void clearAllData() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            // Clear all tables
+            db.delete(DatabaseContract.TABLE_EXERCISES, null, null);
+            db.delete(DatabaseContract.TABLE_RECORDS, null, null);
+            db.delete(DatabaseContract.TABLE_USER, null, null);
+            
+            // Re-seed initial data
+            // seedInitialData(db);
+            
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        
+        // Reset cached DAOs
+        exerciseDao = null;
+        recordDao = null;
+        userDao = null;
+    }
 }

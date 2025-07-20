@@ -4,22 +4,16 @@
     android:layout_height="match_parent"
     android:background="@color/dark_background">
     
-    <!-- Top Navigation Bar -->
-    <include
-        android:id="@+id/navigation_bar"
-        layout="@layout/navigation_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
     
     <!-- Main Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/navigation_bar"
-        android:layout_above="@+id/bottom_navigation">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true">
         
         <LinearLayout
+            android:id="@+id/content_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -283,13 +277,5 @@
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
-    
-    <!-- Bottom Navigation Bar -->
-    <include
-        android:id="@+id/bottom_navigation"
-        layout="@layout/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
     
 </RelativeLayout>

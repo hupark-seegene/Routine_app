@@ -15,8 +15,9 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class ChecklistActivity extends BaseActivity {
+public class ChecklistActivity extends AppCompatActivity {
     
     private RecyclerView recyclerView;
     private ExerciseAdapter adapter;
@@ -34,8 +35,6 @@ public class ChecklistActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         
         loadExercises();
-        setupNavigationBar();
-        setupBottomNavigation();
     }
     
     private void loadExercises() {
@@ -97,8 +96,4 @@ public class ChecklistActivity extends BaseActivity {
         loadExercises();
     }
     
-    @Override
-    protected String getActivityTitle() {
-        return "Daily Checklist";
-    }
 }

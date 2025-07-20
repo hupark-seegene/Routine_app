@@ -17,7 +17,7 @@ public class AIResponseEngine {
     private DatabaseHelper databaseHelper;
     private ExecutorService executorService;
     private Handler mainHandler;
-    private AIResponseListener listener;
+    protected AIResponseListener listener;
     private Random random;
     private OpenAIClient openAIClient;
     

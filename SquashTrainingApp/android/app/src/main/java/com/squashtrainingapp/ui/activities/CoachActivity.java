@@ -9,8 +9,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import java.util.Random;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class CoachActivity extends BaseActivity {
+public class CoachActivity extends AppCompatActivity {
     
     // UI components
     private TextView dailyTipText;
@@ -63,8 +64,6 @@ public class CoachActivity extends BaseActivity {
         initializeViews();
         loadRandomContent();
         setupButtons();
-        setupNavigationBar();
-        setupBottomNavigation();
     }
     
     private void initializeViews() {
@@ -98,8 +97,4 @@ public class CoachActivity extends BaseActivity {
         });
     }
     
-    @Override
-    protected String getActivityTitle() {
-        return "AI Coach";
-    }
 }

@@ -5,6 +5,19 @@ public final class DatabaseContract {
     // Prevent instantiation
     private DatabaseContract() {}
     
+    // Inner classes for table definitions
+    public static class ExerciseEntry {
+        public static final String TABLE_NAME = TABLE_EXERCISES;
+    }
+    
+    public static class RecordEntry {
+        public static final String TABLE_NAME = TABLE_RECORDS;
+    }
+    
+    public static class UserEntry {
+        public static final String TABLE_NAME = TABLE_USER;
+    }
+    
     // Database Info
     public static final String DATABASE_NAME = "squashTraining.db";
     public static final int DATABASE_VERSION = 3; // Incremented for workout sessions

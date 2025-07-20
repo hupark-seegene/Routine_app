@@ -14,9 +14,9 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 import android.content.SharedPreferences;
-import com.squashtrainingapp.activities.ApiSettingsActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class ProfileActivity extends BaseActivity {
+public class ProfileActivity extends AppCompatActivity {
     
     // User info views
     private TextView userNameText;
@@ -80,8 +80,6 @@ public class ProfileActivity extends BaseActivity {
         displayAchievements();
         setupSettingsButton();
         setupDeveloperMode();
-        setupNavigationBar();
-        setupBottomNavigation();
     }
     
     private void initializeViews() {
@@ -157,10 +155,6 @@ public class ProfileActivity extends BaseActivity {
         });
     }
     
-    @Override
-    protected String getActivityTitle() {
-        return "Profile";
-    }
     
     private String formatNumber(int number) {
         if (number >= 1000) {
@@ -250,16 +244,6 @@ public class ProfileActivity extends BaseActivity {
         titleText.setPadding(0, 0, 0, 16);
         developerOptionsLayout.addView(titleText);
         
-        // Add API Settings button
-        Button apiSettingsButton = new Button(this);
-        apiSettingsButton.setText("API Settings");
-        apiSettingsButton.setBackgroundTintList(getResources().getColorStateList(R.color.dark_surface));
-        apiSettingsButton.setTextColor(getResources().getColor(R.color.text_primary));
-        apiSettingsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ApiSettingsActivity.class);
-            startActivity(intent);
-        });
-        developerOptionsLayout.addView(apiSettingsButton);
         
         // Add Clear Data button
         Button clearDataButton = new Button(this);
