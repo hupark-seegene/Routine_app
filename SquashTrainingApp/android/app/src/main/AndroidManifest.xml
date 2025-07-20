@@ -110,5 +110,17 @@
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
+        <activity
+            android:name=".ui.activities.VideoTutorialsActivity"
+            android:label="@string/video_tutorials"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.CustomExerciseActivity"
+            android:label="@string/custom_exercises"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
     </application>
 </manifest>

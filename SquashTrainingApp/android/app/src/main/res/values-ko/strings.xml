@@ -4,6 +4,8 @@
     
     <!-- Main Screen -->
     <string name="drag_hint">나를 영역으로 드래그하거나 길게 눌러서 대화해요!</string>
+    <string name="video_tutorials">비디오 튜토리얼</string>
+    <string name="custom_exercises">커스텀 운동</string>
     <string name="drag_hint_extended">나를 영역으로 드래그하거나 길게 눌러서 대화해요!\n다시 탭하면 설명을 숨기거나 표시합니다</string>
     <string name="voice_recognition_disabled">음성 인식이 일시적으로 비활성화되었습니다</string>
     <string name="voice_recognition_not_available">음성 인식을 사용할 수 없습니다</string>
@@ -136,4 +138,17 @@
     
     <!-- Additional Screens -->
     <string name="training_programs">트레이닝 프로그램</string>
+    
+    <!-- Simple UI -->
+    <string name="loading_advice">맞춤 조언을 준비 중...</string>
+    <string name="profile_desc">통계 및 업적 확인</string>
+    <string name="checklist_desc">오늘의 운동 목표</string>
+    <string name="record_desc">새 운동 세션 시작</string>
+    <string name="history_desc">과거 운동 기록 보기</string>
+    <string name="coach_desc">AI 코치와 대화하기</string>
+    <string name="settings_desc">앱 설정 변경</string>
+    <string name="welcome_back">다시 오신 것을 환영합니다!</string>
+    
+    <!-- Statistics -->
+    <string name="back">뒤로</string>
 </resources>

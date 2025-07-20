@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,11 +6,14 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { ProgramQueries } from '../database/ProgramQueries';
 
 type ProgramDetailRouteProp = RouteProp<RootStackParamList, 'ProgramDetail'>;
 type ProgramDetailNavigationProp = StackNavigationProp<RootStackParamList, 'ProgramDetail'>;
@@ -19,6 +22,10 @@ const ProgramDetailScreen = () => {
   const navigation = useNavigation<ProgramDetailNavigationProp>();
   const route = useRoute<ProgramDetailRouteProp>();
   const { programId, programName } = route.params;
+  
+  const [loading, setLoading] = useState(false);
+  const [enrollment, setEnrollment] = useState<any>(null);
+  const [progress, setProgress] = useState<any>(null);
 
   // 프로그램별 상세 정보
   const programDetails = {
@@ -108,9 +115,66 @@ const ProgramDetailScreen = () => {
     }
   };
 
-  const handleStartProgram = () => {
-    // 프로그램 시작 로직
-    navigation.goBack();
+  useEffect(() => {
+    checkEnrollmentStatus();
+  }, []);
+
+  const checkEnrollmentStatus = async () => {
+    try {
+      setLoading(true);
+      const activeEnrollment = await ProgramQueries.getActiveEnrollment(1); // userId = 1
+      
+      if (activeEnrollment && activeEnrollment.programId === programId) {
+        setEnrollment(activeEnrollment);
+        const programProgress = await ProgramQueries.getProgramProgress(activeEnrollment.id);
+        setProgress(programProgress);
+      }
+    } catch (error) {
+      console.error('Error checking enrollment:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStartProgram = async () => {
+    if (enrollment) {
+      // Already enrolled - navigate to current workout
+      if (progress?.nextWorkout) {
+        navigation.navigate('WorkoutSession', { 
+          sessionId: progress.nextWorkout.id,
+          enrollmentId: enrollment.id,
+        });
+      } else {
+        Alert.alert('프로그램 완료', '축하합니다! 이 프로그램을 완료했습니다.');
+      }
+    } else {
+      // New enrollment
+      Alert.alert(
+        '프로그램 시작',
+        `${programName}을 시작하시겠습니까?`,
+        [
+          { text: '취소', style: 'cancel' },
+          { 
+            text: '시작',
+            onPress: async () => {
+              try {
+                setLoading(true);
+                const enrollmentId = await ProgramQueries.enrollInProgram(1, programId);
+                Alert.alert(
+                  '성공',
+                  '프로그램이 시작되었습니다!',
+                  [{ text: '확인', onPress: () => checkEnrollmentStatus() }]
+                );
+              } catch (error) {
+                Alert.alert('오류', '프로그램 시작에 실패했습니다.');
+              } finally {
+                setLoading(false);
+              }
+            }
+          }
+        ]
+      );
+    }
   };
 
   return (
@@ -179,9 +243,48 @@ const ProgramDetailScreen = () => {
           </View>
         </View>
 
-        {/* Start Button */}
-        <TouchableOpacity style={styles.startButton} onPress={handleStartProgram}>
-          <Text style={styles.startButtonText}>프로그램 시작하기</Text>
+        {/* Progress Section */}
+        {enrollment && progress && (
+          <View style={styles.progressSection}>
+            <Text style={styles.sectionTitle}>진행 상황</Text>
+            <View style={styles.progressBar}>
+              <View 
+                style={[styles.progressFill, { width: `${progress.overallProgress}%` }]} 
+              />
+            </View>
+            <Text style={styles.progressText}>
+              {progress.completedWorkouts}/{progress.totalWorkouts} 운동 완료 ({progress.overallProgress}%)
+            </Text>
+            <View style={styles.currentStatus}>
+              <Icon name="calendar-today" size={20} color="#666" />
+              <Text style={styles.statusText}>
+                현재: Week {enrollment.currentWeek}, Day {enrollment.currentDay}
+              </Text>
+            </View>
+            {progress.nextWorkout && (
+              <View style={styles.nextWorkout}>
+                <Icon name="fitness-center" size={20} color="#4CAF50" />
+                <Text style={styles.nextWorkoutText}>
+                  다음 운동: {progress.nextWorkout.workoutType}
+                </Text>
+              </View>
+            )}
+          </View>
+        )}
+
+        {/* Start/Continue Button */}
+        <TouchableOpacity 
+          style={[styles.startButton, loading && styles.disabledButton]} 
+          onPress={handleStartProgram}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.startButtonText}>
+              {enrollment ? '운동 계속하기' : '프로그램 시작하기'}
+            </Text>
+          )}
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
@@ -315,6 +418,56 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
+  },
+  progressSection: {
+    backgroundColor: '#fff',
+    marginTop: 10,
+    padding: 20,
+  },
+  progressBar: {
+    height: 8,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 4,
+    marginTop: 10,
+    marginBottom: 5,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: '#4CAF50',
+    borderRadius: 4,
+  },
+  progressText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+  currentStatus: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  statusText: {
+    fontSize: 15,
+    color: '#333',
+    marginLeft: 10,
+  },
+  nextWorkout: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#e8f5e9',
+    padding: 10,
+    borderRadius: 8,
+  },
+  nextWorkoutText: {
+    fontSize: 15,
+    color: '#4CAF50',
+    fontWeight: '600',
+    marginLeft: 10,
+  },
+  disabledButton: {
+    opacity: 0.7,
   },
 });
 

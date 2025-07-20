@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/dark_surface"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+        
+        <!-- User Created Indicator -->
+        <View
+            android:id="@+id/user_created_indicator"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="12dp"
+            android:background="@color/volt_green"
+            android:visibility="gone" />
+        
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/user_created_indicator"
+            android:layout_toStartOf="@+id/button_container"
+            android:orientation="vertical">
+            
+            <TextView
+                android:id="@+id/exercise_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="운동 이름"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            
+            <TextView
+                android:id="@+id/exercise_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="운동 설명"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:maxLines="2"
+                android:ellipsize="end" />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                
+                <TextView
+                    android:id="@+id/exercise_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎾 카테고리"
+                    android:textColor="@color/volt_green"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="12dp" />
+                
+                <TextView
+                    android:id="@+id/exercise_difficulty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🟢 난이도"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="12dp" />
+                
+                <TextView
+                    android:id="@+id/exercise_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="15분"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="12dp" />
+                
+                <TextView
+                    android:id="@+id/exercise_usage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="사용: 5회"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+        
+        <!-- Edit/Delete Buttons -->
+        <LinearLayout
+            android:id="@+id/button_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+            
+            <ImageButton
+                android:id="@+id/button_edit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_edit"
+                android:tint="@color/text_secondary"
+                android:padding="8dp"
+                android:visibility="gone" />
+            
+            <ImageButton
+                android:id="@+id/button_delete"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_delete"
+                android:tint="@color/text_secondary"
+                android:padding="8dp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

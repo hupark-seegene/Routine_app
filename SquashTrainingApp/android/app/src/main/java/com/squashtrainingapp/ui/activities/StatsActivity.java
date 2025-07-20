@@ -215,7 +215,7 @@ public class StatsActivity extends AppCompatActivity {
         if (records.isEmpty()) return 0;
         
         // Sort records by date
-        records.sort((r1, r2) -> Long.compare(r2.getDate(), r1.getDate()));
+        records.sort((r1, r2) -> Long.compare(r2.getDateAsTimestamp(), r1.getDateAsTimestamp()));
         
         int streak = 0;
         Calendar cal = Calendar.getInstance();

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/dark_surface"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp">
+        
+        <!-- Thumbnail -->
+        <FrameLayout
+            android:layout_width="120dp"
+            android:layout_height="90dp">
+            
+            <ImageView
+                android:id="@+id/thumbnail_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="@color/dark_background" />
+            
+            <ImageButton
+                android:id="@+id/play_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_background"
+                android:src="@drawable/ic_play_arrow"
+                android:tint="@color/dark_background"
+                android:elevation="2dp" />
+            
+            <TextView
+                android:id="@+id/duration_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="4dp"
+                android:background="@drawable/rounded_background"
+                android:padding="4dp"
+                android:text="10:30"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </FrameLayout>
+        
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+            
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="비디오 제목"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end" />
+            
+            <TextView
+                android:id="@+id/description_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="비디오 설명"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:maxLines="2"
+                android:ellipsize="end" />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                
+                <TextView
+                    android:id="@+id/level_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🌱 초급"
+                    android:textColor="@color/volt_green"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="12dp" />
+                
+                <TextView
+                    android:id="@+id/category_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎾 기술"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+        
+        <!-- Favorite Button -->
+        <ImageButton
+            android:id="@+id/favorite_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="top"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_favorite_outline"
+            android:tint="@color/volt_green"
+            android:padding="8dp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -4,6 +4,8 @@
     
     <!-- Main Screen -->
     <string name="drag_hint">Drag me to a zone or hold me to talk!</string>
+    <string name="video_tutorials">Video Tutorials</string>
+    <string name="custom_exercises">Custom Exercises</string>
     <string name="drag_hint_extended">Drag me to a zone or hold me to talk!\nTap again to hide/show instructions</string>
     <string name="voice_recognition_disabled">Voice recognition temporarily disabled</string>
     <string name="voice_recognition_not_available">Voice recognition not available</string>
@@ -137,7 +139,18 @@
     <!-- Additional Screens -->
     <string name="training_programs">Training Programs</string>
     
+    <!-- Simple UI -->
+    <string name="loading_advice">Loading personalized advice...</string>
+    <string name="profile_desc">View stats and achievements</string>
+    <string name="checklist_desc">Today\'s workout goals</string>
+    <string name="record_desc">Start a new workout session</string>
+    <string name="history_desc">View past workout records</string>
+    <string name="coach_desc">Chat with AI coach</string>
+    <string name="settings_desc">Change app settings</string>
+    <string name="welcome_back">Welcome back!</string>
+    
     <!-- Statistics -->
+    <string name="back">Back</string>
     <string name="statistics">Statistics</string>
     <string name="total_workouts">Total Workouts</string>
     <string name="total_hours">Total Hours</string>

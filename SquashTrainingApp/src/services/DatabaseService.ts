@@ -610,6 +610,255 @@ class DatabaseService {
       totalQueries: 0  // Would need to implement query counting
     };
   }
+
+  // Custom Exercise Operations
+  async addCustomExercise(exercise: {
+    name: string;
+    category: string;
+    type: string;
+    muscle_groups: string;
+    equipment: string;
+    difficulty_level: string;
+    instructions: string;
+    benefits: string;
+    video_url?: string;
+    image_url?: string;
+    created_by: number;
+  }): Promise<number> {
+    const db = await this.ensureDatabase();
+    
+    const result = await db.executeSql(
+      `INSERT INTO exercises 
+        (name, category, type, muscle_groups, equipment, difficulty_level,
+         instructions, benefits, video_url, image_url, created_by, is_custom)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
+      [
+        exercise.name,
+        exercise.category,
+        exercise.type,
+        exercise.muscle_groups,
+        exercise.equipment,
+        exercise.difficulty_level,
+        exercise.instructions,
+        exercise.benefits,
+        exercise.video_url || null,
+        exercise.image_url || null,
+        exercise.created_by,
+      ]
+    );
+    
+    return result[0].insertId;
+  }
+
+  async getCustomExercises(userId: number): Promise<Exercise[]> {
+    const db = await this.ensureDatabase();
+    
+    const result = await db.executeSql(
+      `SELECT * FROM exercises 
+       WHERE is_custom = 1 AND created_by = ?
+       ORDER BY name`,
+      [userId]
+    );
+    
+    const exercises: Exercise[] = [];
+    for (let i = 0; i < result[0].rows.length; i++) {
+      exercises.push(result[0].rows.item(i));
+    }
+    
+    return exercises;
+  }
+
+  async updateCustomExercise(
+    exerciseId: number,
+    userId: number,
+    updates: Partial<{
+      name: string;
+      category: string;
+      type: string;
+      muscle_groups: string;
+      equipment: string;
+      difficulty_level: string;
+      instructions: string;
+      benefits: string;
+      video_url: string;
+      image_url: string;
+    }>
+  ): Promise<void> {
+    const db = await this.ensureDatabase();
+    
+    // Build dynamic update query
+    const updateFields = Object.keys(updates);
+    const setClause = updateFields.map(field => `${field} = ?`).join(', ');
+    const values = updateFields.map(field => updates[field as keyof typeof updates]);
+    
+    await db.executeSql(
+      `UPDATE exercises 
+       SET ${setClause}
+       WHERE id = ? AND is_custom = 1 AND created_by = ?`,
+      [...values, exerciseId, userId]
+    );
+  }
+
+  async deleteCustomExercise(exerciseId: number, userId: number): Promise<void> {
+    const db = await this.ensureDatabase();
+    
+    await db.executeSql(
+      `DELETE FROM exercises 
+       WHERE id = ? AND is_custom = 1 AND created_by = ?`,
+      [exerciseId, userId]
+    );
+  }
+
+  // Custom Workout Operations
+  async saveCustomWorkout(workout: {
+    name: string;
+    type: string;
+    exercises: Array<{
+      exerciseId?: number;
+      name: string;
+      category: string;
+      sets?: string;
+      reps?: string;
+      duration?: string;
+      intensity: string;
+      instructions?: string;
+    }>;
+    userId: number;
+  }): Promise<number> {
+    const db = await this.ensureDatabase();
+    const now = new Date().toISOString();
+    
+    // Start transaction
+    await db.executeSql('BEGIN TRANSACTION');
+    
+    try {
+      // Create daily workout entry
+      const workoutResult = await db.executeSql(
+        `INSERT INTO daily_workouts 
+          (name, workout_type, total_duration, intensity_level, 
+           focus_areas, is_custom, created_by, created_at)
+        VALUES (?, ?, ?, ?, ?, 1, ?, ?)`,
+        [
+          workout.name,
+          workout.type,
+          this.calculateTotalDuration(workout.exercises),
+          this.calculateAverageIntensity(workout.exercises),
+          workout.type,
+          workout.userId,
+          now,
+        ]
+      );
+      
+      const workoutId = workoutResult[0].insertId;
+      
+      // Add exercises to workout
+      for (const exercise of workout.exercises) {
+        let exerciseId = exercise.exerciseId;
+        
+        // If no exerciseId, create a custom exercise
+        if (!exerciseId) {
+          const exResult = await db.executeSql(
+            `INSERT INTO exercises 
+              (name, category, type, difficulty_level, instructions, is_custom, created_by)
+            VALUES (?, ?, ?, ?, ?, 1, ?)`,
+            [
+              exercise.name,
+              exercise.category,
+              workout.type,
+              exercise.intensity,
+              exercise.instructions || '',
+              workout.userId,
+            ]
+          );
+          exerciseId = exResult[0].insertId;
+        }
+        
+        // Link exercise to workout
+        await db.executeSql(
+          `INSERT INTO workout_exercises 
+            (workout_id, exercise_id, sets, reps, duration, intensity, order_index)
+          VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          [
+            workoutId,
+            exerciseId,
+            exercise.sets || null,
+            exercise.reps || null,
+            exercise.duration || null,
+            exercise.intensity,
+            workout.exercises.indexOf(exercise),
+          ]
+        );
+      }
+      
+      await db.executeSql('COMMIT');
+      return workoutId;
+      
+    } catch (error) {
+      await db.executeSql('ROLLBACK');
+      throw error;
+    }
+  }
+
+  async getCustomWorkouts(userId: number): Promise<DailyWorkout[]> {
+    const db = await this.ensureDatabase();
+    
+    const result = await db.executeSql(
+      `SELECT * FROM daily_workouts 
+       WHERE is_custom = 1 AND created_by = ?
+       ORDER BY created_at DESC`,
+      [userId]
+    );
+    
+    const workouts: DailyWorkout[] = [];
+    for (let i = 0; i < result[0].rows.length; i++) {
+      const workout = result[0].rows.item(i);
+      
+      // Get exercises for this workout
+      const exerciseResult = await db.executeSql(
+        `SELECT e.*, we.sets, we.reps, we.duration, we.intensity, we.order_index
+         FROM exercises e
+         JOIN workout_exercises we ON e.id = we.exercise_id
+         WHERE we.workout_id = ?
+         ORDER BY we.order_index`,
+        [workout.id]
+      );
+      
+      const exercises: Exercise[] = [];
+      for (let j = 0; j < exerciseResult[0].rows.length; j++) {
+        exercises.push(exerciseResult[0].rows.item(j));
+      }
+      
+      workouts.push({
+        ...workout,
+        exercises,
+      });
+    }
+    
+    return workouts;
+  }
+
+  // Helper methods for custom workouts
+  private calculateTotalDuration(exercises: any[]): number {
+    return exercises.reduce((total, exercise) => {
+      if (exercise.duration) {
+        return total + parseInt(exercise.duration);
+      } else if (exercise.sets && exercise.reps) {
+        // Estimate 1 minute per set
+        return total + parseInt(exercise.sets);
+      }
+      return total;
+    }, 0);
+  }
+
+  private calculateAverageIntensity(exercises: any[]): string {
+    const intensityMap = { low: 1, medium: 2, high: 3 };
+    const total = exercises.reduce((sum, ex) => sum + (intensityMap[ex.intensity as keyof typeof intensityMap] || 2), 0);
+    const avg = total / exercises.length;
+    
+    if (avg <= 1.5) return 'low';
+    if (avg <= 2.5) return 'medium';
+    return 'high';
+  }
 }
 
 // Export singleton instance

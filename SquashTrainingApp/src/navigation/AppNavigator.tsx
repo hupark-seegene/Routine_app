@@ -20,14 +20,20 @@ import ExerciseDetailScreen from '../screens/ExerciseDetailScreen';
 import DevLoginScreen from '../screens/auth/DevLoginScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { AnalyticsScreen } from '../screens/AnalyticsScreen';
+import { VideoLibraryScreen } from '../screens/VideoLibraryScreen';
+import WorkoutSessionScreen from '../screens/WorkoutSessionScreen';
+import { CreateWorkoutScreen } from '../screens/CreateWorkoutScreen';
 
 export type RootStackParamList = {
   MainTabs: undefined;
   ProgramDetail: { programId: number; programName: string };
   ExerciseDetail: { exerciseId: number; exerciseName: string };
+  WorkoutSession: { sessionId: number; enrollmentId: number };
   DevLogin: undefined;
   Settings: undefined;
   Analytics: undefined;
+  VideoLibrary: undefined;
+  CreateWorkout: undefined;
 };
 
 export type MainTabParamList = {
@@ -160,6 +166,39 @@ export default function AppNavigator() {
           component={AnalyticsScreen}
           options={{ 
             title: 'Analytics',
+            headerStyle: {
+              backgroundColor: DarkTheme.background,
+            },
+            headerTintColor: Colors.accentVolt,
+          }}
+        />
+        <Stack.Screen 
+          name="VideoLibrary" 
+          component={VideoLibraryScreen}
+          options={{ 
+            title: 'Video Library',
+            headerStyle: {
+              backgroundColor: DarkTheme.background,
+            },
+            headerTintColor: Colors.accentVolt,
+          }}
+        />
+        <Stack.Screen 
+          name="WorkoutSession" 
+          component={WorkoutSessionScreen}
+          options={{ 
+            title: '운동 세션',
+            headerStyle: {
+              backgroundColor: DarkTheme.background,
+            },
+            headerTintColor: Colors.accentVolt,
+          }}
+        />
+        <Stack.Screen 
+          name="CreateWorkout" 
+          component={CreateWorkoutScreen}
+          options={{ 
+            title: 'Create Workout',
             headerStyle: {
               backgroundColor: DarkTheme.background,
             },
