@@ -175,7 +175,16 @@ const ProfileScreen = () => {
 
         {/* Settings Section */}
         <View style={styles.settingsSection}>
-          <Text style={styles.sectionTitle}>알림 설정</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>알림 설정</Text>
+            <TouchableOpacity
+              style={styles.settingsButton}
+              onPress={() => navigation.navigate('Settings')}
+            >
+              <Icon name="settings" size={20} color={Colors.accentVolt} />
+              <Text style={styles.settingsButtonText}>모든 설정</Text>
+            </TouchableOpacity>
+          </View>
           
           <View style={styles.settingItem}>
             <View style={styles.settingInfo}>
@@ -376,6 +385,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginTop: 10,
     padding: 20,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  settingsButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    backgroundColor: Colors.backgroundLight,
+  },
+  settingsButtonText: {
+    fontSize: 14,
+    color: Colors.accentVolt,
+    fontWeight: '600',
   },
   settingItem: {
     flexDirection: 'row',

@@ -1,7 +1,10 @@
 package com.squashtrainingapp.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -17,6 +20,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import com.squashtrainingapp.R;
+import com.squashtrainingapp.MainActivity;
+
+import java.util.Locale;
 
 public class SettingsActivity extends AppCompatActivity {
     
@@ -185,13 +191,31 @@ public class SettingsActivity extends AppCompatActivity {
     }
     
     private void updateAppLanguage(String language) {
-        // In a real app, this would update the locale
-        // For now, just show a toast
-        String message = "Language changed. Restart app to apply.";
+        // Update locale
+        Locale locale;
         if (language.equals("ko")) {
-            message = "언어가 변경되었습니다. 앱을 재시작하세요.";
+            locale = new Locale("ko");
+        } else if (language.equals("en")) {
+            locale = Locale.ENGLISH;
+        } else {
+            // Auto - use system default
+            locale = Resources.getSystem().getConfiguration().locale;
         }
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        
+        // Update configuration
+        Resources resources = getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+        
+        // Save the locale preference
+        prefs.edit().putString("app_locale", locale.getLanguage()).apply();
+        
+        // Restart the app to apply changes
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
     
     private void clearCache() {

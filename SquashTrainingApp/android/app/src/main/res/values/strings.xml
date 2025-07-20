@@ -158,4 +158,8 @@
     <string name="thu">Thu</string>
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
+    <string name="export_data">Export Data</string>
+    <string name="no_data_to_export">No data to export</string>
+    <string name="data_exported_to">Data exported to:</string>
+    <string name="export_failed">Export failed</string>
 </resources>

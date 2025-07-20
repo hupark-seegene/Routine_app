@@ -18,12 +18,16 @@ import CoachScreen from '../screens/CoachScreen';
 import ProgramDetailScreen from '../screens/ProgramDetailScreen';
 import ExerciseDetailScreen from '../screens/ExerciseDetailScreen';
 import DevLoginScreen from '../screens/auth/DevLoginScreen';
+import { SettingsScreen } from '../screens/SettingsScreen';
+import { AnalyticsScreen } from '../screens/AnalyticsScreen';
 
 export type RootStackParamList = {
   MainTabs: undefined;
   ProgramDetail: { programId: number; programName: string };
   ExerciseDetail: { exerciseId: number; exerciseName: string };
   DevLogin: undefined;
+  Settings: undefined;
+  Analytics: undefined;
 };
 
 export type MainTabParamList = {
@@ -134,6 +138,28 @@ export default function AppNavigator() {
           component={DevLoginScreen}
           options={{ 
             title: 'Developer Login',
+            headerStyle: {
+              backgroundColor: DarkTheme.background,
+            },
+            headerTintColor: Colors.accentVolt,
+          }}
+        />
+        <Stack.Screen 
+          name="Settings" 
+          component={SettingsScreen}
+          options={{ 
+            title: 'Settings',
+            headerStyle: {
+              backgroundColor: DarkTheme.background,
+            },
+            headerTintColor: Colors.accentVolt,
+          }}
+        />
+        <Stack.Screen 
+          name="Analytics" 
+          component={AnalyticsScreen}
+          options={{ 
+            title: 'Analytics',
             headerStyle: {
               backgroundColor: DarkTheme.background,
             },
