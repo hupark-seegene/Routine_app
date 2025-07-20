@@ -4,7 +4,12 @@
     
     <!-- Main Screen -->
     <string name="drag_hint">나를 영역으로 드래그하거나 길게 눌러서 대화해요!</string>
+    <string name="drag_hint_extended">나를 영역으로 드래그하거나 길게 눌러서 대화해요!\n다시 탭하면 설명을 숨기거나 표시합니다</string>
     <string name="voice_recognition_disabled">음성 인식이 일시적으로 비활성화되었습니다</string>
+    <string name="voice_recognition_not_available">음성 인식을 사용할 수 없습니다</string>
+    <string name="entering_zone">%1$s 진입!</string>
+    <string name="no_speech_detected">음성이 감지되지 않았습니다 - 다시 시도하세요</string>
+    <string name="network_error_try_again">네트워크 오류 - 다시 시도해주세요</string>
     
     <!-- Navigation -->
     <string name="profile">프로필</string>
@@ -26,6 +31,10 @@
     <string name="week_warrior">주간 전사</string>
     <string name="century_club">센추리 클럽</string>
     <string name="level">레벨</string>
+    <string name="xp">XP</string>
+    <string name="achievement_calorie_crusher">칼로리 파괴자</string>
+    <string name="achievement_speed_demon">스피드 데몬</string>
+    <string name="settings_coming_soon">설정이 공 준비 중입니다!</string>
     
     <!-- Coach -->
     <string name="daily_tip">오늘의 팁</string>
@@ -83,6 +92,19 @@
     <string name="tap_to_cancel">취소하려면 탭하세요</string>
     <string name="voice_error">음성 오류: %1$s</string>
     
+    <!-- Voice Responses -->
+    <string name="voice_response_opening_profile">프로필을 열고 있습니다...</string>
+    <string name="voice_response_showing_checklist">운동 체크리스트를 표시합니다...</string>
+    <string name="voice_response_starting_record">운동 기록을 시작합니다...</string>
+    <string name="voice_response_loading_history">운동 기록을 불러오고 있습니다...</string>
+    <string name="voice_response_getting_advice">코칭 조언을 가져오고 있습니다...</string>
+    <string name="voice_response_opening_settings">설정을 열고 있습니다...</string>
+    <string name="voice_response_analyzing_progress">진행 상황을 분석하고 있습니다...</string>
+    <string name="voice_response_start_workout">운동을 시작해요!</string>
+    <string name="voice_response_let_me_help">제가 도와드릴게요...</string>
+    <string name="voice_response_unknown_command">이해하지 못했어요. \'프로필 보기\' 또는 \'운동 시작\'이라고 말해보세요.</string>
+    <string name="voice_help_text">다음과 같이 말할 수 있어요:\n• "내 프로필 보기"\n• "체크리스트 열기"\n• "새 운동 시작"\n• "내 기록 보기"\n• "코칭 조언 받기"\n• "진행 상황 확인"</string>
+    
     <!-- Record -->
     <string name="start_training">트레이닝 시작</string>
     <string name="pause">일시정지</string>
@@ -111,4 +133,7 @@
     <string name="this_week">이번 주</string>
     <string name="this_month">이번 달</string>
     <string name="all_time">전체</string>
+    
+    <!-- Additional Screens -->
+    <string name="training_programs">트레이닝 프로그램</string>
 </resources>

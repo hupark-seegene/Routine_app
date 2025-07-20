@@ -2,6 +2,7 @@
     
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -31,50 +32,50 @@
         
         <activity
             android:name=".ui.activities.RecordActivity"
-            android:label="Record"
+            android:label="@string/record"
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
         <activity
             android:name=".ui.activities.ProfileActivity"
-            android:label="Profile"
+            android:label="@string/profile"
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
         <activity
             android:name=".ui.activities.ChecklistActivity"
-            android:label="Checklist"
+            android:label="@string/checklist"
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
         <activity
             android:name=".ui.activities.CoachActivity"
-            android:label="Coach"
+            android:label="@string/ai_coach"
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
         <activity
             android:name=".ui.activities.HistoryActivity"
-            android:label="History"
+            android:label="@string/history"
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
         <activity
             android:name=".ai.AIChatbotActivity"
-            android:label="AI Coach Chat"
+            android:label="@string/ai_coach_chat"
             android:exported="false"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"/>
             
         <activity
             android:name=".ui.activities.SettingsActivity"
-            android:label="Settings"
+            android:label="@string/settings"
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
         <activity
             android:name=".ui.activities.ProgramsActivity"
-            android:label="Training Programs"
+            android:label="@string/training_programs"
             android:exported="false"
             android:theme="@style/AppTheme"/>
             

@@ -189,7 +189,7 @@ public class MainActivity extends Activity implements
                 voiceManager.startListening();
             } else {
                 Log.e(TAG, "Failed to initialize voice manager");
-                voiceStatusText.setText("Voice recognition not available");
+                voiceStatusText.setText(getString(R.string.voice_recognition_not_available));
                 new Handler().postDelayed(this::hideVoiceOverlay, 2000);
             }
         }
@@ -199,7 +199,7 @@ public class MainActivity extends Activity implements
         if (voiceOverlay != null) {
             Log.d(TAG, "Showing voice overlay");
             voiceOverlay.setVisibility(View.VISIBLE);
-            voiceStatusText.setText("Listening...");
+            voiceStatusText.setText(getString(R.string.listening));
             recognizedText.setText("");
             
             // Start voice wave animation
@@ -269,7 +269,8 @@ public class MainActivity extends Activity implements
                 Log.d(TAG, "Mascot released in zone: " + zone);
                 
                 // Provide visual confirmation before navigation
-                Toast.makeText(this, "Entering " + zone.toUpperCase() + "!", 
+                String enteringText = getString(R.string.entering_zone, zone.toUpperCase());
+                Toast.makeText(this, enteringText, 
                         Toast.LENGTH_SHORT).show();
                 
                 navigateToZone(zone);
@@ -296,7 +297,7 @@ public class MainActivity extends Activity implements
                 zoneManager.toggleInstructions();
             }
             
-            Toast.makeText(this, "Drag me to a zone or hold me to talk!\nTap again to hide/show instructions", 
+            Toast.makeText(this, getString(R.string.drag_hint_extended), 
                     Toast.LENGTH_LONG).show();
         }
     }
@@ -331,6 +332,8 @@ public class MainActivity extends Activity implements
         
         if (intent != null) {
             startActivity(intent);
+            // Add slide animation when navigating to new activity
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }
     
@@ -342,7 +345,7 @@ public class MainActivity extends Activity implements
         
         // Process voice command using static methods
         VoiceCommands.Command command = VoiceCommands.parseCommand(recognizedText);
-        String response = VoiceCommands.getResponseForCommand(command);
+        String response = VoiceCommands.getResponseForCommand(this, command);
         
         // Handle navigation commands
         switch (command.type) {
@@ -387,13 +390,13 @@ public class MainActivity extends Activity implements
         // If overlay is visible, update status text
         if (voiceOverlay != null && voiceOverlay.getVisibility() == View.VISIBLE) {
             if (error.contains("permissions")) {
-                voiceStatusText.setText("Audio permission required");
+                voiceStatusText.setText(getString(R.string.audio_permission_required));
             } else if (error.contains("No match")) {
-                voiceStatusText.setText("No speech detected - try again");
+                voiceStatusText.setText(getString(R.string.no_speech_detected));
             } else if (error.contains("Network")) {
-                voiceStatusText.setText("Network error - please try again");
+                voiceStatusText.setText(getString(R.string.network_error_try_again));
             } else {
-                voiceStatusText.setText("Error: " + error);
+                voiceStatusText.setText(getString(R.string.voice_error, error));
             }
             
             // Hide overlay after showing error
@@ -405,7 +408,7 @@ public class MainActivity extends Activity implements
                     PERMISSION_REQUEST_RECORD_AUDIO);
         } else {
             // Other errors - show toast
-            Toast.makeText(this, "Voice recognition error: " + error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.voice_error, error), Toast.LENGTH_SHORT).show();
         }
     }
     
@@ -413,7 +416,7 @@ public class MainActivity extends Activity implements
     public void onReadyForSpeech() {
         Log.d(TAG, "Voice ready for speech");
         if (voiceStatusText != null) {
-            voiceStatusText.setText("Speak now...");
+            voiceStatusText.setText(getString(R.string.speak_now));
         }
     }
     
@@ -421,7 +424,7 @@ public class MainActivity extends Activity implements
     public void onEndOfSpeech() {
         Log.d(TAG, "Voice end of speech");
         if (voiceStatusText != null) {
-            voiceStatusText.setText("Processing...");
+            voiceStatusText.setText(getString(R.string.processing));
         }
     }
     
@@ -435,11 +438,11 @@ public class MainActivity extends Activity implements
                 // Setup voice recognition now that we have permission
                 setupVoiceRecognition();
                 Toast.makeText(this, 
-                        "Voice commands enabled! Hold the mascot to speak", 
+                        getString(R.string.voice_commands_enabled), 
                         Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, 
-                        "Voice commands disabled. You can still use all other features", 
+                        getString(R.string.voice_commands_disabled), 
                         Toast.LENGTH_LONG).show();
             }
         }

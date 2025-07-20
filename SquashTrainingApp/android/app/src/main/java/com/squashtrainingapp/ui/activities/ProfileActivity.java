@@ -10,9 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
     
     // User info views
     private TextView userNameText;
@@ -68,6 +68,8 @@ public class ProfileActivity extends AppCompatActivity {
         displayStats();
         displayAchievements();
         setupSettingsButton();
+        setupNavigationBar();
+        setupBottomNavigation();
     }
     
     private void initializeViews() {
@@ -94,8 +96,8 @@ public class ProfileActivity extends AppCompatActivity {
     
     private void loadUserData() {
         userNameText.setText(userName);
-        levelText.setText("Level " + userLevel);
-        experienceText.setText(currentExp + " / " + maxExp + " XP");
+        levelText.setText(getString(R.string.level) + " " + userLevel);
+        experienceText.setText(currentExp + " / " + maxExp + " " + getString(R.string.xp));
         
         // Set experience bar progress
         experienceBar.setMax(maxExp);
@@ -109,20 +111,20 @@ public class ProfileActivity extends AppCompatActivity {
         sessionsCountText.setText(String.valueOf(totalSessions));
         caloriesCountText.setText(formatNumber(totalCalories));
         hoursCountText.setText(String.valueOf(totalHours));
-        streakCountText.setText(currentStreak + " days");
+        streakCountText.setText(currentStreak + " " + getString(R.string.days_streak));
     }
     
     private void displayAchievements() {
         // Recent achievement
-        recentAchievementText.setText("Completed 7-Day Streak!");
+        recentAchievementText.setText(getString(R.string.completed_7_day_streak));
         
         // Achievement badges (mock data)
         String[] achievements = {
-            "First Workout",
-            "Week Warrior",
-            "Century Club",
-            "Calorie Crusher",
-            "Speed Demon"
+            getString(R.string.first_workout),
+            getString(R.string.week_warrior),
+            getString(R.string.century_club),
+            getString(R.string.achievement_calorie_crusher),
+            getString(R.string.achievement_speed_demon)
         };
         
         // Add achievement badges dynamically
@@ -137,9 +139,15 @@ public class ProfileActivity extends AppCompatActivity {
     
     private void setupSettingsButton() {
         settingsButton.setOnClickListener(v -> {
-            // TODO: Navigate to settings
-            android.widget.Toast.makeText(this, "Settings coming soon!", android.widget.Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
+    }
+    
+    @Override
+    protected String getActivityTitle() {
+        return "Profile";
     }
     
     private String formatNumber(int number) {

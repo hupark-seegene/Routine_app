@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_background">
     
-    <LinearLayout
+    <!-- Top Navigation Bar -->
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_alignParentTop="true" />
+    
+    <!-- Main Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/navigation_bar"
+        android:layout_above="@+id/bottom_navigation">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         
         <!-- Header Section -->
         <LinearLayout
@@ -268,3 +283,13 @@
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
+    
+    <!-- Bottom Navigation Bar -->
+    <include
+        android:id="@+id/bottom_navigation"
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+    
+</RelativeLayout>

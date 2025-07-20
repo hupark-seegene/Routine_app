@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Colors, DarkTheme } from '../styles';
+import ModernTabBar from '../components/navigation/ModernTabBar';
 
 // Screen imports (to be created)
 import HomeScreen from '../screens/HomeScreen';
@@ -37,34 +38,10 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 function MainTabs() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName: string = 'home';
-
-          if (route.name === 'Home') {
-            iconName = 'home';
-          } else if (route.name === 'Checklist') {
-            iconName = 'checklist';
-          } else if (route.name === 'Record') {
-            iconName = 'edit';
-          } else if (route.name === 'Coach') {
-            iconName = 'psychology';
-          } else if (route.name === 'Profile') {
-            iconName = 'person';
-          }
-
-          return (
-            <View style={[styles.iconContainer, focused && styles.iconContainerActive]}>
-              <Icon name={iconName} size={24} color={focused ? Colors.accentVolt : DarkTheme.textTertiary} />
-            </View>
-          );
-        },
-        tabBarStyle: styles.tabBar,
-        tabBarActiveTintColor: Colors.accentVolt,
-        tabBarInactiveTintColor: DarkTheme.textTertiary,
-        tabBarLabelStyle: styles.tabBarLabel,
+      tabBar={(props) => <ModernTabBar {...props} />}
+      screenOptions={{
         headerShown: false,
-      })}
+      }}
     >
       <Tab.Screen 
         name="Home" 

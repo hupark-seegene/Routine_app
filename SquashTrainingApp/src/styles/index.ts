@@ -1,10 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { Colors, DarkTheme } from './colors';
 import { Typography, FontSize, FontWeight } from './typography';
+import * as Modern from './modern';
 
 export * from './colors';
 export * from './typography';
 export * from './animations';
+export * from './modern';
 
 // Global styles
 export const GlobalStyles = StyleSheet.create({

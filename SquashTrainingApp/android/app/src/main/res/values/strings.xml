@@ -4,7 +4,12 @@
     
     <!-- Main Screen -->
     <string name="drag_hint">Drag me to a zone or hold me to talk!</string>
+    <string name="drag_hint_extended">Drag me to a zone or hold me to talk!\nTap again to hide/show instructions</string>
     <string name="voice_recognition_disabled">Voice recognition temporarily disabled</string>
+    <string name="voice_recognition_not_available">Voice recognition not available</string>
+    <string name="entering_zone">Entering %1$s!</string>
+    <string name="no_speech_detected">No speech detected - try again</string>
+    <string name="network_error_try_again">Network error - please try again</string>
     
     <!-- Navigation -->
     <string name="profile">Profile</string>
@@ -26,6 +31,10 @@
     <string name="week_warrior">Week Warrior</string>
     <string name="century_club">Century Club</string>
     <string name="level">Level</string>
+    <string name="xp">XP</string>
+    <string name="achievement_calorie_crusher">Calorie Crusher</string>
+    <string name="achievement_speed_demon">Speed Demon</string>
+    <string name="settings_coming_soon">Settings coming soon!</string>
     
     <!-- Coach -->
     <string name="daily_tip">Daily Tip</string>
@@ -83,6 +92,19 @@
     <string name="tap_to_cancel">TAP TO CANCEL</string>
     <string name="voice_error">Voice error: %1$s</string>
     
+    <!-- Voice Responses -->
+    <string name="voice_response_opening_profile">Opening your profile...</string>
+    <string name="voice_response_showing_checklist">Showing your exercise checklist...</string>
+    <string name="voice_response_starting_record">Starting workout recording...</string>
+    <string name="voice_response_loading_history">Loading your workout history...</string>
+    <string name="voice_response_getting_advice">Getting coaching advice...</string>
+    <string name="voice_response_opening_settings">Opening settings...</string>
+    <string name="voice_response_analyzing_progress">Analyzing your progress...</string>
+    <string name="voice_response_start_workout">Let\'s start your workout!</string>
+    <string name="voice_response_let_me_help">Let me help you with that...</string>
+    <string name="voice_response_unknown_command">I didn\'t understand that. Try saying \'show profile\' or \'start workout\'.</string>
+    <string name="voice_help_text">You can say things like:\n• "Show my profile"\n• "Open checklist"\n• "Start a new workout"\n• "Show my history"\n• "Get coaching advice"\n• "Check my progress"</string>
+    
     <!-- Record -->
     <string name="start_training">Start Training</string>
     <string name="pause">Pause</string>
@@ -111,4 +133,7 @@
     <string name="this_week">This Week</string>
     <string name="this_month">This Month</string>
     <string name="all_time">All Time</string>
+    
+    <!-- Additional Screens -->
+    <string name="training_programs">Training Programs</string>
 </resources>

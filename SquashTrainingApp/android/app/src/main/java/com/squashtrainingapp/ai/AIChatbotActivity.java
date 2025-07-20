@@ -80,7 +80,8 @@ public class AIChatbotActivity extends AppCompatActivity implements
     }
     
     private void setupAIEngine() {
-        aiEngine = new ImprovedAIResponseEngine(this);
+        // Use API-based engine if available, otherwise fallback to local
+        aiEngine = new APIAIResponseEngine(this);
         aiEngine.setAIResponseListener(this);
     }
     
