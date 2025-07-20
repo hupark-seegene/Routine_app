@@ -54,18 +54,27 @@ if (-not $SkipClean) {
     }
     
     # Clean Metro bundler cache
-    npx react-native start --reset-cache --max-workers=1 &
-    Start-Sleep -Seconds 3
-    Stop-Process -Name "node" -ErrorAction SilentlyContinue
-    Write-ColorOutput "  ✓ Reset Metro bundler cache" "Success"
+    try {
+        $metroProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "npx react-native start --reset-cache --max-workers=1" -PassThru -WindowStyle Hidden
+        Start-Sleep -Seconds 3
+        if ($metroProcess -and !$metroProcess.HasExited) {
+            $metroProcess.Kill()
+        }
+        Stop-Process -Name "node" -ErrorAction SilentlyContinue
+        Write-ColorOutput "  ✓ Reset Metro bundler cache" "Success"
+    } catch {
+        Write-ColorOutput "  ⚠ Metro cache reset skipped" "Warning"
+    }
 } else {
     Write-ColorOutput "[2/10] Skipping clean step" "Warning"
 }
 
 # Step 3: Update project plan
 Write-ColorOutput "[3/10] Updating project plan..." "Progress"
-$planContent = Get-Content "project_plan.md" -Raw
-$planContent = $planContent -replace "## Current Status.*?(?=##)", @"
+$planPath = Join-Path (Join-Path $projectRoot "..") "project_plan.md"
+if (Test-Path $planPath) {
+    $planContent = Get-Content $planPath -Raw
+    $planContent = $planContent -replace "## Current Status.*?(?=##)", @"
 ## Current Status
 
 ### UI/UX Excellence Achieved ✓
@@ -79,8 +88,11 @@ $planContent = $planContent -replace "## Current Status.*?(?=##)", @"
 - **Professional Polish**: Nike/Strava level quality
 
 "@
-$planContent | Set-Content "project_plan.md"
-Write-ColorOutput "  ✓ Project plan updated" "Success"
+    $planContent | Set-Content $planPath
+    Write-ColorOutput "  ✓ Project plan updated" "Success"
+} else {
+    Write-ColorOutput "  ⚠ Project plan not found, skipping update" "Warning"
+}
 
 # Step 4: Install dependencies
 Write-ColorOutput "[4/10] Installing dependencies..." "Progress"
@@ -129,9 +141,9 @@ $buildInfo = @{
         )
     }
     performance = @{
-        animations = "60fps smooth transitions",
-        bundle_size = "Optimized with tree shaking",
-        memory = "Efficient component recycling",
+        animations = "60fps smooth transitions"
+        bundle_size = "Optimized with tree shaking"
+        memory = "Efficient component recycling"
         startup = "Fast with lazy loading"
     }
 }
@@ -228,6 +240,10 @@ Set-Location $projectRoot
 Write-ColorOutput "[8/10] Copying APK to DDD folder..." "Progress"
 $buildType = if ($Debug) { "debug" } else { "release" }
 $apkSource = "android/app/build/outputs/apk/$buildType/app-$buildType.apk"
+if (-not (Test-Path $apkSource)) {
+    # Try unsigned APK
+    $apkSource = "android/app/build/outputs/apk/$buildType/app-$buildType-unsigned.apk"
+}
 $apkDest = "$cyclePath/SquashTrainingApp-v2.0.$cycleNumber-premium.apk"
 
 if (Test-Path $apkSource) {

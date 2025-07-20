@@ -46,6 +46,9 @@ public class AIChatbotActivity extends AppCompatActivity implements
         
         // Welcome message
         addMessage(getString(R.string.welcome_message), ChatMessage.MessageType.AI);
+        
+        // Show input hint
+        showInputHint();
     }
     
     private void initializeViews() {
@@ -109,7 +112,8 @@ public class AIChatbotActivity extends AppCompatActivity implements
                         voiceManager.startListening();
                         voiceButton.setImageResource(R.drawable.ic_mic_active);
                     } else {
-                        Toast.makeText(this, "Voice input not available", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.voice_input_not_available), Toast.LENGTH_SHORT).show();
+                    showTypingHint();
                     }
                 }
             }
@@ -238,10 +242,26 @@ public class AIChatbotActivity extends AppCompatActivity implements
                 Toast.makeText(this, "Voice input enabled!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, 
-                        "Voice input disabled. You can still type your questions", 
+                        getString(R.string.voice_input_disabled_use_text), 
                         Toast.LENGTH_LONG).show();
+                showTypingHint();
             }
         }
+    }
+    
+    private void showInputHint() {
+        // Add a system message explaining input options
+        String hint = "💡 You can either:\n" +
+                      "• Type your message and tap send\n" +
+                      "• Tap the microphone to use voice input";
+        addMessage(hint, ChatMessage.MessageType.SYSTEM);
+    }
+    
+    private void showTypingHint() {
+        // Show hint when voice is not available
+        inputEditText.setHint("Type your message here (voice unavailable)");
+        // Make the hint more visible
+        inputEditText.requestFocus();
     }
     
     @Override

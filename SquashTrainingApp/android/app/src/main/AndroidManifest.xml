@@ -13,12 +13,19 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         
+        <!-- Original MainActivity (now a regular activity) -->
         <activity
             android:name=".MainActivity"
-            android:exported="true"
+            android:exported="false"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize" />
+            
+        <!-- New Simple Main Activity (launcher) -->
+        <activity
+            android:name=".SimpleMainActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

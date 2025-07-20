@@ -29,6 +29,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
         if (viewType == ChatMessage.MessageType.USER.ordinal()) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_chat_user, parent, false);
+        } else if (viewType == ChatMessage.MessageType.SYSTEM.ordinal()) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_chat_system, parent, false);
         } else {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_chat_ai, parent, false);
