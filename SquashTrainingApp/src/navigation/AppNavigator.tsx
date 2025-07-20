@@ -8,7 +8,7 @@ import { Colors, DarkTheme } from '../styles';
 import ModernTabBar from '../components/navigation/ModernTabBar';
 
 // Screen imports (to be created)
-import HomeScreen from '../screens/HomeScreen';
+import ModernHomeScreen from '../screens/ModernHomeScreen';
 import ChecklistScreen from '../screens/ChecklistScreen';
 import RecordScreen from '../screens/RecordScreen';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -45,7 +45,7 @@ function MainTabs() {
     >
       <Tab.Screen 
         name="Home" 
-        component={HomeScreen} 
+        component={ModernHomeScreen} 
         options={{ title: '홈' }}
       />
       <Tab.Screen 

@@ -7,11 +7,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import java.util.Random;
 
-public class CoachActivity extends AppCompatActivity {
+public class CoachActivity extends BaseActivity {
     
     // UI components
     private TextView dailyTipText;
@@ -64,6 +63,8 @@ public class CoachActivity extends AppCompatActivity {
         initializeViews();
         loadRandomContent();
         setupButtons();
+        setupNavigationBar();
+        setupBottomNavigation();
     }
     
     private void initializeViews() {
@@ -93,6 +94,12 @@ public class CoachActivity extends AppCompatActivity {
             // Launch AI Chatbot Activity
             android.content.Intent intent = new android.content.Intent(this, com.squashtrainingapp.ai.AIChatbotActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
+    }
+    
+    @Override
+    protected String getActivityTitle() {
+        return "AI Coach";
     }
 }

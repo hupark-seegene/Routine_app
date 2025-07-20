@@ -9,7 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { BlurView } from '@react-native-community/blur';
+// Removed blur view import - will use custom implementation
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   Colors,
@@ -140,16 +140,7 @@ const ModernHeroCard: React.FC<ModernHeroCardProps> = ({
 
           {/* Glass overlay */}
           <View style={styles.glassOverlay}>
-            {Platform.OS === 'ios' ? (
-              <BlurView
-                style={styles.blur}
-                blurType="light"
-                blurAmount={10}
-                reducedTransparencyFallbackColor="transparent"
-              />
-            ) : (
-              <View style={[styles.blur, { backgroundColor: Glass.light.backgroundColor }]} />
-            )}
+            <View style={[styles.blur, { backgroundColor: Glass.light.backgroundColor }]} />
           </View>
 
           {/* Content */}
