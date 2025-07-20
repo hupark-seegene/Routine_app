@@ -18,19 +18,25 @@ import androidx.core.content.ContextCompat;
 
 import com.squashtrainingapp.ai.VoiceRecognitionManager;
 import com.squashtrainingapp.ai.VoiceCommands;
-import com.squashtrainingapp.mascot.MascotView;
+import com.squashtrainingapp.mascot.OptimizedMascotView;
+import com.squashtrainingapp.utils.MemoryManager;
+import com.squashtrainingapp.utils.PerformanceMonitor;
 import com.squashtrainingapp.mascot.ZoneManager;
 import com.squashtrainingapp.ui.activities.*;
+import com.squashtrainingapp.BuildConfig;
 
 public class MainActivity extends Activity implements 
-        MascotView.OnMascotInteractionListener,
-        VoiceRecognitionManager.VoiceRecognitionListener {
+        OptimizedMascotView.OnMascotInteractionListener,
+        VoiceRecognitionManager.VoiceRecognitionListener,
+        PerformanceMonitor.PerformanceListener {
     
     private static final String TAG = "MainActivity";
     private static final int PERMISSION_REQUEST_RECORD_AUDIO = 1001;
     private static final long LONG_PRESS_DURATION = 2000; // 2 seconds
     
-    private MascotView mascotView;
+    private OptimizedMascotView mascotView;
+    private PerformanceMonitor performanceMonitor;
+    private MemoryManager memoryManager;
     private ZoneManager zoneManager;
     private VoiceRecognitionManager voiceManager;
     // VoiceCommands uses static methods
@@ -51,6 +57,7 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main_mascot);
         
         initializeViews();
+        setupPerformanceMonitoring();
         setupMascotInteraction();
         checkAudioPermission(); // This will setup voice recognition if permission granted
     }
@@ -76,6 +83,10 @@ public class MainActivity extends Activity implements
         }
         
         longPressHandler = new Handler();
+        
+        // Initialize memory manager
+        memoryManager = MemoryManager.getInstance(this);
+        memoryManager.registerActivity(this);
     }
     
     private void checkAudioPermission() {
@@ -448,12 +459,97 @@ public class MainActivity extends Activity implements
         }
     }
     
+    private void setupPerformanceMonitoring() {
+        performanceMonitor = PerformanceMonitor.getInstance(this);
+        performanceMonitor.setPerformanceListener(this);
+        
+        // Start monitoring in debug builds
+        if (BuildConfig.DEBUG) {
+            performanceMonitor.startMonitoring();
+        }
+    }
+    
+    // PerformanceMonitor.PerformanceListener implementation
+    @Override
+    public void onFPSUpdate(int fps) {
+        // Log FPS in debug mode
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "FPS: " + fps);
+        }
+    }
+    
+    @Override
+    public void onMemoryUpdate(long usedMemoryMB, long maxMemoryMB) {
+        // Log memory usage
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, String.format("Memory: %dMB / %dMB", usedMemoryMB, maxMemoryMB));
+        }
+        
+        // Perform cleanup if memory usage is high
+        if (usedMemoryMB > maxMemoryMB * 0.8) {
+            Log.w(TAG, "High memory usage detected, performing cleanup");
+            memoryManager.performMemoryCleanup();
+        }
+    }
+    
+    @Override
+    public void onPerformanceWarning(String warning) {
+        Log.w(TAG, "Performance warning: " + warning);
+        
+        // Show toast in debug mode
+        if (BuildConfig.DEBUG) {
+            Toast.makeText(this, "Performance: " + warning, Toast.LENGTH_SHORT).show();
+        }
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (performanceMonitor != null && BuildConfig.DEBUG) {
+            performanceMonitor.startMonitoring();
+        }
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (performanceMonitor != null) {
+            performanceMonitor.stopMonitoring();
+        }
+    }
+    
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        Log.d(TAG, "onTrimMemory called with level: " + level);
+        
+        // Let memory manager handle memory pressure
+        if (memoryManager != null) {
+            memoryManager.onTrimMemory(level);
+        }
+    }
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        
+        // Cleanup performance monitoring
+        if (performanceMonitor != null) {
+            performanceMonitor.stopMonitoring();
+            performanceMonitor.setPerformanceListener(null);
+        }
+        
+        // Unregister from memory manager
+        if (memoryManager != null) {
+            memoryManager.unregisterActivity(this);
+        }
+        
+        // Cleanup voice manager
         if (voiceManager != null) {
             voiceManager.destroy();
         }
+        
+        // Cleanup handlers
         if (longPressHandler != null && longPressRunnable != null) {
             longPressHandler.removeCallbacks(longPressRunnable);
         }

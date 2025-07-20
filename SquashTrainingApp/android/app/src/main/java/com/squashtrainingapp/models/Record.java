@@ -64,6 +64,41 @@ public class Record {
 
     public String getDate() { return date; }
     public void setDate(String date) { this.date = date; }
+    
+    // Get date as timestamp
+    public long getDateAsTimestamp() {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            Date parsedDate = sdf.parse(date);
+            return parsedDate != null ? parsedDate.getTime() : System.currentTimeMillis();
+        } catch (Exception e) {
+            return System.currentTimeMillis();
+        }
+    }
+    
+    // Get exercise type (category)
+    public String getExerciseType() {
+        if (exerciseName == null) return "Other";
+        
+        String lowerName = exerciseName.toLowerCase();
+        if (lowerName.contains("drive") || lowerName.contains("straight")) {
+            return "Drives";
+        } else if (lowerName.contains("drop") || lowerName.contains("short")) {
+            return "Drop Shots";
+        } else if (lowerName.contains("volley")) {
+            return "Volleys";
+        } else if (lowerName.contains("serve") || lowerName.contains("service")) {
+            return "Serves";
+        } else if (lowerName.contains("boast") || lowerName.contains("angle")) {
+            return "Boasts";
+        } else if (lowerName.contains("drill") || lowerName.contains("practice")) {
+            return "Drills";
+        } else if (lowerName.contains("match") || lowerName.contains("game")) {
+            return "Matches";
+        } else {
+            return "General";
+        }
+    }
 
     // Helper methods
     public String getFormattedDate() {

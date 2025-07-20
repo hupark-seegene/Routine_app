@@ -10,6 +10,7 @@ import {
   AIAdvice,
   NotificationSettings,
 } from '../types';
+import { DatabaseOptimized, BackupMetadata, AnalyticsData } from '../database/DatabaseOptimized';
 
 // Enable debugging
 SQLite.enablePromise(true);
@@ -17,16 +18,30 @@ SQLite.DEBUG(__DEV__);
 
 class DatabaseService {
   private db: SQLite.SQLiteDatabase | null = null;
+  private dbOptimized: DatabaseOptimized;
 
-  // Initialize database connection
+  constructor() {
+    this.dbOptimized = DatabaseOptimized.getInstance();
+  }
+
+  // Initialize database connection with optimizations
   async init(): Promise<void> {
     try {
-      if (!this.db) {
-        this.db = await SQLite.openDatabase({
-          name: 'SquashTraining.db',
-          location: 'default',
-        });
-      }
+      // Initialize optimized database with indexes
+      await this.dbOptimized.initializeDatabase();
+      this.db = await this.dbOptimized.getDBConnection();
+      
+      // Schedule periodic optimization
+      setInterval(async () => {
+        await this.dbOptimized.cleanupCache();
+      }, 3600000); // Every hour
+      
+      // Schedule weekly optimization
+      setInterval(async () => {
+        await this.dbOptimized.optimizeDatabase();
+      }, 604800000); // Every week
+      
+      console.log('Database initialized with optimizations');
     } catch (error) {
       console.error('Database initialization error:', error);
       throw error;
@@ -36,7 +51,7 @@ class DatabaseService {
   // Ensure database is initialized
   private async ensureDatabase(): Promise<SQLite.SQLiteDatabase> {
     if (!this.db) {
-      await this.init();
+      this.db = await this.dbOptimized.getDBConnection();
     }
     if (!this.db) {
       throw new Error('Database not initialized');
@@ -544,6 +559,55 @@ class DatabaseService {
       recentWorkouts,
       stats,
       currentProgram,
+    };
+  }
+
+  // Backup and Restore functionality
+  async createBackup(backupName?: string): Promise<string> {
+    return await this.dbOptimized.createBackup(backupName);
+  }
+
+  async restoreBackup(backupPath: string): Promise<void> {
+    return await this.dbOptimized.restoreBackup(backupPath);
+  }
+
+  // Analytics functionality
+  async getAnalytics(userId: number = 1, days: number = 30): Promise<AnalyticsData> {
+    return await this.dbOptimized.getAnalytics(userId, days);
+  }
+
+  async getWeakAreaAnalysis(userId: number = 1): Promise<any> {
+    return await this.dbOptimized.getWeakAreaAnalysis(userId);
+  }
+
+  async getProgressTrend(userId: number = 1, exerciseId?: number): Promise<any> {
+    return await this.dbOptimized.getProgressTrend(userId, exerciseId);
+  }
+
+  // Performance monitoring
+  async getPerformanceMetrics(): Promise<{
+    cacheHitRate: number;
+    avgQueryTime: number;
+    totalQueries: number;
+  }> {
+    const db = await this.ensureDatabase();
+    
+    // Get cache statistics
+    const [cacheStats] = await db.executeSql(
+      `SELECT COUNT(*) as total_cached,
+        SUM(CASE WHEN expires_at > datetime('now') THEN 1 ELSE 0 END) as valid_cached
+       FROM analytics_cache`
+    );
+    
+    const stats = cacheStats.rows.item(0);
+    const cacheHitRate = stats.total_cached > 0 
+      ? (stats.valid_cached / stats.total_cached) * 100 
+      : 0;
+    
+    return {
+      cacheHitRate,
+      avgQueryTime: 0, // Would need to implement query timing
+      totalQueries: 0  // Would need to implement query counting
     };
   }
 }

@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Mascot View - the draggable character -->
-    <com.squashtrainingapp.mascot.MascotView
+    <!-- Mascot View - the draggable character (Optimized) -->
+    <com.squashtrainingapp.mascot.OptimizedMascotView
         android:id="@+id/mascot_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

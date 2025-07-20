@@ -77,6 +77,37 @@ public class RecordDao {
         return records;
     }
     
+    // Get records between dates (using timestamp)
+    public List<Record> getRecordsBetweenDates(long startTime, long endTime) {
+        List<Record> records = new ArrayList<>();
+        // Convert timestamps to date strings for comparison
+        String startDate = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(new java.util.Date(startTime));
+        String endDate = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(new java.util.Date(endTime));
+        
+        String selection = DatabaseContract.COLUMN_RECORD_DATE + " BETWEEN ? AND ?";
+        String[] selectionArgs = { startDate, endDate };
+        
+        Cursor cursor = database.query(
+            DatabaseContract.TABLE_RECORDS,
+            null,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            DatabaseContract.COLUMN_RECORD_DATE + " DESC"
+        );
+        
+        if (cursor.moveToFirst()) {
+            do {
+                Record record = cursorToRecord(cursor);
+                records.add(record);
+            } while (cursor.moveToNext());
+        }
+        
+        cursor.close();
+        return records;
+    }
+    
     // Get records count
     public int getRecordsCount() {
         String countQuery = "SELECT COUNT(*) FROM " + DatabaseContract.TABLE_RECORDS;

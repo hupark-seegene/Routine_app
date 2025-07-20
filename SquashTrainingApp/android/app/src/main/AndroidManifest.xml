@@ -104,5 +104,11 @@
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
+        <activity
+            android:name=".ui.activities.StatsActivity"
+            android:label="@string/statistics"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
     </application>
 </manifest>

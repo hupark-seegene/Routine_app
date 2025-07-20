@@ -136,4 +136,26 @@
     
     <!-- Additional Screens -->
     <string name="training_programs">Training Programs</string>
+    
+    <!-- Statistics -->
+    <string name="statistics">Statistics</string>
+    <string name="total_workouts">Total Workouts</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="avg_duration">Avg Duration</string>
+    <string name="current_streak">Current Streak</string>
+    <string name="this_year">This Year</string>
+    <string name="progress_over_time">Progress Over Time</string>
+    <string name="weekly_activity">Weekly Activity</string>
+    <string name="exercise_breakdown">Exercise Breakdown</string>
+    <string name="workout_minutes">Workout Minutes</string>
+    <string name="exercise_types">Exercise Types</string>
+    <string name="categories">Categories</string>
+    <string name="other">Other</string>
+    <string name="sun">Sun</string>
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
 </resources>

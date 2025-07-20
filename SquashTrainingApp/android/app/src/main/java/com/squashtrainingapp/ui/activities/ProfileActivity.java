@@ -102,6 +102,16 @@ public class ProfileActivity extends AppCompatActivity {
         
         // Settings
         settingsButton = findViewById(R.id.settings_button);
+        
+        // Stats button
+        Button viewStatsButton = findViewById(R.id.view_stats_button);
+        if (viewStatsButton != null) {
+            viewStatsButton.setOnClickListener(v -> {
+                Intent intent = new Intent(this, StatsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            });
+        }
     }
     
     private void loadUserData() {
