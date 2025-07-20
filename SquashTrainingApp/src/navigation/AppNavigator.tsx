@@ -23,6 +23,7 @@ import { AnalyticsScreen } from '../screens/AnalyticsScreen';
 import { VideoLibraryScreen } from '../screens/VideoLibraryScreen';
 import WorkoutSessionScreen from '../screens/WorkoutSessionScreen';
 import { CreateWorkoutScreen } from '../screens/CreateWorkoutScreen';
+import { CustomWorkoutsScreen } from '../screens/CustomWorkoutsScreen';
 
 export type RootStackParamList = {
   MainTabs: undefined;
@@ -34,6 +35,7 @@ export type RootStackParamList = {
   Analytics: undefined;
   VideoLibrary: undefined;
   CreateWorkout: undefined;
+  CustomWorkouts: undefined;
 };
 
 export type MainTabParamList = {
@@ -199,6 +201,17 @@ export default function AppNavigator() {
           component={CreateWorkoutScreen}
           options={{ 
             title: 'Create Workout',
+            headerStyle: {
+              backgroundColor: DarkTheme.background,
+            },
+            headerTintColor: Colors.accentVolt,
+          }}
+        />
+        <Stack.Screen 
+          name="CustomWorkouts" 
+          component={CustomWorkoutsScreen}
+          options={{ 
+            title: 'My Workouts',
             headerStyle: {
               backgroundColor: DarkTheme.background,
             },

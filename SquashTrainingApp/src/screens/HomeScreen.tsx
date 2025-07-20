@@ -356,6 +356,53 @@ const HomeScreen = () => {
             ))}
           </View>
           
+          {/* Custom Workouts Section */}
+          <View style={styles.customWorkoutsSection}>
+            <View style={styles.sectionHeader}>
+              <Text variant="h6">Custom Workouts</Text>
+              <Button
+                variant="text"
+                size="small"
+                color="primary"
+                onPress={() => navigation.navigate('CustomWorkouts')}
+              >
+                View All
+              </Button>
+            </View>
+            
+            <Card variant="filled" padding="large" style={styles.customWorkoutCard}>
+              <View style={styles.customWorkoutContent}>
+                <Icon name="dumbbell" size={32} color={Palette.primary[500]} />
+                <View style={styles.customWorkoutText}>
+                  <Text variant="body1" weight="semibold">
+                    Create Your Own Workout
+                  </Text>
+                  <Text variant="caption" color="textSecondary">
+                    Design personalized training routines
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.customWorkoutActions}>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  startIcon="plus"
+                  onPress={() => navigation.navigate('CreateWorkout')}
+                  style={{ marginRight: Spacing[2] }}
+                >
+                  Create New
+                </Button>
+                <Button
+                  variant="text"
+                  size="small"
+                  onPress={() => navigation.navigate('CustomWorkouts')}
+                >
+                  My Workouts
+                </Button>
+              </View>
+            </Card>
+          </View>
+
           {/* Achievements */}
           <View style={styles.achievementsSection}>
             <Text variant="h6" style={styles.sectionTitle}>
@@ -669,6 +716,26 @@ const styles = StyleSheet.create({
   },
   workoutStatus: {
     marginLeft: Spacing[3],
+  },
+  customWorkoutsSection: {
+    paddingHorizontal: Spacing[4],
+    marginBottom: Spacing[6],
+  },
+  customWorkoutCard: {
+    marginTop: Spacing[3],
+  },
+  customWorkoutContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing[4],
+  },
+  customWorkoutText: {
+    flex: 1,
+    marginLeft: Spacing[3],
+  },
+  customWorkoutActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   achievementsSection: {
     paddingLeft: Spacing[4],
