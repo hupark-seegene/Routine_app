@@ -6,6 +6,9 @@
     <string name="drag_hint">Drag me to a zone or hold me to talk!</string>
     <string name="video_tutorials">Video Tutorials</string>
     <string name="custom_exercises">Custom Exercises</string>
+    <string name="workout_programs">Workout Programs</string>
+    <string name="create_program">Create Program</string>
+    <string name="achievements">Achievements</string>
     <string name="drag_hint_extended">Drag me to a zone or hold me to talk!\nTap again to hide/show instructions</string>
     <string name="voice_recognition_disabled">Voice recognition temporarily disabled</string>
     <string name="voice_recognition_not_available">Voice recognition not available</string>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/dark_surface"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+        
+        <!-- User Created Indicator -->
+        <View
+            android:id="@+id/user_created_indicator"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="12dp"
+            android:background="@color/volt_green"
+            android:visibility="gone" />
+        
+        <!-- Active Indicator -->
+        <View
+            android:id="@+id/active_indicator"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/circle_background"
+            android:visibility="gone" />
+        
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/user_created_indicator"
+            android:orientation="vertical">
+            
+            <TextView
+                android:id="@+id/program_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="프로그램 이름"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="40dp" />
+            
+            <TextView
+                android:id="@+id/program_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="프로그램 설명"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:maxLines="2"
+                android:ellipsize="end" />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+                
+                <TextView
+                    android:id="@+id/program_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🌱 초급자"
+                    android:textColor="@color/volt_green"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="12dp" />
+                
+                <TextView
+                    android:id="@+id/program_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4주 · 주 3회"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            
+            <!-- Progress Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical">
+                
+                <TextView
+                    android:id="@+id/progress_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="25% 완료 (3/12일)"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="4dp" />
+                
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:progressDrawable="@drawable/progress_drawable"
+                    android:progress="25" />
+            </LinearLayout>
+            
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+                
+                <Button
+                    android:id="@+id/action_button"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="시작"
+                    android:textSize="14sp"
+                    android:background="@drawable/button_background"
+                    android:textColor="@color/dark_background" />
+                
+                <ImageButton
+                    android:id="@+id/delete_button"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_delete"
+                    android:tint="@color/text_secondary"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

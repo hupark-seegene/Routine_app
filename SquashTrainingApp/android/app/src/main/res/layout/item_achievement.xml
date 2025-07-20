@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="@color/dark_surface"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+        
+        <!-- Achievement Icon -->
+        <TextView
+            android:id="@+id/achievement_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:text="🎯"
+            android:textSize="32sp"
+            android:gravity="center" />
+        
+        <!-- Rank Icon -->
+        <TextView
+            android:id="@+id/rank_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:text="🥉"
+            android:textSize="16sp"
+            android:gravity="center" />
+        
+        <!-- Name -->
+        <TextView
+            android:id="@+id/achievement_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/achievement_icon"
+            android:layout_marginTop="8dp"
+            android:text="업적 이름"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+        
+        <!-- Description -->
+        <TextView
+            android:id="@+id/achievement_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/achievement_name"
+            android:layout_marginTop="4dp"
+            android:text="업적 설명"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:gravity="center"
+            android:maxLines="2"
+            android:ellipsize="end" />
+        
+        <!-- Progress Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/achievement_description"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+            
+            <TextView
+                android:id="@+id/progress_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0 / 10"
+                android:textColor="@color/text_secondary"
+                android:textSize="10sp" />
+            
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="4dp"
+                android:progressDrawable="@drawable/progress_drawable"
+                android:progress="0" />
+        </LinearLayout>
+        
+        <!-- Points -->
+        <TextView
+            android:id="@+id/points_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:text="+50P"
+            android:textColor="@color/volt_green"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+        
+        <!-- Unlock Date -->
+        <TextView
+            android:id="@+id/date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:text="2024.01.20"
+            android:textColor="@color/text_secondary"
+            android:textSize="10sp"
+            android:visibility="gone" />
+        
+        <!-- Locked Overlay -->
+        <View
+            android:id="@+id/locked_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80000000"
+            android:visibility="gone" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".MainApplication"
@@ -121,6 +124,36 @@
             android:label="@string/custom_exercises"
             android:exported="false"
             android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.WorkoutProgramActivity"
+            android:label="@string/workout_programs"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.CreateProgramActivity"
+            android:label="@string/create_program"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.AchievementsActivity"
+            android:label="@string/achievements"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
+        <!-- Notification Receiver -->
+        <receiver 
+            android:name=".receivers.NotificationReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.squashtrainingapp.DAILY_NOTIFICATION" />
+                <action android:name="com.squashtrainingapp.WORKOUT_REMINDER" />
+            </intent-filter>
+        </receiver>
             
     </application>
 </manifest>

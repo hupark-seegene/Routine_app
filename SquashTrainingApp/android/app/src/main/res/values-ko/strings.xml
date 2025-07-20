@@ -6,6 +6,9 @@
     <string name="drag_hint">나를 영역으로 드래그하거나 길게 눌러서 대화해요!</string>
     <string name="video_tutorials">비디오 튜토리얼</string>
     <string name="custom_exercises">커스텀 운동</string>
+    <string name="workout_programs">운동 프로그램</string>
+    <string name="create_program">프로그램 만들기</string>
+    <string name="achievements">업적</string>
     <string name="drag_hint_extended">나를 영역으로 드래그하거나 길게 눌러서 대화해요!\n다시 탭하면 설명을 숨기거나 표시합니다</string>
     <string name="voice_recognition_disabled">음성 인식이 일시적으로 비활성화되었습니다</string>
     <string name="voice_recognition_not_available">음성 인식을 사용할 수 없습니다</string>
