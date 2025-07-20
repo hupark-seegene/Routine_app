@@ -276,6 +276,32 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+    
+    <!-- Developer Mode Content (Initially Hidden) -->
+    <LinearLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        
+        <LinearLayout
+            android:id="@+id/developer_options_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"/>
+            
+        <TextView
+            android:id="@+id/version_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Version 1.0.0"
+            android:textAlignment="center"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:padding="16dp"/>
+    </LinearLayout>
 </ScrollView>
     
 </RelativeLayout>

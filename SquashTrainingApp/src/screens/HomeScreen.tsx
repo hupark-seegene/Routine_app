@@ -1,395 +1,714 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
-  StatusBar,
   RefreshControl,
-  Alert,
+  Animated,
+  Dimensions,
+  StatusBar,
+  Platform,
 } from 'react-native';
-import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { RootStackParamList, MainTabParamList } from '../navigation/AppNavigator';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import Haptics from 'react-native-haptic-feedback';
+
+// Core Components
+import { Text, Button, Card, Surface, Icon, Skeleton } from '../components/core';
+
+// Design System
+import {
+  Palette,
+  Spacing,
+  BorderRadius,
+  Animation,
+  Typography,
+  Layout,
+} from '../styles/designSystem';
+
+// Contexts
+import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from './auth/AuthContext';
-import aiApi from '../services/api/aiApi';
+
+// Services
 import DatabaseService from '../services/DatabaseService';
+import aiApi from '../services/api/aiApi';
+
+// Types
 import { WorkoutLog, TrainingProgram } from '../types';
 
-// Components
-import HeroCard from '../components/home/HeroCard';
-import QuickStats from '../components/home/QuickStats';
-import WorkoutCard from '../components/home/WorkoutCard';
-import ProgressRing from '../components/home/ProgressRing';
-import AchievementScroll from '../components/home/AchievementScroll';
-import AICoachFAB from '../components/common/AICoachFAB';
-
-// Styles
-import {
-  Colors,
-  DarkTheme,
-  Typography,
-  Spacing,
-  GlobalStyles,
-} from '../styles';
-import { LoadingState } from '../components/common';
-
-type HomeScreenNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<MainTabParamList, 'Home'>,
-  StackNavigationProp<RootStackParamList>
->;
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const HomeScreen = () => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const navigation = useNavigation();
+  const { theme } = useTheme();
   const { isDeveloper, developerApiKey } = useAuth();
-  const [refreshing, setRefreshing] = useState(false);
-  const [streak, setStreak] = useState(0);
+  
+  // State
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({
-    totalWorkouts: 0,
-    totalMinutes: 0,
-    averageIntensity: 0,
-    averageCondition: 0,
-    completionRate: 0,
-  });
+  const [refreshing, setRefreshing] = useState(false);
   const [activeProgram, setActiveProgram] = useState<TrainingProgram | null>(null);
-  const [todayWorkout, setTodayWorkout] = useState<any>(null);
-  const [workouts, setWorkouts] = useState([
-    {
-      id: '1',
-      icon: 'tennis',
-      name: 'Technical Drills',
-      details: 'Forehand • Backhand • Boast',
-      duration: '45 min',
-      completed: false,
-    },
-    {
-      id: '2',
-      icon: 'dumbbell',
-      name: 'Strength Training',
-      details: 'Core • Legs • Upper Body',
-      duration: '30 min',
-      completed: false,
-    },
-    {
-      id: '3',
-      icon: 'run-fast',
-      name: 'HIIT Cardio',
-      details: 'Intervals • Agility • Speed',
-      duration: '20 min',
-      completed: true,
-    },
-  ]);
-
-  // Load data on mount
+  const [stats, setStats] = useState({
+    streak: 0,
+    weeklyProgress: 0,
+    totalWorkouts: 0,
+    avgIntensity: 0,
+  });
+  const [todayWorkouts, setTodayWorkouts] = useState([]);
+  const [recentAchievements, setRecentAchievements] = useState([]);
+  
+  // Animations
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(50)).current;
+  
+  // Load data
   useEffect(() => {
     loadData();
+    animateEntrance();
   }, []);
-
-  // Set developer API key when available
+  
+  // Set developer API key
   useEffect(() => {
     if (isDeveloper && developerApiKey) {
       aiApi.setDeveloperApiKey(developerApiKey);
     }
   }, [isDeveloper, developerApiKey]);
-
+  
+  const animateEntrance = () => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: Animation.duration.base,
+        useNativeDriver: true,
+      }),
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        ...Animation.easing.spring,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+  
   const loadData = async () => {
     try {
       setLoading(true);
       await DatabaseService.init();
       
-      // Get user profile
-      const profile = await DatabaseService.getUserProfile();
-      const userId = profile?.id || 1;
+      // Simulate data loading
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Get statistics
-      const statistics = await DatabaseService.getTrainingStats(userId, 30);
-      setStats(statistics);
+      // Load user stats
+      setStats({
+        streak: 7,
+        weeklyProgress: 75,
+        totalWorkouts: 142,
+        avgIntensity: 8.2,
+      });
       
-      // Calculate streak
-      const weekStats = await DatabaseService.getWeeklyStats(userId);
-      let currentStreak = 0;
-      const today = new Date();
-      for (let i = 0; i < 7; i++) {
-        const checkDate = new Date(today);
-        checkDate.setDate(today.getDate() - i);
-        const dateStr = checkDate.toISOString().split('T')[0];
-        if (weekStats.find(stat => stat.day === dateStr && stat.workouts > 0)) {
-          currentStreak++;
-        } else if (i > 0) {
-          break;
-        }
-      }
-      setStreak(currentStreak);
-      
-      // Get active program
-      const program = await DatabaseService.getActiveProgram();
-      setActiveProgram(program);
-      
-      // Get today's workout
-      const workout = await DatabaseService.getTodayWorkout(userId);
-      setTodayWorkout(workout);
-      
-      // Transform workout data for display
-      if (workout && workout.exercises) {
-        const transformedWorkouts = workout.exercises.map((exercise, index) => ({
-          id: String(exercise.id || index),
-          icon: exercise.category === 'skill' ? 'tennis' : 
-                exercise.category === 'fitness' ? 'dumbbell' : 'run-fast',
-          name: exercise.name,
-          details: exercise.instructions || '',
-          duration: exercise.duration ? `${exercise.duration} min` : 
-                   exercise.sets ? `${exercise.sets}x${exercise.reps}` : '30 min',
+      // Load today's workouts
+      setTodayWorkouts([
+        {
+          id: '1',
+          name: 'Morning Drills',
+          time: '07:00 AM',
+          duration: 45,
+          category: 'skill',
+          completed: true,
+        },
+        {
+          id: '2',
+          name: 'Strength Training',
+          time: '05:00 PM',
+          duration: 30,
+          category: 'strength',
           completed: false,
-        }));
-        setWorkouts(transformedWorkouts);
-      }
+        },
+        {
+          id: '3',
+          name: 'Evening Cardio',
+          time: '07:30 PM',
+          duration: 20,
+          category: 'cardio',
+          completed: false,
+        },
+      ]);
+      
+      // Load achievements
+      setRecentAchievements([
+        { id: '1', title: 'Week Warrior', icon: '🏆', unlocked: true },
+        { id: '2', title: 'Speed Demon', icon: '⚡', unlocked: true },
+        { id: '3', title: 'Consistency King', icon: '👑', unlocked: false },
+      ]);
       
     } catch (error) {
       console.error('Error loading data:', error);
-      Alert.alert('오류', '데이터를 불러오는데 실패했습니다.');
     } finally {
       setLoading(false);
     }
   };
-
-  const getTodayDate = () => {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 
-                    'July', 'August', 'September', 'October', 'November', 'December'];
-    const today = new Date();
-    return `${days[today.getDay()]}, ${months[today.getMonth()]} ${today.getDate()}`;
-  };
-
-  const handleStartWorkout = () => {
-    Alert.alert('Start Workout', 'Ready to begin your Power & Precision training?', [
-      { text: 'Not Yet', style: 'cancel' },
-      { text: "Let's Go!", onPress: () => console.log('Starting workout...') },
-    ]);
-  };
-
-  const handleWorkoutPress = (workoutId: string) => {
-    const updatedWorkouts = workouts.map(w => 
-      w.id === workoutId ? { ...w, completed: !w.completed } : w
-    );
-    setWorkouts(updatedWorkouts);
-  };
-
-  const handleAICoachPress = () => {
-    navigation.navigate('Coach');
-  };
-
-  const calculateProgress = () => {
-    const completed = workouts.filter(w => w.completed).length;
-    return Math.round((completed / workouts.length) * 100);
-  };
-
-  const onRefresh = async () => {
+  
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
+    Haptics.trigger('impactLight');
     await loadData();
     setRefreshing(false);
-  };
-
-  const quickStats = [
-    { value: stats.averageIntensity.toFixed(1), label: 'Avg Intensity' },
-    { value: `${Math.round(stats.completionRate)}%`, label: 'Consistency' },
-    { value: `${stats.totalWorkouts}`, label: 'Workouts' },
-  ];
-
-  const achievements = [
-    {
-      id: '1',
-      icon: '🏆',
-      name: 'Week Warrior',
-      description: '7 days streak',
-      unlocked: true,
-    },
-    {
-      id: '2',
-      icon: '⚡',
-      name: 'Speed Demon',
-      description: 'Sub 0.4s reaction',
-      unlocked: true,
-    },
-    {
-      id: '3',
-      icon: '🎯',
-      name: 'Precision Pro',
-      description: '90% accuracy',
-      unlocked: false,
-    },
-    {
-      id: '4',
-      icon: '🔥',
-      name: 'On Fire',
-      description: '30 days streak',
-      unlocked: false,
-    },
-  ];
-
+  }, []);
+  
+  const handleStartWorkout = useCallback(() => {
+    Haptics.trigger('impactMedium');
+    navigation.navigate('Record');
+  }, [navigation]);
+  
+  const handleWorkoutPress = useCallback((workout) => {
+    Haptics.trigger('selection');
+    // Navigate to workout detail
+  }, []);
+  
+  const headerOpacity = scrollY.interpolate({
+    inputRange: [0, 100],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+  
+  const heroScale = scrollY.interpolate({
+    inputRange: [-100, 0, 100],
+    outputRange: [1.1, 1, 0.9],
+    extrapolate: 'clamp',
+  });
+  
   if (loading) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <LoadingState />
-      </SafeAreaView>
-    );
+    return <LoadingScreen />;
   }
-
+  
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.primaryBlack} />
-      <SafeAreaView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerContent}>
-            <Text style={styles.headerTitle}>Squash Master</Text>
-            <View style={styles.streakBadge}>
-              <Text style={styles.streakEmoji}>🔥</Text>
-              <Text style={styles.streakText}>{streak} Days</Text>
+      <StatusBar
+        barStyle={theme === 'dark' ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+        translucent
+      />
+      
+      <SafeAreaView style={styles.container} edges={['top']}>
+        {/* Fixed Header */}
+        <Animated.View
+          style={[
+            styles.header,
+            {
+              opacity: headerOpacity,
+              transform: [
+                {
+                  translateY: headerOpacity.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [-20, 0],
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          <Surface level={2} style={styles.headerSurface}>
+            <Text variant="h6">Squash Master</Text>
+            <View style={styles.headerActions}>
+              <Button
+                variant="text"
+                size="small"
+                startIcon="bell-outline"
+                onPress={() => {}}
+              />
+              <Button
+                variant="text"
+                size="small"
+                startIcon="cog-outline"
+                onPress={() => navigation.navigate('Profile')}
+              />
             </View>
-          </View>
-        </View>
-
-        <ScrollView
+          </Surface>
+        </Animated.View>
+        
+        <Animated.ScrollView
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              tintColor={Colors.accentVolt}
-              colors={[Colors.accentVolt]}
+              tintColor={Palette.primary[500]}
+              colors={[Palette.primary[500]]}
             />
           }
-          contentContainerStyle={styles.scrollContent}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: true }
+          )}
+          scrollEventThrottle={16}
         >
           {/* Hero Section */}
-          <View style={styles.section}>
-            <HeroCard
-              date={getTodayDate()}
-              title={activeProgram?.name || "Start Your Journey"}
-              subtitle={activeProgram ? `Week ${activeProgram.current_week}` : "Choose a training program"}
-              onPress={handleStartWorkout}
-            />
-          </View>
-
-          {/* Quick Stats */}
-          <View style={styles.section}>
-            <QuickStats stats={quickStats} />
-          </View>
-
-          {/* Today's Training */}
-          <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Today's Training</Text>
-              <Text style={styles.seeAll}>See All</Text>
-            </View>
-            
-            {workouts.map((workout) => (
-              <WorkoutCard
-                key={workout.id}
-                {...workout}
-                onPress={() => handleWorkoutPress(workout.id)}
+          <Animated.View
+            style={[
+              styles.heroSection,
+              {
+                opacity: fadeAnim,
+                transform: [
+                  { translateY: slideAnim },
+                  { scale: heroScale },
+                ],
+              },
+            ]}
+          >
+            <LinearGradient
+              colors={
+                theme === 'dark'
+                  ? [Palette.primary[900], Palette.primary[800]]
+                  : [Palette.primary[500], Palette.primary[600]]
+              }
+              style={styles.heroGradient}
+            >
+              <View style={styles.heroContent}>
+                <Text variant="overline" color="textSecondary">
+                  {new Date().toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </Text>
+                <Text variant="h3" style={styles.heroTitle}>
+                  Ready to Train?
+                </Text>
+                <Text variant="body1" style={styles.heroSubtitle}>
+                  {stats.streak} day streak • {3 - todayWorkouts.filter(w => w.completed).length} workouts left
+                </Text>
+                
+                <Button
+                  variant="contained"
+                  size="large"
+                  color="secondary"
+                  fullWidth
+                  startIcon="play"
+                  onPress={handleStartWorkout}
+                  style={styles.heroButton}
+                >
+                  Start Today's Workout
+                </Button>
+              </View>
+              
+              {/* Decorative Elements */}
+              <View style={styles.heroDecoration1} />
+              <View style={styles.heroDecoration2} />
+            </LinearGradient>
+          </Animated.View>
+          
+          {/* Stats Grid */}
+          <View style={styles.statsSection}>
+            <Text variant="h6" style={styles.sectionTitle}>
+              Your Progress
+            </Text>
+            <View style={styles.statsGrid}>
+              <StatsCard
+                icon="fire"
+                value={stats.streak}
+                label="Day Streak"
+                color={Palette.semantic.error}
               />
-            ))}
-          </View>
-
-          {/* Progress Ring */}
-          <View style={styles.section}>
-            <ProgressRing
-              percentage={calculateProgress() * 0.7} // 70% of weekly goal
-              workouts={workouts.filter(w => w.completed).length}
-              totalWorkouts={6}
-              minutes={285}
-            />
-          </View>
-
-          {/* Achievements */}
-          <View style={styles.achievementsSection}>
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Achievements</Text>
-              <Text style={styles.seeAll}>See All</Text>
+              <StatsCard
+                icon="trending-up"
+                value={`${stats.weeklyProgress}%`}
+                label="Weekly Goal"
+                color={Palette.semantic.success}
+              />
+              <StatsCard
+                icon="trophy"
+                value={stats.totalWorkouts}
+                label="Total Sessions"
+                color={Palette.semantic.warning}
+              />
+              <StatsCard
+                icon="lightning-bolt"
+                value={stats.avgIntensity.toFixed(1)}
+                label="Avg Intensity"
+                color={Palette.semantic.info}
+              />
             </View>
           </View>
           
-          <AchievementScroll achievements={achievements} />
-
-          {/* Bottom spacing */}
-          <View style={{ height: 100 }} />
-        </ScrollView>
-
-        {/* AI Coach FAB */}
-        <AICoachFAB onPress={handleAICoachPress} />
+          {/* Today's Schedule */}
+          <View style={styles.scheduleSection}>
+            <View style={styles.sectionHeader}>
+              <Text variant="h6">Today's Schedule</Text>
+              <Button
+                variant="text"
+                size="small"
+                color="primary"
+                onPress={() => navigation.navigate('Checklist')}
+              >
+                View All
+              </Button>
+            </View>
+            
+            {todayWorkouts.map((workout, index) => (
+              <WorkoutCard
+                key={workout.id}
+                workout={workout}
+                onPress={() => handleWorkoutPress(workout)}
+                style={{ marginBottom: Spacing[3] }}
+              />
+            ))}
+          </View>
+          
+          {/* Achievements */}
+          <View style={styles.achievementsSection}>
+            <Text variant="h6" style={styles.sectionTitle}>
+              Recent Achievements
+            </Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.achievementsScroll}
+            >
+              {recentAchievements.map((achievement) => (
+                <AchievementCard
+                  key={achievement.id}
+                  achievement={achievement}
+                />
+              ))}
+            </ScrollView>
+          </View>
+          
+          {/* Bottom Spacing */}
+          <View style={{ height: Spacing[20] }} />
+        </Animated.ScrollView>
+        
+        {/* Floating Action Button */}
+        <FloatingAICoach />
       </SafeAreaView>
     </>
+  );
+};
+
+// Sub-components
+const LoadingScreen = () => {
+  const { theme } = useTheme();
+  
+  return (
+    <SafeAreaView style={styles.loadingContainer}>
+      <View style={styles.loadingContent}>
+        <Skeleton variant="rectangular" height={200} style={{ marginBottom: Spacing[6] }} />
+        <Skeleton variant="text" width="60%" style={{ marginBottom: Spacing[3] }} />
+        <Skeleton variant="text" width="100%" style={{ marginBottom: Spacing[3] }} />
+        <Skeleton variant="text" width="80%" style={{ marginBottom: Spacing[6] }} />
+        
+        <View style={styles.statsGrid}>
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton
+              key={i}
+              variant="rectangular"
+              height={100}
+              style={styles.statCardSkeleton}
+            />
+          ))}
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const StatsCard = ({ icon, value, label, color }) => (
+  <Card
+    variant="filled"
+    padding="medium"
+    style={styles.statCard}
+  >
+    <Icon name={icon} size={24} color={color} style={styles.statIcon} />
+    <Text variant="h4" weight="bold" style={styles.statValue}>
+      {value}
+    </Text>
+    <Text variant="caption" color="textSecondary">
+      {label}
+    </Text>
+  </Card>
+);
+
+const WorkoutCard = ({ workout, onPress, style }) => {
+  const categoryColors = {
+    skill: Palette.categories.skill,
+    strength: Palette.categories.strength,
+    cardio: Palette.categories.cardio,
+  };
+  
+  return (
+    <Card
+      variant="elevated"
+      onPress={onPress}
+      style={[styles.workoutCard, style]}
+    >
+      <View style={styles.workoutContent}>
+        <View
+          style={[
+            styles.workoutIcon,
+            { backgroundColor: `${categoryColors[workout.category]}20` },
+          ]}
+        >
+          <Icon
+            name={
+              workout.category === 'skill'
+                ? 'tennis'
+                : workout.category === 'strength'
+                ? 'dumbbell'
+                : 'run-fast'
+            }
+            size={24}
+            color={categoryColors[workout.category]}
+          />
+        </View>
+        
+        <View style={styles.workoutInfo}>
+          <Text variant="body1" weight="semibold">
+            {workout.name}
+          </Text>
+          <Text variant="caption" color="textSecondary">
+            {workout.time} • {workout.duration} min
+          </Text>
+        </View>
+        
+        <View style={styles.workoutStatus}>
+          {workout.completed ? (
+            <Icon name="check-circle" size={24} color={Palette.semantic.success} />
+          ) : (
+            <Icon name="chevron-right" size={24} color={Palette.neutral[400]} />
+          )}
+        </View>
+      </View>
+    </Card>
+  );
+};
+
+const AchievementCard = ({ achievement }) => (
+  <Card
+    variant="outlined"
+    padding="medium"
+    style={[
+      styles.achievementCard,
+      !achievement.unlocked && styles.achievementLocked,
+    ]}
+  >
+    <Text style={styles.achievementIcon}>{achievement.icon}</Text>
+    <Text variant="body2" weight="semibold" align="center">
+      {achievement.title}
+    </Text>
+    {!achievement.unlocked && (
+      <View style={styles.lockedOverlay}>
+        <Icon name="lock" size={20} color={Palette.neutral[500]} />
+      </View>
+    )}
+  </Card>
+);
+
+const FloatingAICoach = () => {
+  const navigation = useNavigation();
+  const scaleAnim = useRef(new Animated.Value(0)).current;
+  
+  useEffect(() => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      delay: Animation.duration.slow,
+      ...Animation.easing.bounce,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+  
+  return (
+    <Animated.View
+      style={[
+        styles.fab,
+        {
+          transform: [{ scale: scaleAnim }],
+        },
+      ]}
+    >
+      <Button
+        variant="gradient"
+        size="large"
+        startIcon="robot"
+        onPress={() => navigation.navigate('Coach')}
+        style={styles.fabButton}
+      />
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: DarkTheme.background,
+  },
+  loadingContainer: {
+    flex: 1,
+    padding: Spacing[6],
+  },
+  loadingContent: {
+    flex: 1,
   },
   header: {
-    backgroundColor: Colors.blackAlpha(0.95),
-    paddingTop: 20,
-    paddingHorizontal: Spacing.lg,
-    paddingBottom: Spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: DarkTheme.border,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+    paddingTop: Layout.safeArea.top,
   },
-  headerContent: {
+  headerSurface: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    paddingHorizontal: Spacing[4],
+    paddingVertical: Spacing[3],
   },
-  headerTitle: {
-    ...Typography.h1,
-    color: DarkTheme.text,
-  },
-  streakBadge: {
-    backgroundColor: Colors.accentVolt,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
-    borderRadius: 20,
+  headerActions: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.xs,
-  },
-  streakEmoji: {
-    fontSize: 16,
-  },
-  streakText: {
-    ...Typography.labelTiny,
-    color: Colors.primaryBlack,
-    fontWeight: Typography.FontWeight.bold,
+    gap: Spacing[2],
   },
   scrollContent: {
-    paddingBottom: Spacing.xl,
+    paddingTop: Layout.safeArea.top + 60,
   },
-  section: {
-    paddingHorizontal: Spacing.lg,
-    marginBottom: Spacing.xl,
+  heroSection: {
+    marginHorizontal: Spacing[4],
+    marginBottom: Spacing[6],
   },
-  achievementsSection: {
-    paddingHorizontal: Spacing.lg,
-    marginBottom: Spacing.md,
+  heroGradient: {
+    borderRadius: BorderRadius.xl,
+    padding: Spacing[6],
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  heroContent: {
+    zIndex: 1,
+  },
+  heroTitle: {
+    color: Palette.neutral[0],
+    marginVertical: Spacing[2],
+  },
+  heroSubtitle: {
+    color: Palette.neutral[100],
+    marginBottom: Spacing[4],
+  },
+  heroButton: {
+    marginTop: Spacing[2],
+  },
+  heroDecoration1: {
+    position: 'absolute',
+    top: -50,
+    right: -50,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  heroDecoration2: {
+    position: 'absolute',
+    bottom: -30,
+    left: -30,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  },
+  statsSection: {
+    paddingHorizontal: Spacing[4],
+    marginBottom: Spacing[6],
+  },
+  sectionTitle: {
+    marginBottom: Spacing[4],
+  },
+  statsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: Spacing[3],
+  },
+  statCard: {
+    flex: 1,
+    minWidth: (SCREEN_WIDTH - Spacing[4] * 2 - Spacing[3]) / 2 - 1,
+    alignItems: 'center',
+  },
+  statCardSkeleton: {
+    flex: 1,
+    minWidth: (SCREEN_WIDTH - Spacing[4] * 2 - Spacing[3]) / 2 - 1,
+  },
+  statIcon: {
+    marginBottom: Spacing[2],
+  },
+  statValue: {
+    marginBottom: Spacing[1],
+  },
+  scheduleSection: {
+    paddingHorizontal: Spacing[4],
+    marginBottom: Spacing[6],
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing[4],
   },
-  sectionTitle: {
-    ...Typography.h3,
-    color: DarkTheme.text,
+  workoutCard: {
+    padding: Spacing[4],
   },
-  seeAll: {
-    ...Typography.bodySmall,
-    color: Colors.accentVolt,
-    fontWeight: Typography.FontWeight.semiBold,
+  workoutContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  workoutIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: BorderRadius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: Spacing[3],
+  },
+  workoutInfo: {
+    flex: 1,
+  },
+  workoutStatus: {
+    marginLeft: Spacing[3],
+  },
+  achievementsSection: {
+    paddingLeft: Spacing[4],
+    marginBottom: Spacing[6],
+  },
+  achievementsScroll: {
+    paddingRight: Spacing[4],
+    gap: Spacing[3],
+  },
+  achievementCard: {
+    width: 120,
+    alignItems: 'center',
+  },
+  achievementIcon: {
+    fontSize: 32,
+    marginBottom: Spacing[2],
+  },
+  achievementLocked: {
+    opacity: 0.5,
+  },
+  lockedOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    borderRadius: BorderRadius.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  fab: {
+    position: 'absolute',
+    bottom: Spacing[6],
+    right: Spacing[4],
+  },
+  fabButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
   },
 });
 

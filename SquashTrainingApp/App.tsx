@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
 import { AuthProvider } from './src/screens/auth/AuthContext';
+import { ThemeProvider } from './src/contexts/ThemeContext';
 import { initializeDatabase } from './src/database/database';
 import NotificationService from './src/services/NotificationService';
 import storageManager from './src/utils/storageManager';
@@ -41,13 +42,16 @@ function App(): React.JSX.Element {
 
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor="#000000"
-        />
-        <AppNavigator />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor="transparent"
+            translucent
+          />
+          <AppNavigator />
+        </AuthProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

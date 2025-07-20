@@ -1,14 +1,16 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, Theme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Colors, DarkTheme } from '../styles';
+import { DarkTheme as AppDarkTheme, LightTheme as AppLightTheme } from '../styles/designSystem';
+import { useTheme } from '../contexts/ThemeContext';
 import ModernTabBar from '../components/navigation/ModernTabBar';
 
 // Screen imports (to be created)
-import ModernHomeScreen from '../screens/ModernHomeScreen';
+import HomeScreen from '../screens/HomeScreen';
 import ChecklistScreen from '../screens/ChecklistScreen';
 import RecordScreen from '../screens/RecordScreen';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -45,7 +47,7 @@ function MainTabs() {
     >
       <Tab.Screen 
         name="Home" 
-        component={ModernHomeScreen} 
+        component={HomeScreen} 
         options={{ title: '홈' }}
       />
       <Tab.Screen 
@@ -73,20 +75,29 @@ function MainTabs() {
 }
 
 export default function AppNavigator() {
+  const { theme } = useTheme();
+  
+  const navigationTheme: Theme = {
+    dark: theme === 'dark',
+    colors: theme === 'dark' ? {
+      primary: AppDarkTheme.colors.primary,
+      background: AppDarkTheme.colors.background,
+      card: AppDarkTheme.colors.surface,
+      text: AppDarkTheme.colors.text,
+      border: AppDarkTheme.colors.border,
+      notification: AppDarkTheme.colors.primary,
+    } : {
+      primary: AppLightTheme.colors.primary,
+      background: AppLightTheme.colors.background,
+      card: AppLightTheme.colors.surface,
+      text: AppLightTheme.colors.text,
+      border: AppLightTheme.colors.border,
+      notification: AppLightTheme.colors.primary,
+    },
+  };
+  
   return (
-    <NavigationContainer
-      theme={{
-        dark: true,
-        colors: {
-          primary: Colors.accentVolt,
-          background: DarkTheme.background,
-          card: DarkTheme.surface,
-          text: DarkTheme.text,
-          border: DarkTheme.border,
-          notification: Colors.accentVolt,
-        },
-      }}
-    >
+    <NavigationContainer theme={navigationTheme}>
       <Stack.Navigator
         screenOptions={{
           headerStyle: {
