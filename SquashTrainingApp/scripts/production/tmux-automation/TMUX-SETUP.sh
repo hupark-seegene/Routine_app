@@ -115,6 +115,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Check if PowerShell is available
 if command -v pwsh &> /dev/null; then
     PS_CMD="pwsh"
+elif command -v powershell.exe &> /dev/null; then
+    PS_CMD="powershell.exe"
 elif command -v powershell &> /dev/null; then
     PS_CMD="powershell"
 else

@@ -8,6 +8,7 @@ import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.core.content.ContextCompat;
@@ -24,7 +25,13 @@ public class ZoneManager extends View {
     private Paint activeZonePaint;
     private Paint iconPaint;
     private Paint textPaint;
+    private Paint hintPaint;
+    private Paint instructionPaint;
     private String highlightedZone = null;
+    private float zoneAnimationPhase = 0f;
+    private boolean showInstructions = false;
+    private Handler animationHandler;
+    private Runnable zoneAnimationRunnable;
     
     private static class ZoneInfo {
         String label;
@@ -87,6 +94,27 @@ public class ZoneManager extends View {
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setShadowLayer(8, 0, 0, 0xFFC9FF00);
         textPaint.setLetterSpacing(0.05f);
+        
+        hintPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        hintPaint.setTextSize(20);
+        hintPaint.setColor(0xFFC9FF00);
+        hintPaint.setTextAlign(Paint.Align.CENTER);
+        hintPaint.setShadowLayer(4, 0, 0, 0xFF000000);
+        
+        instructionPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        instructionPaint.setTextSize(16);
+        instructionPaint.setColor(0xFFAAAAAA);
+        instructionPaint.setTextAlign(Paint.Align.CENTER);
+        instructionPaint.setShadowLayer(2, 0, 0, 0xFF000000);
+        
+        animationHandler = new Handler();
+        
+        // Show instructions briefly on startup
+        showInstructions = true;
+        animationHandler.postDelayed(() -> {
+            showInstructions = false;
+            invalidate();
+        }, 5000);
     }
     
     @Override
@@ -153,37 +181,71 @@ public class ZoneManager extends View {
                 borderPaint.setColor((info.color & 0x00FFFFFF) | 0x60000000);
                 canvas.drawCircle(centerX, centerY, radius, borderPaint);
                 
-                // Draw active zone neon glow
+                // Draw active zone neon glow with pulsing animation
                 if (zoneName.equals(highlightedZone)) {
+                    // Animate the glow intensity
+                    float pulseIntensity = 0.7f + 0.3f * (float) Math.sin(zoneAnimationPhase * 4);
+                    
                     // Multiple glow layers for neon effect
-                    for (int i = 3; i > 0; i--) {
+                    for (int i = 4; i > 0; i--) {
                         Paint glowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                         glowPaint.setStyle(Paint.Style.STROKE);
-                        glowPaint.setStrokeWidth(i * 4);
+                        glowPaint.setStrokeWidth(i * 5);
                         glowPaint.setColor(0xFFC9FF00);
-                        glowPaint.setAlpha(255 / (i * 2));
-                        glowPaint.setMaskFilter(new BlurMaskFilter(i * 8, BlurMaskFilter.Blur.NORMAL));
-                        canvas.drawCircle(centerX, centerY, radius, glowPaint);
+                        glowPaint.setAlpha((int) (pulseIntensity * 255 / (i * 1.5)));
+                        glowPaint.setMaskFilter(new BlurMaskFilter(i * 10, BlurMaskFilter.Blur.NORMAL));
+                        canvas.drawCircle(centerX, centerY, radius + i * 2, glowPaint);
                     }
                     
-                    // Inner bright ring
-                    canvas.drawCircle(centerX, centerY, radius, activeZonePaint);
+                    // Inner bright ring with pulsing
+                    Paint pulsePaint = new Paint(activeZonePaint);
+                    pulsePaint.setStrokeWidth(4 + 2 * pulseIntensity);
+                    pulsePaint.setAlpha((int) (pulseIntensity * 255));
+                    canvas.drawCircle(centerX, centerY, radius, pulsePaint);
+                    
+                    // Draw zone activation hint
+                    canvas.drawText(
+                        "DROP TO ENTER",
+                        centerX,
+                        centerY + 35,
+                        hintPaint
+                    );
                 }
                 
                 // Draw zone label with glow
                 canvas.drawText(
                     info.label.toUpperCase(),
                     centerX,
-                    centerY + 10,
+                    centerY + (zoneName.equals(highlightedZone) ? -5 : 10),
                     textPaint
                 );
             }
+        }
+        
+        // Draw instructional text at bottom
+        if (showInstructions) {
+            float instructionY = getHeight() - 80;
+            canvas.drawText(
+                "DRAG MASCOT TO ZONE • HOLD TO SPEAK • TAP FOR HINT",
+                getWidth() / 2f,
+                instructionY,
+                instructionPaint
+            );
         }
     }
     
     public void highlightZone(String zoneName) {
         if (!zoneName.equals(highlightedZone)) {
             highlightedZone = zoneName;
+            
+            // Start zone animation
+            startZoneAnimation();
+            
+            // Hide instructions when user starts interacting
+            if (showInstructions) {
+                showInstructions = false;
+            }
+            
             invalidate();
         }
     }
@@ -191,11 +253,57 @@ public class ZoneManager extends View {
     public void clearHighlight() {
         if (highlightedZone != null) {
             highlightedZone = null;
+            
+            // Stop zone animation
+            stopZoneAnimation();
+            
             invalidate();
         }
     }
     
     public DragHandler getDragHandler() {
         return dragHandler;
+    }
+    
+    private void startZoneAnimation() {
+        if (zoneAnimationRunnable == null) {
+            zoneAnimationRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (highlightedZone != null) {
+                        zoneAnimationPhase += 0.1f;
+                        if (zoneAnimationPhase > 2 * Math.PI) {
+                            zoneAnimationPhase = 0f;
+                        }
+                        invalidate();
+                        animationHandler.postDelayed(this, 32); // ~30 FPS
+                    }
+                }
+            };
+        }
+        animationHandler.post(zoneAnimationRunnable);
+    }
+    
+    private void stopZoneAnimation() {
+        if (zoneAnimationRunnable != null) {
+            animationHandler.removeCallbacks(zoneAnimationRunnable);
+            zoneAnimationRunnable = null;
+        }
+        zoneAnimationPhase = 0f;
+    }
+    
+    // Method to toggle instructions visibility
+    public void toggleInstructions() {
+        showInstructions = !showInstructions;
+        invalidate();
+    }
+    
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        stopZoneAnimation();
+        if (animationHandler != null) {
+            animationHandler.removeCallbacksAndMessages(null);
+        }
     }
 }

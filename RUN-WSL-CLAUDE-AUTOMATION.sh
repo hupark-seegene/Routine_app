@@ -6,8 +6,8 @@
 echo "🚀 WSL Claude Code 자동화 시스템 시작..."
 echo "=================================================="
 
-# 프로젝트 디렉토리로 이동
-cd /mnt/c/Git/Routine_app/SquashTrainingApp
+# 프로젝트 루트 디렉토리로 이동
+cd /mnt/c/Git/Routine_app
 
 echo "📁 현재 디렉토리: $(pwd)"
 echo ""
@@ -59,21 +59,12 @@ echo "=================================================="
 echo "🎯 Claude Code 시작 가이드"
 echo "=================================================="
 echo ""
-echo "각 터미널에서 다음 명령을 순서대로 실행하세요:"
+echo "각 터미널에서 다음 명령을 실행하세요:"
 echo ""
-echo "1. 먼저 프로젝트 디렉토리로 이동:"
-echo "   cd /mnt/c/Git/Routine_app/SquashTrainingApp"
+echo "claude"
 echo ""
-echo "2. Claude Code 시작:"
-echo ""
-echo "🧠 플래너 (Terminal 1):"
-echo "   claude --model claude-3-opus-20240229"
-echo ""
-echo "🔨🔧⚙️📊 코더들 (Terminal 2-5):"
-echo "   claude --model claude-3-5-sonnet-20241022"
-echo ""
-echo "또는 간단히:"
-echo "   claude"
+echo "※ 모든 터미널에서 동일한 명령어 'claude'만 입력하면 됩니다."
+echo "※ 각 터미널은 이미 /mnt/c/Git/Routine_app 디렉토리에 위치합니다."
 echo ""
 echo "⚠️ 중요: Claude Code에서는 Enter를 두 번 눌러야 명령이 전달됩니다!"
 echo ""

@@ -1,6 +1,7 @@
 package com.squashtrainingapp.mascot;
 
 import android.graphics.RectF;
+import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,8 +10,12 @@ public class DragHandler {
     
     // Feature zones definitions
     private Map<String, RectF> featureZones;
+    private Map<String, Float> zoneDistances;
     private String activeZone = null;
+    private String nearestZone = null;
     private OnZoneChangeListener zoneChangeListener;
+    private float zoneRadius;
+    private int screenWidth, screenHeight;
     
     public interface OnZoneChangeListener {
         void onZoneEntered(String zoneName);
@@ -20,71 +25,116 @@ public class DragHandler {
     
     public DragHandler() {
         featureZones = new HashMap<>();
+        zoneDistances = new HashMap<>();
     }
     
     // Initialize zones based on screen dimensions
     public void initializeZones(int screenWidth, int screenHeight) {
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        
         float centerX = screenWidth / 2f;
         float centerY = screenHeight / 2f;
-        float zoneRadius = Math.min(screenWidth, screenHeight) * 0.15f;
+        
+        // Adaptive zone radius based on screen size
+        this.zoneRadius = Math.min(screenWidth, screenHeight) * 0.16f;
+        
+        // Improved zone positioning with better spacing
+        float horizontalOffset = screenWidth * 0.28f;
+        float verticalOffset = screenHeight * 0.32f;
+        
+        Log.d(TAG, "Initializing zones - Screen: " + screenWidth + "x" + screenHeight + 
+                   ", ZoneRadius: " + zoneRadius);
         
         // Profile Zone (top)
+        float profileY = centerY - verticalOffset;
         featureZones.put("profile", new RectF(
             centerX - zoneRadius,
-            centerY - screenHeight * 0.35f - zoneRadius,
+            profileY - zoneRadius,
             centerX + zoneRadius,
-            centerY - screenHeight * 0.35f + zoneRadius
+            profileY + zoneRadius
         ));
         
         // Checklist Zone (top-left)
+        float checklistX = centerX - horizontalOffset;
+        float checklistY = centerY - verticalOffset * 0.6f;
         featureZones.put("checklist", new RectF(
-            centerX - screenWidth * 0.3f - zoneRadius,
-            centerY - screenHeight * 0.2f - zoneRadius,
-            centerX - screenWidth * 0.3f + zoneRadius,
-            centerY - screenHeight * 0.2f + zoneRadius
+            checklistX - zoneRadius,
+            checklistY - zoneRadius,
+            checklistX + zoneRadius,
+            checklistY + zoneRadius
         ));
         
         // Coach Zone (top-right)
+        float coachX = centerX + horizontalOffset;
+        float coachY = centerY - verticalOffset * 0.6f;
         featureZones.put("coach", new RectF(
-            centerX + screenWidth * 0.3f - zoneRadius,
-            centerY - screenHeight * 0.2f - zoneRadius,
-            centerX + screenWidth * 0.3f + zoneRadius,
-            centerY - screenHeight * 0.2f + zoneRadius
+            coachX - zoneRadius,
+            coachY - zoneRadius,
+            coachX + zoneRadius,
+            coachY + zoneRadius
         ));
         
         // Record Zone (bottom-left)
+        float recordX = centerX - horizontalOffset;
+        float recordY = centerY + verticalOffset * 0.6f;
         featureZones.put("record", new RectF(
-            centerX - screenWidth * 0.3f - zoneRadius,
-            centerY + screenHeight * 0.2f - zoneRadius,
-            centerX - screenWidth * 0.3f + zoneRadius,
-            centerY + screenHeight * 0.2f + zoneRadius
+            recordX - zoneRadius,
+            recordY - zoneRadius,
+            recordX + zoneRadius,
+            recordY + zoneRadius
         ));
         
         // History Zone (bottom-right)
+        float historyX = centerX + horizontalOffset;
+        float historyY = centerY + verticalOffset * 0.6f;
         featureZones.put("history", new RectF(
-            centerX + screenWidth * 0.3f - zoneRadius,
-            centerY + screenHeight * 0.2f - zoneRadius,
-            centerX + screenWidth * 0.3f + zoneRadius,
-            centerY + screenHeight * 0.2f + zoneRadius
+            historyX - zoneRadius,
+            historyY - zoneRadius,
+            historyX + zoneRadius,
+            historyY + zoneRadius
         ));
         
         // Settings Zone (bottom)
+        float settingsY = centerY + verticalOffset;
         featureZones.put("settings", new RectF(
             centerX - zoneRadius,
-            centerY + screenHeight * 0.35f - zoneRadius,
+            settingsY - zoneRadius,
             centerX + zoneRadius,
-            centerY + screenHeight * 0.35f + zoneRadius
+            settingsY + zoneRadius
         ));
+        
+        // Log zone positions for debugging
+        for (Map.Entry<String, RectF> entry : featureZones.entrySet()) {
+            RectF zone = entry.getValue();
+            Log.d(TAG, "Zone " + entry.getKey() + ": center(" + zone.centerX() + ", " + 
+                      zone.centerY() + ") size(" + zone.width() + "x" + zone.height() + ")");
+        }
     }
     
-    // Check which zone the mascot is currently in
+    // Check which zone the mascot is currently in with improved detection
     public void updatePosition(float x, float y) {
         String currentZone = null;
+        float minDistance = Float.MAX_VALUE;
         
+        // Clear previous distances
+        zoneDistances.clear();
+        
+        // Calculate distances to all zones
         for (Map.Entry<String, RectF> entry : featureZones.entrySet()) {
-            if (entry.getValue().contains(x, y)) {
+            RectF zone = entry.getValue();
+            float distance = calculateDistanceToZone(x, y, zone);
+            zoneDistances.put(entry.getKey(), distance);
+            
+            // Check if point is within zone
+            if (zone.contains(x, y)) {
                 currentZone = entry.getKey();
-                break;
+            }
+            
+            // Track nearest zone
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestZone = entry.getKey();
             }
         }
         
@@ -128,18 +178,71 @@ public class DragHandler {
         return activeZone;
     }
     
+    public float getZoneRadius() {
+        return zoneRadius;
+    }
+    
     // Get zone bounds for drawing
     public RectF getZoneBounds(String zoneName) {
         return featureZones.get(zoneName);
     }
     
-    // Get the zone at a specific position
+    // Get the zone at a specific position with improved accuracy
     public String getZoneAt(float x, float y) {
+        // First check for exact zone containment
         for (Map.Entry<String, RectF> entry : featureZones.entrySet()) {
             if (entry.getValue().contains(x, y)) {
                 return entry.getKey();
             }
         }
+        
+        // If not in any zone, check if close to zone edge (within 20% of radius)
+        float threshold = zoneRadius * 0.2f;
+        for (Map.Entry<String, RectF> entry : featureZones.entrySet()) {
+            RectF zone = entry.getValue();
+            float distance = calculateDistanceToZone(x, y, zone);
+            if (distance <= threshold) {
+                return entry.getKey();
+            }
+        }
+        
         return null;
+    }
+    
+    // Calculate distance from point to zone center
+    private float calculateDistanceToZone(float x, float y, RectF zone) {
+        float centerX = zone.centerX();
+        float centerY = zone.centerY();
+        
+        float dx = x - centerX;
+        float dy = y - centerY;
+        
+        return (float) Math.sqrt(dx * dx + dy * dy);
+    }
+    
+    // Get the nearest zone to current position
+    public String getNearestZone() {
+        return nearestZone;
+    }
+    
+    // Get distance to a specific zone
+    public float getDistanceToZone(String zoneName) {
+        return zoneDistances.containsKey(zoneName) ? zoneDistances.get(zoneName) : Float.MAX_VALUE;
+    }
+    
+    // Get all zone distances for debugging
+    public Map<String, Float> getAllZoneDistances() {
+        return new HashMap<>(zoneDistances);
+    }
+    
+    // Check if position is near any zone (within 30% of radius)
+    public boolean isNearAnyZone(float x, float y) {
+        float threshold = zoneRadius * 0.3f;
+        for (RectF zone : featureZones.values()) {
+            if (calculateDistanceToZone(x, y, zone) <= threshold) {
+                return true;
+            }
+        }
+        return false;
     }
 }

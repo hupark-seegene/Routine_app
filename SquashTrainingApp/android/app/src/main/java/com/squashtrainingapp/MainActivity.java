@@ -160,9 +160,12 @@ public class MainActivity extends Activity implements
     }
     
     private void activateVoiceRecognition() {
+        Log.d(TAG, "Activating voice recognition");
+        
         // Check permission first
         if (ContextCompat.checkSelfPermission(this, 
                 Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "No audio permission - requesting");
             // Request permission if not granted
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.RECORD_AUDIO},
@@ -170,31 +173,57 @@ public class MainActivity extends Activity implements
             return;
         }
         
+        // Always show overlay first
+        showVoiceOverlay();
+        
         // If we have permission and voice manager is initialized
         if (voiceManager != null) {
-            showVoiceOverlay();
+            Log.d(TAG, "Starting voice listening");
             voiceManager.startListening();
         } else {
+            Log.d(TAG, "Voice manager not initialized - setting up");
             // Try to initialize voice manager
             setupVoiceRecognition();
             if (voiceManager != null) {
-                showVoiceOverlay();
+                Log.d(TAG, "Voice manager initialized - starting listening");
                 voiceManager.startListening();
+            } else {
+                Log.e(TAG, "Failed to initialize voice manager");
+                voiceStatusText.setText("Voice recognition not available");
+                new Handler().postDelayed(this::hideVoiceOverlay, 2000);
             }
         }
     }
     
     private void showVoiceOverlay() {
         if (voiceOverlay != null) {
+            Log.d(TAG, "Showing voice overlay");
             voiceOverlay.setVisibility(View.VISIBLE);
             voiceStatusText.setText("Listening...");
             recognizedText.setText("");
+            
+            // Start voice wave animation
+            com.squashtrainingapp.ui.widgets.VoiceWaveView waveView = 
+                voiceOverlay.findViewById(R.id.voice_wave_view);
+            if (waveView != null) {
+                waveView.startAnimation();
+            }
+        } else {
+            Log.e(TAG, "Voice overlay is null!");
         }
     }
     
     private void hideVoiceOverlay() {
         if (voiceOverlay != null) {
+            Log.d(TAG, "Hiding voice overlay");
             voiceOverlay.setVisibility(View.GONE);
+            
+            // Stop voice wave animation
+            com.squashtrainingapp.ui.widgets.VoiceWaveView waveView = 
+                voiceOverlay.findViewById(R.id.voice_wave_view);
+            if (waveView != null) {
+                waveView.stopAnimation();
+            }
         }
         if (voiceManager != null) {
             voiceManager.stopListening();
@@ -207,18 +236,49 @@ public class MainActivity extends Activity implements
         // Update zone highlighting in ZoneManager
         if (zoneManager != null) {
             zoneManager.updateMascotPosition(x, y);
+            
+            // Get the current zone and highlight it
+            String currentZone = zoneManager.checkZoneAtPosition(x, y);
+            if (currentZone != null) {
+                zoneManager.highlightZone(currentZone);
+                
+                // Notify mascot it's in a zone for visual feedback
+                if (mascotView != null) {
+                    mascotView.setInZone(true);
+                }
+            } else {
+                zoneManager.clearHighlight();
+                
+                // Notify mascot it's not in a zone
+                if (mascotView != null) {
+                    mascotView.setInZone(false);
+                }
+            }
         }
     }
     
     @Override
     public void onMascotReleased(float x, float y) {
-        // Check if mascot was released in a zone
+        // Clear zone highlighting
         if (zoneManager != null) {
+            zoneManager.clearHighlight();
+            
+            // Check if mascot was released in a zone
             String zone = zoneManager.checkZoneAtPosition(x, y);
             if (zone != null) {
                 Log.d(TAG, "Mascot released in zone: " + zone);
+                
+                // Provide visual confirmation before navigation
+                Toast.makeText(this, "Entering " + zone.toUpperCase() + "!", 
+                        Toast.LENGTH_SHORT).show();
+                
                 navigateToZone(zone);
             }
+        }
+        
+        // Always clear the zone state for mascot
+        if (mascotView != null) {
+            mascotView.setInZone(false);
         }
     }
     
@@ -231,9 +291,13 @@ public class MainActivity extends Activity implements
     @Override
     public void onMascotTapped() {
         if (!isLongPressing) {
-            // Short tap - show hint
-            Toast.makeText(this, "Drag me to a zone or hold me to talk!", 
-                    Toast.LENGTH_SHORT).show();
+            // Short tap - show enhanced hint with zone instructions
+            if (zoneManager != null) {
+                zoneManager.toggleInstructions();
+            }
+            
+            Toast.makeText(this, "Drag me to a zone or hold me to talk!\nTap again to hide/show instructions", 
+                    Toast.LENGTH_LONG).show();
         }
     }
     
@@ -319,25 +383,46 @@ public class MainActivity extends Activity implements
     @Override
     public void onError(String error) {
         Log.e(TAG, "Voice recognition error: " + error);
-        // Don't show overlay for permission errors
-        if (!error.contains("permissions")) {
-            voiceStatusText.setText("Error: " + error);
-            showVoiceOverlay();
+        
+        // If overlay is visible, update status text
+        if (voiceOverlay != null && voiceOverlay.getVisibility() == View.VISIBLE) {
+            if (error.contains("permissions")) {
+                voiceStatusText.setText("Audio permission required");
+            } else if (error.contains("No match")) {
+                voiceStatusText.setText("No speech detected - try again");
+            } else if (error.contains("Network")) {
+                voiceStatusText.setText("Network error - please try again");
+            } else {
+                voiceStatusText.setText("Error: " + error);
+            }
+            
+            // Hide overlay after showing error
             new Handler().postDelayed(this::hideVoiceOverlay, 2000);
+        } else if (error.contains("permissions")) {
+            // Permission error without overlay - request permissions
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    PERMISSION_REQUEST_RECORD_AUDIO);
         } else {
-            // Just log permission errors
-            Log.w(TAG, "Voice permissions not granted");
+            // Other errors - show toast
+            Toast.makeText(this, "Voice recognition error: " + error, Toast.LENGTH_SHORT).show();
         }
     }
     
     @Override
     public void onReadyForSpeech() {
-        voiceStatusText.setText("Speak now...");
+        Log.d(TAG, "Voice ready for speech");
+        if (voiceStatusText != null) {
+            voiceStatusText.setText("Speak now...");
+        }
     }
     
     @Override
     public void onEndOfSpeech() {
-        voiceStatusText.setText("Processing...");
+        Log.d(TAG, "Voice end of speech");
+        if (voiceStatusText != null) {
+            voiceStatusText.setText("Processing...");
+        }
     }
     
     @Override

@@ -30,6 +30,9 @@ fi
 if command -v pwsh &> /dev/null; then
     PS_CMD="pwsh"
     echo -e "${GREEN}✓ PowerShell Core found${NC}"
+elif command -v powershell.exe &> /dev/null; then
+    PS_CMD="powershell.exe"
+    echo -e "${GREEN}✓ Windows PowerShell found${NC}"
 elif command -v powershell &> /dev/null; then
     PS_CMD="powershell"
     echo -e "${GREEN}✓ PowerShell found${NC}"
