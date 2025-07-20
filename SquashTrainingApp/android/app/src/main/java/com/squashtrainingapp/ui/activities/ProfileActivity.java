@@ -11,6 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.content.Intent;
+import android.view.View;
+import android.widget.Toast;
+import android.content.SharedPreferences;
+import com.squashtrainingapp.activities.ApiSettingsActivity;
 
 public class ProfileActivity extends BaseActivity {
     
@@ -44,6 +48,13 @@ public class ProfileActivity extends BaseActivity {
     private int totalHours = 0;
     private int currentStreak = 0;
     
+    // Developer mode
+    private boolean isDeveloperModeEnabled = false;
+    private int versionTapCount = 0;
+    private TextView versionText;
+    private LinearLayout developerOptionsLayout;
+    private SharedPreferences prefs;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +79,7 @@ public class ProfileActivity extends BaseActivity {
         displayStats();
         displayAchievements();
         setupSettingsButton();
+        setupDeveloperMode();
         setupNavigationBar();
         setupBottomNavigation();
     }
@@ -155,5 +167,140 @@ public class ProfileActivity extends BaseActivity {
             return String.format("%.1fK", number / 1000.0);
         }
         return String.valueOf(number);
+    }
+    
+    private void setupDeveloperMode() {
+        prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        isDeveloperModeEnabled = prefs.getBoolean("developer_mode", false);
+        
+        // Find version text
+        versionText = findViewById(R.id.version_text);
+        if (versionText == null) {
+            // Add version text at the bottom
+            versionText = new TextView(this);
+            versionText.setId(View.generateViewId());
+            versionText.setText("Version 1.0.0");
+            versionText.setTextColor(getResources().getColor(R.color.text_secondary));
+            versionText.setTextSize(12);
+            versionText.setPadding(16, 16, 16, 16);
+            versionText.setGravity(android.view.Gravity.CENTER);
+            
+            // Find the main scroll view or content layout
+            LinearLayout contentLayout = findViewById(R.id.content_layout);
+            if (contentLayout != null) {
+                contentLayout.addView(versionText);
+            }
+        }
+        
+        // Setup tap listener for developer mode
+        versionText.setOnClickListener(v -> {
+            versionTapCount++;
+            if (versionTapCount >= 5) {
+                enableDeveloperMode();
+                versionTapCount = 0;
+            } else if (versionTapCount >= 3) {
+                Toast.makeText(this, (5 - versionTapCount) + " more taps to enable developer mode", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
+        // Create developer options container
+        developerOptionsLayout = findViewById(R.id.developer_options_layout);
+        if (developerOptionsLayout == null) {
+            developerOptionsLayout = new LinearLayout(this);
+            developerOptionsLayout.setId(View.generateViewId());
+            developerOptionsLayout.setOrientation(LinearLayout.VERTICAL);
+            developerOptionsLayout.setPadding(16, 16, 16, 16);
+            developerOptionsLayout.setVisibility(View.GONE);
+            
+            LinearLayout contentLayout = findViewById(R.id.content_layout);
+            if (contentLayout != null) {
+                // Add before version text
+                int versionIndex = contentLayout.indexOfChild(versionText);
+                if (versionIndex > 0) {
+                    contentLayout.addView(developerOptionsLayout, versionIndex);
+                } else {
+                    contentLayout.addView(developerOptionsLayout);
+                }
+            }
+        }
+        
+        // Show developer options if already enabled
+        if (isDeveloperModeEnabled) {
+            showDeveloperOptions();
+        }
+    }
+    
+    private void enableDeveloperMode() {
+        isDeveloperModeEnabled = true;
+        prefs.edit().putBoolean("developer_mode", true).apply();
+        Toast.makeText(this, "Developer mode enabled!", Toast.LENGTH_LONG).show();
+        showDeveloperOptions();
+    }
+    
+    private void showDeveloperOptions() {
+        if (developerOptionsLayout == null) return;
+        
+        developerOptionsLayout.removeAllViews();
+        
+        // Add developer options title
+        TextView titleText = new TextView(this);
+        titleText.setText("Developer Options");
+        titleText.setTextColor(getResources().getColor(R.color.volt_green));
+        titleText.setTextSize(18);
+        titleText.setPadding(0, 0, 0, 16);
+        developerOptionsLayout.addView(titleText);
+        
+        // Add API Settings button
+        Button apiSettingsButton = new Button(this);
+        apiSettingsButton.setText("API Settings");
+        apiSettingsButton.setBackgroundTintList(getResources().getColorStateList(R.color.dark_surface));
+        apiSettingsButton.setTextColor(getResources().getColor(R.color.text_primary));
+        apiSettingsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ApiSettingsActivity.class);
+            startActivity(intent);
+        });
+        developerOptionsLayout.addView(apiSettingsButton);
+        
+        // Add Clear Data button
+        Button clearDataButton = new Button(this);
+        clearDataButton.setText("Clear All Data");
+        clearDataButton.setBackgroundTintList(getResources().getColorStateList(R.color.dark_surface));
+        clearDataButton.setTextColor(getResources().getColor(R.color.text_primary));
+        clearDataButton.setOnClickListener(v -> {
+            // Clear database
+            DatabaseHelper db = DatabaseHelper.getInstance(this);
+            db.clearAllData();
+            Toast.makeText(this, "All data cleared", Toast.LENGTH_SHORT).show();
+            
+            // Reload data
+            User user = db.getUserDao().getUser();
+            userName = user.getName();
+            userLevel = user.getLevel();
+            currentExp = user.getExperience();
+            totalSessions = user.getTotalSessions();
+            totalCalories = user.getTotalCalories();
+            totalHours = Math.round(user.getTotalHours());
+            currentStreak = user.getCurrentStreak();
+            
+            loadUserData();
+            displayStats();
+        });
+        developerOptionsLayout.addView(clearDataButton);
+        
+        // Add Disable Developer Mode button
+        Button disableButton = new Button(this);
+        disableButton.setText("Disable Developer Mode");
+        disableButton.setBackgroundTintList(getResources().getColorStateList(android.R.color.holo_red_dark));
+        disableButton.setTextColor(getResources().getColor(R.color.text_primary));
+        disableButton.setOnClickListener(v -> {
+            isDeveloperModeEnabled = false;
+            prefs.edit().putBoolean("developer_mode", false).apply();
+            developerOptionsLayout.setVisibility(View.GONE);
+            versionTapCount = 0;
+            Toast.makeText(this, "Developer mode disabled", Toast.LENGTH_SHORT).show();
+        });
+        developerOptionsLayout.addView(disableButton);
+        
+        developerOptionsLayout.setVisibility(View.VISIBLE);
     }
 }

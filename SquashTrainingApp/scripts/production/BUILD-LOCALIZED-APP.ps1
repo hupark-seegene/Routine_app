@@ -125,4 +125,4 @@ Write-ColorOutput "`n📊 로그 모니터링 시작 (Ctrl+C로 종료)..." "BLU
 Write-ColorOutput "========================================`n" "CYAN"
 
 adb logcat -c
-adb logcat | Select-String -Pattern "squashtrainingapp|MainActivity|Voice|한글|Korean"
+adb logcat | Select-String -Pattern "squashtrainingapp|MainActivity|Voice|Korean"
