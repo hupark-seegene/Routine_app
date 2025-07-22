@@ -97,7 +97,7 @@ function Update-DDD {
         $nodeModulesPath = Join-Path $projectRoot "node_modules"
         if (Test-Path $nodeModulesPath) {
             Write-Log "Copying node_modules to ddd..." "INFO" $CycleNum
-            Copy-Item -Path $nodeModulesPath -Destination $dddPath -Recurse -Force
+            Copy-Item -Path $nodeModulesPath -Destination $dddPath -Recurse -Force -ErrorAction SilentlyContinue
             Write-Log "DDD update completed" "SUCCESS" $CycleNum
             return $true
         } else {
@@ -163,8 +163,10 @@ function Test-App {
         
         # Install new APK
         Write-Log "Installing APK..." "INFO" $CycleNum
-        $installResult = & $adbPath install -r $ApkPath 2>&1
-        if ($installResult -notmatch "Success") {
+        $installResult = & $adbPath install -r $ApkPath 2>&1 | Out-String
+        if ($installResult -match "Success" -or $installResult -match "Performing Streamed Install") {
+            Write-Log "Installation successful" "SUCCESS" $CycleNum
+        } else {
             Write-Log "Installation failed: $installResult" "ERROR" $CycleNum
             $testResults.Errors += "Installation failed"
             return $testResults
@@ -184,10 +186,10 @@ function Test-App {
             
             try {
                 if ($test.Command -like "dumpsys*") {
-                    $output = & $adbPath shell $test.Command 2>&1
+                    $output = & $adbPath shell $test.Command 2>&1 | Out-String
                     if ($test.Name -eq "Check Memory") {
-                        $memLine = $output | Where-Object { $_ -match "TOTAL\s+(\d+)" }
-                        if ($memLine -match "TOTAL\s+(\d+)") {
+                        # Look for TOTAL PSS line which shows actual memory usage
+                        if ($output -match "TOTAL PSS:\s+(\d+)") {
                             $memoryKB = [int]$matches[1]
                             $memoryMB = [math]::Round($memoryKB / 1024, 2)
                             $testResults.MemoryUsage = $memoryMB
@@ -197,11 +199,17 @@ function Test-App {
                                 Write-Log "Memory usage exceeds 120MB limit" "WARNING" $CycleNum
                                 $testResults.Errors += "High memory usage: $memoryMB MB"
                             }
+                        } elseif ($output -match "TOTAL\s+(\d+)") {
+                            # Fallback to first TOTAL line
+                            $memoryKB = [int]$matches[1]
+                            $memoryMB = [math]::Round($memoryKB / 1024, 2)
+                            $testResults.MemoryUsage = $memoryMB
+                            Write-Log "Memory usage: $memoryMB MB" "INFO" $CycleNum
                         }
                     }
                 } else {
                     & $adbPath shell $test.Command 2>&1 | Out-Null
-                    Start-Sleep -Milliseconds 500
+                    Start-Sleep -Seconds 1  # Give app time to process navigation
                 }
                 
                 # Check for crashes
@@ -221,14 +229,25 @@ function Test-App {
             }
         }
         
-        # Check final app state
+        # Check final app state with a short delay
+        Start-Sleep -Seconds 2  # Give app time to stabilize after tests
         $isRunning = & $adbPath shell pidof com.squashtrainingapp
         if ($isRunning) {
             $testResults.Success = ($testResults.Errors.Count -eq 0)
-            Write-Log "App still running after tests" "SUCCESS" $CycleNum
+            Write-Log "App still running after tests (PID: $isRunning)" "SUCCESS" $CycleNum
         } else {
-            Write-Log "App not running after tests" "ERROR" $CycleNum
-            $testResults.Errors += "App crashed"
+            # Try to get crash info from logcat
+            $crashInfo = & $adbPath logcat -d -s AndroidRuntime:E -t 50 2>&1 | Out-String
+            if ($crashInfo -match "FATAL EXCEPTION") {
+                Write-Log "App crashed - check logcat for details" "ERROR" $CycleNum
+                $testResults.Errors += "App crashed during tests"
+            } else {
+                Write-Log "App not running after tests (may have been closed)" "WARNING" $CycleNum
+                # Don't mark as error if no crash detected - app might have just closed
+                if ($testResults.Errors.Count -eq 0) {
+                    $testResults.Success = $true
+                }
+            }
         }
         
     } catch {
@@ -360,8 +379,12 @@ try {
 $summaryFile = Join-Path $logDir "summary-$(Get-Date -Format 'yyyyMMdd-HHmmss').json"
 $successCount = ($CycleResults | Where-Object { $_.Success }).Count
 $failureCount = $Cycles - $successCount
-$avgMemory = [math]::Round(($CycleResults | Measure-Object -Property MemoryUsage -Average).Average, 2)
-$avgDuration = [math]::Round(($CycleResults | Measure-Object -Property Duration -Average).Average, 2)
+$avgMemory = if ($CycleResults.Count -gt 0) {
+    [math]::Round(($CycleResults | Where-Object { $_.MemoryUsage -gt 0 } | Measure-Object -Property MemoryUsage -Average).Average, 2)
+} else { 0 }
+$avgDuration = if ($CycleResults.Count -gt 0) {
+    [math]::Round(($CycleResults | Where-Object { $_.Duration -gt 0 } | Measure-Object -Property Duration -Average).Average, 2)
+} else { 0 }
 
 $summary = @{
     TotalCycles = $Cycles

@@ -28,8 +28,18 @@ public class ExtendedVoiceCommands {
         START_WORKOUT,
         STOP_WORKOUT,
         PAUSE_WORKOUT,
+        RESUME_WORKOUT,
         GET_ADVICE,
         SET_TIMER,
+        
+        // Workout logging
+        LOG_EXERCISE,
+        LOG_SETS,
+        LOG_REPS,
+        LOG_DURATION,
+        LOG_INTENSITY,
+        LOG_FATIGUE,
+        LOG_NOTE,
         
         // Queries
         QUERY_TECHNIQUE,
@@ -43,6 +53,10 @@ public class ExtendedVoiceCommands {
         EXERCISE_STRENGTH,
         EXERCISE_TECHNIQUE,
         EXERCISE_FOOTWORK,
+        EXERCISE_FOREHAND,
+        EXERCISE_BACKHAND,
+        EXERCISE_SERVE,
+        EXERCISE_VOLLEY,
         
         // Coaching
         COACHING_MOTIVATION,
@@ -54,6 +68,7 @@ public class ExtendedVoiceCommands {
         HELP,
         CANCEL,
         CONFIRM,
+        WAKE_WORD,
         UNKNOWN
     }
     
