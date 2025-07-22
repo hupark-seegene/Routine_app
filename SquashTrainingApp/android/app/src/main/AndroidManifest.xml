@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".MainApplication"
@@ -45,6 +47,13 @@
             android:label="@string/record"
             android:exported="false"
             android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.VoiceEnabledRecordActivity"
+            android:label="@string/record"
+            android:exported="false"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"/>
             
         <activity
             android:name=".ui.activities.ProfileActivity"
@@ -143,6 +152,19 @@
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
+        <activity
+            android:name=".ui.activities.VoiceGuidedWorkoutActivity"
+            android:label="Voice Guided Workout"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
+        <!-- Global Voice Command Service -->
+        <service 
+            android:name=".services.GlobalVoiceCommandService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
+        
         <!-- Notification Receiver -->
         <receiver 
             android:name=".receivers.NotificationReceiver"

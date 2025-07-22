@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:padding="16dp">
+    
+    <!-- Exercise Name -->
+    <TextView
+        android:id="@+id/exercise_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:text="운동 이름"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary" />
+    
+    <!-- Set Progress -->
+    <TextView
+        android:id="@+id/set_progress_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/exercise_name_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="0/3 세트"
+        android:textSize="24sp"
+        android:textColor="@color/primary" />
+    
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/workout_progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/set_progress_text"
+        android:layout_marginTop="24dp"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/progress_drawable" />
+    
+    <!-- Status Text -->
+    <TextView
+        android:id="@+id/status_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/workout_progress_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="시작 버튼을 눌러주세요"
+        android:textSize="18sp"
+        android:textColor="@color/text_secondary" />
+    
+    <!-- Voice Wave Animation -->
+    <com.squashtrainingapp.ui.widgets.VoiceWaveView
+        android:id="@+id/voice_wave_view"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_centerInParent="true"
+        android:layout_margin="32dp" />
+    
+    <!-- Control Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:gravity="center">
+        
+        <!-- Primary Controls -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+            
+            <Button
+                android:id="@+id/start_workout_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="시작"
+                android:background="@drawable/rounded_button_background"
+                android:textColor="@color/white" />
+            
+            <Button
+                android:id="@+id/pause_workout_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="8dp"
+                android:text="일시정지"
+                android:background="@drawable/button_outline"
+                android:textColor="@color/primary" />
+            
+            <Button
+                android:id="@+id/stop_workout_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="중지"
+                android:background="@drawable/button_outline"
+                android:textColor="@color/error" />
+        </LinearLayout>
+        
+        <!-- Motivation Button -->
+        <Button
+            android:id="@+id/motivation_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="동기부여 💪"
+            android:background="@drawable/rounded_button_background"
+            android:textColor="@color/white"
+            android:paddingHorizontal="32dp" />
+            
+        <!-- Voice Tips -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="음성 가이드가 운동을 안내해드립니다"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:gravity="center" />
+    </LinearLayout>
+    
+</RelativeLayout>

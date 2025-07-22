@@ -147,8 +147,55 @@ public class ExtendedVoiceCommands {
         ));
         
         commandPatterns.add(new CommandPattern(
+            Pattern.compile(".*(재개|다시.*시작|계속|resume).*", Pattern.CASE_INSENSITIVE),
+            CommandType.RESUME_WORKOUT
+        ));
+        
+        commandPatterns.add(new CommandPattern(
             Pattern.compile(".*(타이머|시간.*설정|알람|시간.*맞춰).*", Pattern.CASE_INSENSITIVE),
             CommandType.SET_TIMER
+        ));
+        
+        // Workout logging patterns - Korean
+        commandPatterns.add(new CommandPattern(
+            Pattern.compile(".*(기록|로그|추가).*\\b(\\d+)\\s*(세트|셋|sets?).*", Pattern.CASE_INSENSITIVE),
+            CommandType.LOG_SETS
+        ));
+        
+        commandPatterns.add(new CommandPattern(
+            Pattern.compile(".*(기록|로그|추가).*\\b(\\d+)\\s*(회|개|번|reps?).*", Pattern.CASE_INSENSITIVE),
+            CommandType.LOG_REPS
+        ));
+        
+        commandPatterns.add(new CommandPattern(
+            Pattern.compile(".*(기록|로그|추가).*\\b(\\d+)\\s*(분|초|시간|minutes?|seconds?).*", Pattern.CASE_INSENSITIVE),
+            CommandType.LOG_DURATION
+        ));
+        
+        commandPatterns.add(new CommandPattern(
+            Pattern.compile(".*(운동.*이름|exercise.*name|운동은).*(\\S+).*", Pattern.CASE_INSENSITIVE),
+            CommandType.LOG_EXERCISE
+        ));
+        
+        commandPatterns.add(new CommandPattern(
+            Pattern.compile(".*(강도|intensity).*(\\d+).*", Pattern.CASE_INSENSITIVE),
+            CommandType.LOG_INTENSITY
+        ));
+        
+        commandPatterns.add(new CommandPattern(
+            Pattern.compile(".*(피로도|피로|fatigue).*(\\d+).*", Pattern.CASE_INSENSITIVE),
+            CommandType.LOG_FATIGUE
+        ));
+        
+        commandPatterns.add(new CommandPattern(
+            Pattern.compile(".*(메모|노트|기록.*남겨|note).*", Pattern.CASE_INSENSITIVE),
+            CommandType.LOG_NOTE
+        ));
+        
+        // Wake word pattern
+        commandPatterns.add(new CommandPattern(
+            Pattern.compile("^(헤이.*코치|hey.*coach|코치님|coach).*", Pattern.CASE_INSENSITIVE),
+            CommandType.WAKE_WORD
         ));
         
         // Queries - Korean
@@ -299,6 +346,48 @@ public class ExtendedVoiceCommands {
             }
         }
         
+        // Extract workout logging parameters
+        if (cmd.type == CommandType.LOG_SETS || cmd.type == CommandType.LOG_REPS || 
+            cmd.type == CommandType.LOG_DURATION || cmd.type == CommandType.LOG_INTENSITY || 
+            cmd.type == CommandType.LOG_FATIGUE) {
+            Pattern numberPattern = Pattern.compile("(\\d+)");
+            Matcher matcher = numberPattern.matcher(input);
+            if (matcher.find()) {
+                cmd.extras.put("value", matcher.group(1));
+            }
+            
+            // Extract time unit for duration
+            if (cmd.type == CommandType.LOG_DURATION) {
+                if (input.contains("초") || input.contains("second")) {
+                    cmd.extras.put("unit", "seconds");
+                } else if (input.contains("시간") || input.contains("hour")) {
+                    cmd.extras.put("unit", "hours");
+                } else {
+                    cmd.extras.put("unit", "minutes");
+                }
+            }
+        }
+        
+        // Extract exercise name
+        if (cmd.type == CommandType.LOG_EXERCISE) {
+            // Try to extract exercise name after keywords
+            Pattern namePattern = Pattern.compile("(?:운동은|exercise.*name|운동.*이름)\\s+(.+?)(?:\\s|$)", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = namePattern.matcher(input);
+            if (matcher.find()) {
+                cmd.extras.put("exercise_name", matcher.group(1).trim());
+            }
+        }
+        
+        // Extract note content
+        if (cmd.type == CommandType.LOG_NOTE) {
+            // Extract everything after the keyword
+            Pattern notePattern = Pattern.compile("(?:메모|노트|기록.*남겨|note)\\s*[:는]?\\s*(.+)", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = notePattern.matcher(input);
+            if (matcher.find()) {
+                cmd.extras.put("note_content", matcher.group(1).trim());
+            }
+        }
+        
         // Extract exercise specifics
         if (input.contains("백핸드") || input.contains("backhand")) {
             cmd.extras.put("technique", "backhand");
@@ -306,6 +395,8 @@ public class ExtendedVoiceCommands {
             cmd.extras.put("technique", "forehand");
         } else if (input.contains("서브") || input.contains("serve")) {
             cmd.extras.put("technique", "serve");
+        } else if (input.contains("발리") || input.contains("volley")) {
+            cmd.extras.put("technique", "volley");
         }
         
         // Extract intensity levels
@@ -313,6 +404,8 @@ public class ExtendedVoiceCommands {
             cmd.extras.put("difficulty", "easy");
         } else if (input.contains("어려운") || input.contains("고급") || input.contains("hard")) {
             cmd.extras.put("difficulty", "hard");
+        } else if (input.contains("중간") || input.contains("보통") || input.contains("medium")) {
+            cmd.extras.put("difficulty", "medium");
         }
     }
     
@@ -354,13 +447,66 @@ public class ExtendedVoiceCommands {
             case COACHING_RECOVERY:
                 return "충분한 휴식도 훈련의 일부입니다. 오늘은 가볍게 스트레칭을 해보세요.";
                 
+            case RESUME_WORKOUT:
+                return "운동을 재개합니다!";
+                
+            case LOG_SETS:
+                if (command.extras.containsKey("value")) {
+                    return command.extras.get("value") + " 세트를 기록했습니다.";
+                }
+                return "세트 수를 기록합니다.";
+                
+            case LOG_REPS:
+                if (command.extras.containsKey("value")) {
+                    return command.extras.get("value") + " 회를 기록했습니다.";
+                }
+                return "반복 횟수를 기록합니다.";
+                
+            case LOG_DURATION:
+                if (command.extras.containsKey("value")) {
+                    String unit = command.extras.get("unit");
+                    String unitKr = unit.equals("seconds") ? "초" : unit.equals("hours") ? "시간" : "분";
+                    return command.extras.get("value") + unitKr + "을 기록했습니다.";
+                }
+                return "운동 시간을 기록합니다.";
+                
+            case LOG_EXERCISE:
+                if (command.extras.containsKey("exercise_name")) {
+                    return "'" + command.extras.get("exercise_name") + "' 운동을 기록합니다.";
+                }
+                return "운동 이름을 기록합니다.";
+                
+            case LOG_INTENSITY:
+                if (command.extras.containsKey("value")) {
+                    return "강도 " + command.extras.get("value") + "를 기록했습니다.";
+                }
+                return "운동 강도를 기록합니다.";
+                
+            case LOG_FATIGUE:
+                if (command.extras.containsKey("value")) {
+                    return "피로도 " + command.extras.get("value") + "를 기록했습니다.";
+                }
+                return "피로도를 기록합니다.";
+                
+            case LOG_NOTE:
+                if (command.extras.containsKey("note_content")) {
+                    return "메모를 기록했습니다: " + command.extras.get("note_content");
+                }
+                return "메모를 기록합니다.";
+                
+            case WAKE_WORD:
+                return "네, 무엇을 도와드릴까요?";
+                
             case HELP:
                 return "다음과 같이 말씀해주세요:\n" +
                        "• '프로필 보여줘'\n" +
                        "• '운동 시작하자'\n" +
                        "• '오늘 뭐 할까?'\n" +
                        "• '백핸드 어떻게 치지?'\n" +
-                       "• '5분 타이머 설정해줘'";
+                       "• '5분 타이머 설정해줘'\n" +
+                       "• '3세트 기록해줘'\n" +
+                       "• '15회 기록해줘'\n" +
+                       "• '30분 운동했어'";
                 
             default:
                 return "명령을 처리하고 있습니다...";

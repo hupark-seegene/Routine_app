@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E6000000"
+    android:clickable="true"
+    android:focusable="true">
+    
+    <!-- Close button -->
+    <ImageButton
+        android:id="@+id/close_overlay_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_close"
+        android:tint="@color/white"
+        android:contentDescription="닫기" />
+    
+    <!-- Main content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp">
+        
+        <!-- Voice Wave Animation -->
+        <com.squashtrainingapp.ui.widgets.VoiceWaveView
+            android:id="@+id/voice_wave_view"
+            android:layout_width="240dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="32dp" />
+        
+        <!-- Status Text -->
+        <TextView
+            android:id="@+id/voice_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="듣고 있습니다..."
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+        
+        <!-- Command Suggestions -->
+        <LinearLayout
+            android:id="@+id/command_suggestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="음성 명령 예시:"
+                android:textColor="#B3FFFFFF"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• '프로필 보여줘'\n• '운동 시작하자'\n• '체크리스트 열어줘'\n• '오늘 운동 기록해줘'\n• 'AI 코치 불러줘'"
+                android:textColor="#B3FFFFFF"
+                android:textSize="14sp"
+                android:lineSpacingMultiplier="1.2" />
+        </LinearLayout>
+        
+        <!-- Active command indicator -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="'취소'라고 말하면 음성 명령을 종료합니다"
+            android:textColor="#80FFFFFF"
+            android:textSize="12sp"
+            android:layout_marginTop="24dp" />
+    </LinearLayout>
+    
+    <!-- Bottom hint -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:text="음성 명령 모드"
+        android:textColor="@color/volt_green"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+        
+</RelativeLayout>

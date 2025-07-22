@@ -64,6 +64,75 @@ public class ImprovedVoiceRecognitionManager implements RecognitionListener, Tex
         initializeTextToSpeech();
     }
     
+    // Constructor with Context for services
+    public ImprovedVoiceRecognitionManager(Context context) {
+        this.activity = null;
+        this.retryHandler = new Handler(Looper.getMainLooper());
+        this.silenceHandler = new Handler(Looper.getMainLooper());
+        initializeSpeechRecognizerWithContext(context);
+        initializeTextToSpeechWithContext(context);
+    }
+    
+    private void initializeSpeechRecognizerWithContext(Context context) {
+        if (ContextCompat.checkSelfPermission(context, 
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            Log.w(TAG, "No RECORD_AUDIO permission");
+            return;
+        }
+        
+        if (SpeechRecognizer.isRecognitionAvailable(context)) {
+            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
+            speechRecognizer.setRecognitionListener(this);
+            
+            setupRecognizerIntent();
+            Log.d(TAG, "Speech recognizer initialized with Korean support");
+        } else {
+            Log.e(TAG, "Speech recognition not available");
+        }
+    }
+    
+    private void initializeTextToSpeechWithContext(Context context) {
+        textToSpeech = new TextToSpeech(context, this);
+        textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String utteranceId) {
+                isSpeaking = true;
+                if (listener != null) {
+                    new Handler(Looper.getMainLooper()).post(() -> listener.onSpeakingStateChanged(true));
+                }
+            }
+            
+            @Override
+            public void onDone(String utteranceId) {
+                isSpeaking = false;
+                if (listener != null) {
+                    new Handler(Looper.getMainLooper()).post(() -> listener.onSpeakingStateChanged(false));
+                }
+                
+                // Process next in queue
+                if (!speechQueue.isEmpty()) {
+                    String nextText = speechQueue.poll();
+                    if (nextText != null) {
+                        speakInternal(nextText);
+                    }
+                }
+                
+                // Resume listening in continuous mode
+                if (continuousMode && !isListening) {
+                    retryHandler.postDelayed(() -> startListening(), 500);
+                }
+            }
+            
+            @Override
+            public void onError(String utteranceId) {
+                isSpeaking = false;
+                if (listener != null) {
+                    new Handler(Looper.getMainLooper()).post(() -> listener.onSpeakingStateChanged(false));
+                }
+            }
+        });
+    }
+    
     private void initializeSpeechRecognizer() {
         if (ContextCompat.checkSelfPermission(activity, 
                 Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
