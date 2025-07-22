@@ -14,9 +14,9 @@
         android:layout_margin="16dp"
         android:background="@drawable/round_button_background"
         android:src="@drawable/ic_mic"
-        android:tint="@color/white"
+        android:tint="@color/text_primary"
         android:elevation="6dp"
-        android:contentDescription="음성 입력" />
+        android:contentDescription="?�성 ?�력" />
     
     <!-- Main Content -->
     <TabHost
@@ -53,7 +53,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="운동 정보"
+                        android:text="?�동 ?�보"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -68,7 +68,7 @@
                             android:id="@+id/exercise_name_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="운동 이름"
+                            android:hint="?�동 ?�름"
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
                     
@@ -88,7 +88,7 @@
                                 android:id="@+id/sets_input"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="세트"
+                                android:hint="?�트"
                                 android:inputType="number" />
                         </com.google.android.material.textfield.TextInputLayout>
                         
@@ -115,14 +115,14 @@
                             android:id="@+id/duration_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="시간 (분)"
+                            android:hint="?�간 (�?"
                             android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
                     
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="💡 음성으로 입력하려면 마이크 버튼을 누르세요"
+                        android:text="?�� ?�성?�로 ?�력?�려�?마이??버튼???�르?�요"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginTop="16dp" />
@@ -139,7 +139,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="운동 평가"
+                        android:text="?�동 ?��?"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -179,8 +179,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="컨디션"
-                        android:textColor="@color/text_primary"
+                        android:text="컨디??
+                android:textColor="@color/text_secondary" />
                         android:layout_marginTop="24dp" />
                     
                     <LinearLayout
@@ -209,7 +209,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="피로도"
+                        android:text="?�로??
                         android:textColor="@color/text_primary"
                         android:layout_marginTop="24dp" />
                     
@@ -258,7 +258,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:hint="운동 메모를 입력하세요..."
+                        android:hint="?�동 메모�??�력?�세??.."
                         android:gravity="top"
                         android:padding="12dp"
                         android:background="@drawable/rounded_edittext_background"
@@ -268,10 +268,10 @@
                         android:id="@+id/save_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="저장"
+                        android:text="?�??
                         android:layout_marginTop="16dp"
                         android:background="@drawable/rounded_button_background"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/text_primary" />
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
@@ -298,14 +298,14 @@
             android:id="@+id/voice_status_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="말씀해주세요..."
-            android:textColor="@color/white"
+            android:text="말�??�주?�요..."
+            android:textColor="@color/text_primary"
             android:textSize="18sp" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="예시: '3세트 기록해줘', '15회 했어', '강도 7'"
+            android:text="?�시: '3?�트 기록?�줘', '15???�어', '강도 7'"
             android:textColor="#B3FFFFFF"
             android:textSize="14sp"
             android:layout_marginTop="8dp" />

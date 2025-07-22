@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    app:cardBackgroundColor="@color/dark_surface"
+    app:cardBackgroundColor="@color/surface"
     app:cardCornerRadius="8dp"
     app:cardElevation="2dp">
     
@@ -33,7 +33,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Exercise Name"
-                    android:textColor="@color/volt_green"
+                    android:textColor="@color/accent"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
                 
@@ -53,8 +53,8 @@
                 android:layout_height="36dp"
                 android:text="DELETE"
                 android:textSize="12sp"
-                android:textColor="@color/volt_green"
-                android:backgroundTint="@color/dark_background"
+                android:textColor="@color/accent"
+                android:backgroundTint="@color/background"
                 android:paddingHorizontal="12dp"/>
         </LinearLayout>
         

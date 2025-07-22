@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/dark_background">
+    android:background="@color/background">
 
     <!-- Header -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/dark_surface"
+        android:background="@color/surface"
         android:padding="16dp">
 
         <ImageView
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="TRAINING PROGRAMS"
-            android:textColor="@color/volt_green"
+            android:textColor="@color/accent"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -46,10 +46,10 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dark_surface"
-        app:tabSelectedTextColor="@color/volt_green"
+        android:background="@color/surface"
+        app:tabSelectedTextColor="@color/accent"
         app:tabTextColor="@color/text_secondary"
-        app:tabIndicatorColor="@color/volt_green"
+        app:tabIndicatorColor="@color/accent"
         app:tabIndicatorHeight="3dp"
         app:tabMode="fixed"
         app:tabGravity="fill" />

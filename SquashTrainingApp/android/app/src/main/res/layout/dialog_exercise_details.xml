@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/dark_background">
+    android:background="@color/background">
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
             android:id="@+id/exercise_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="운동 이름"
+            android:text="?�동 ?�름"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -30,8 +30,8 @@
                 android:id="@+id/exercise_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🎾 카테고리"
-                android:textColor="@color/volt_green"
+                android:text="?�� 카테고리"
+                android:textColor="@color/accent"
                 android:textSize="14sp"
                 android:layout_marginEnd="16dp" />
             
@@ -39,8 +39,8 @@
                 android:id="@+id/exercise_difficulty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🟢 난이도"
-                android:textColor="@color/text_secondary"
+                android:text="?�� ?�이??
+                android:textColor="@color/text_secondary" />
                 android:textSize="14sp" />
         </LinearLayout>
         
@@ -59,7 +59,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="시간"
+                    android:text="?�간"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
                 
@@ -67,7 +67,7 @@
                     android:id="@+id/exercise_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="15분"
+                    android:text="15�?
                     android:textColor="@color/text_primary"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -81,7 +81,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="세트/반복"
+                    android:text="?�트/반복"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
                 
@@ -89,7 +89,7 @@
                     android:id="@+id/exercise_sets_reps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3세트 x 10회"
+                    android:text="3?�트 x 10??
                     android:textColor="@color/text_primary"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -103,7 +103,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="통계"
+                    android:text="?�계"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
                 
@@ -111,7 +111,7 @@
                     android:id="@+id/exercise_usage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="사용: 5회"
+                    android:text="?�용: 5??
                     android:textColor="@color/text_primary"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -120,13 +120,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/dark_surface"
+            android:background="@color/surface"
             android:layout_marginVertical="16dp" />
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="수행 방법"
+            android:text="?�행 방법"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
             android:layout_marginBottom="8dp" />
@@ -135,7 +135,7 @@
             android:id="@+id/exercise_instructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="운동 수행 방법이 여기에 표시됩니다."
+            android:text="?�동 ?�행 방법???�기???�시?�니??"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:lineSpacingExtra="2dp"
@@ -144,7 +144,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="팁 및 주의사항"
+            android:text="??�?주의?�항"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
             android:layout_marginBottom="8dp" />
@@ -153,7 +153,7 @@
             android:id="@+id/exercise_tips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="팁과 주의사항이 여기에 표시됩니다."
+            android:text="?�과 주의?�항???�기???�시?�니??"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:lineSpacingExtra="2dp" />

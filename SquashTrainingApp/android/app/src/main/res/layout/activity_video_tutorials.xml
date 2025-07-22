@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/dark_background">
+    android:background="@color/background">
     
     <!-- Header -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/dark_surface"
+        android:background="@color/surface"
         android:elevation="4dp">
         
         <ImageButton
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="비디오 튜토리얼"
+            android:text="비디???�토리얼"
             android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -47,7 +47,7 @@
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
             android:background="@drawable/spinner_background"
-            android:popupBackground="@color/dark_surface" />
+            android:popupBackground="@color/surface" />
         
         <Spinner
             android:id="@+id/level_spinner"
@@ -56,7 +56,7 @@
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             android:background="@drawable/spinner_background"
-            android:popupBackground="@color/dark_surface" />
+            android:popupBackground="@color/surface" />
     </LinearLayout>
     
     <!-- Videos List -->
@@ -77,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="해당하는 비디오가 없습니다"
+            android:text="?�당?�는 비디?��? ?�습?�다"
             android:textColor="@color/text_secondary"
             android:textSize="16sp"
             android:visibility="gone" />

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_background">
+    android:background="@color/background">
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/dark_surface"
+            android:background="@color/surface"
             android:elevation="4dp">
             
             <ImageButton
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="커스텀 운동"
+                android:text="커스?� ?�동"
                 android:textColor="@color/text_primary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -47,7 +47,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="필터: "
+                android:text="?�터: "
                 android:textColor="@color/text_secondary"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="8dp" />
@@ -58,7 +58,7 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:background="@drawable/spinner_background"
-                android:popupBackground="@color/dark_surface" />
+                android:popupBackground="@color/surface" />
         </LinearLayout>
         
         <!-- Exercises List -->
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="아직 운동이 없습니다\n+ 버튼을 눌러 새 운동을 만들어보세요"
+                android:text="?�직 ?�동???�습?�다\n+ 버튼???�러 ???�동??만들?�보?�요"
                 android:textColor="@color/text_secondary"
                 android:textSize="16sp"
                 android:gravity="center"
@@ -94,6 +94,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        app:backgroundTint="@color/volt_green"
-        app:tint="@color/dark_background" />
+        app:backgroundTint="@color/accent"
+        app:tint="@color/background" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

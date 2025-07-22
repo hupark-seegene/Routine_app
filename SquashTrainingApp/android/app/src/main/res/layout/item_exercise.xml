@@ -43,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Category"
-                    android:textColor="@color/volt_green"
+                    android:textColor="@color/accent"
                     android:textSize="14sp"
                     android:textStyle="bold"/>
                     
@@ -63,7 +63,7 @@
             android:id="@+id/exercise_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/volt_green"
+            android:buttonTint="@color/accent"
             android:scaleX="1.2"
             android:scaleY="1.2"/>
             

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_background">
+    android:background="@color/background">
     
     <!-- Header -->
     <LinearLayout
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SQUASH TRAINING"
-            android:textColor="@color/volt_green"
+            android:textColor="@color/accent"
             android:textSize="28sp"
             android:textStyle="bold"/>
             
@@ -77,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="START TRAINING"
-                style="@style/VoltButton"
+                style="@style/PrimaryButton"
                 android:layout_marginBottom="12dp"/>
                 
             <Button
@@ -85,9 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="VIEW PROGRAM"
-                style="@style/VoltButton"
-                android:backgroundTint="@color/dark_surface"
-                android:textColor="@color/volt_green"
+                style="@style/OutlineButton"
+                android:textColor="@color/accent"
                 android:layout_marginBottom="12dp"/>
                 
             <Button
@@ -95,9 +94,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="AI COACH"
-                style="@style/VoltButton"
-                android:backgroundTint="@color/dark_surface"
-                android:textColor="@color/volt_green"/>
+                style="@style/OutlineButton"
+                android:textColor="@color/accent"/>
         </LinearLayout>
     </ScrollView>
     

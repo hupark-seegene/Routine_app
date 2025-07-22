@@ -72,7 +72,7 @@ public class ChecklistActivity extends AppCompatActivity {
             exercise.setCategory(ex[1]);
             exercise.setDescription(ex[2]);
             exercise.setChecked(false);
-            databaseHelper.getExerciseDao().insertExercise(exercise);
+            databaseHelper.getExerciseDao().insert(exercise);
         }
         
         Toast.makeText(this, "일일 운동 체크리스트가 준비되었습니다!", Toast.LENGTH_SHORT).show();

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="@color/dark_surface"
+    app:cardBackgroundColor="@color/surface"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
     
@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_marginEnd="12dp"
-            android:background="@color/volt_green"
+            android:background="@color/accent"
             android:visibility="gone" />
         
         <!-- Active Indicator -->
@@ -44,7 +44,7 @@
                 android:id="@+id/program_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="프로그램 이름"
+                android:text="?�로그램 ?�름"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="프로그램 설명"
+                android:text="?�로그램 ?�명"
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 android:maxLines="2"
@@ -71,8 +71,8 @@
                     android:id="@+id/program_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🌱 초급자"
-                    android:textColor="@color/volt_green"
+                    android:text="?�� 초급??
+                android:textColor="@color/text_secondary" />
                     android:textSize="12sp"
                     android:layout_marginEnd="12dp" />
                 
@@ -80,7 +80,7 @@
                     android:id="@+id/program_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4주 · 주 3회"
+                    android:text="4�?· �?3??
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -96,7 +96,7 @@
                     android:id="@+id/progress_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="25% 완료 (3/12일)"
+                    android:text="25% ?�료 (3/12??"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:layout_marginBottom="4dp" />
@@ -122,10 +122,10 @@
                     android:layout_width="0dp"
                     android:layout_height="36dp"
                     android:layout_weight="1"
-                    android:text="시작"
+                    android:text="?�작"
                     android:textSize="14sp"
                     android:background="@drawable/button_background"
-                    android:textColor="@color/dark_background" />
+                    android:textColor="@color/background" />
                 
                 <ImageButton
                     android:id="@+id/delete_button"

@@ -48,7 +48,7 @@
     <!-- Bottom Navigation Colors -->
     <color name="bottom_nav_background">#FFFFFF</color>
     <color name="bottom_nav_background_dark">#1E1E1E</color>
-    <color name="bottom_nav_selected">#1E88E5</color>
+    <color name="bottom_nav_selected">@color/accent</color>
     <color name="bottom_nav_unselected">#9E9E9E</color>
     
     <!-- Component colors -->

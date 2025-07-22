@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/dark_background">
+    android:background="@color/background">
 
     <!-- Header -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/dark_surface"
+        android:background="@color/surface"
         android:padding="16dp">
 
         <ImageView
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="SCHEDULE WORKOUT"
-            android:textColor="@color/volt_green"
+            android:textColor="@color/accent"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="NEW WORKOUT SESSION"
-                    android:textColor="@color/volt_green"
+                    android:textColor="@color/accent"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp" />
@@ -171,7 +171,7 @@
                     android:layout_height="56dp"
                     android:background="@drawable/button_primary"
                     android:text="SCHEDULE WORKOUT"
-                    android:textColor="@color/dark_background"
+                    android:textColor="@color/background"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -182,7 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="UPCOMING SESSIONS"
-                android:textColor="@color/volt_green"
+                android:textColor="@color/accent"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginTop="24dp"

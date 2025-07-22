@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_background">
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/dark_surface"
+            android:background="@color/surface"
             android:elevation="4dp">
 
             <ImageView
@@ -25,14 +25,14 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
                 android:src="@drawable/ic_back"
-                android:tint="@color/volt_green" />
+                android:tint="@color/accent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="Settings"
-                android:textColor="@color/volt_green"
+                android:textColor="@color/accent"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Language / 언어"
+            android:text="Language / ?�어"
             android:textColor="@color/text_secondary"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/dark_surface"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp">
 
@@ -67,17 +67,17 @@
                     android:id="@+id/radio_auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Auto / 자동"
+                    android:text="Auto / ?�동"
                     android:textColor="@color/text_primary"
-                    android:buttonTint="@color/volt_green" />
+                    android:buttonTint="@color/accent" />
 
                 <RadioButton
                     android:id="@+id/radio_korean"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="한국어"
-                    android:textColor="@color/text_primary"
-                    android:buttonTint="@color/volt_green" />
+                    android:text="?�국??
+                android:text="?쒓뎅?? />
+                    android:buttonTint="@color/accent" />
 
                 <RadioButton
                     android:id="@+id/radio_english"
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:text="English"
                     android:textColor="@color/text_primary"
-                    android:buttonTint="@color/volt_green" />
+                    android:buttonTint="@color/accent" />
 
             </RadioGroup>
 
@@ -110,7 +110,7 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="@color/dark_surface"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp">
 
@@ -169,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/dark_surface"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp">
 
@@ -197,7 +197,7 @@
                         android:id="@+id/theme_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:thumbTint="@color/volt_green"
+                        android:thumbTint="@color/accent"
                         android:trackTint="@color/text_secondary" />
 
                 </LinearLayout>
@@ -227,7 +227,7 @@
                         android:id="@+id/sound_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:thumbTint="@color/volt_green"
+                        android:thumbTint="@color/accent"
                         android:trackTint="@color/text_secondary" />
 
                 </LinearLayout>
@@ -257,7 +257,7 @@
                         android:id="@+id/vibration_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:thumbTint="@color/volt_green"
+                        android:thumbTint="@color/accent"
                         android:trackTint="@color/text_secondary" />
 
                 </LinearLayout>

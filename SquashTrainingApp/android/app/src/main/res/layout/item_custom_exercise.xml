@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="@color/dark_surface"
+    app:cardBackgroundColor="@color/surface"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
     
@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_marginEnd="12dp"
-            android:background="@color/volt_green"
+            android:background="@color/accent"
             android:visibility="gone" />
         
         <!-- Content -->
@@ -35,7 +35,7 @@
                 android:id="@+id/exercise_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="운동 이름"
+                android:text="?�동 ?�름"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="운동 설명"
+                android:text="?�동 ?�명"
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 android:maxLines="2"
@@ -61,8 +61,8 @@
                     android:id="@+id/exercise_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🎾 카테고리"
-                    android:textColor="@color/volt_green"
+                    android:text="?�� 카테고리"
+                    android:textColor="@color/accent"
                     android:textSize="12sp"
                     android:layout_marginEnd="12dp" />
                 
@@ -70,8 +70,8 @@
                     android:id="@+id/exercise_difficulty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🟢 난이도"
-                    android:textColor="@color/text_secondary"
+                    android:text="?�� ?�이??
+                android:textColor="@color/text_secondary" />
                     android:textSize="12sp"
                     android:layout_marginEnd="12dp" />
                 
@@ -79,7 +79,7 @@
                     android:id="@+id/exercise_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="15분"
+                    android:text="15�?
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:layout_marginEnd="12dp" />
@@ -88,7 +88,7 @@
                     android:id="@+id/exercise_usage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="사용: 5회"
+                    android:text="?�용: 5??
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:visibility="gone" />

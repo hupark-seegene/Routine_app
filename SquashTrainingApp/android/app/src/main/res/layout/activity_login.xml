@@ -36,23 +36,23 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/ic_squash_racket"
-                    android:tint="@color/white" />
+                    android:tint="@color/text_primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="스쿼시 트레이닝 프로"
+                    android:text="?�쿼???�레?�닝 ?�로"
                     android:textSize="24sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_primary"
                     android:textStyle="bold"
                     android:layout_marginTop="16dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="AI 코치와 함께하는 맞춤 트레이닝"
+                    android:text="AI 코치?� ?�께?�는 맞춤 ?�레?�닝"
                     android:textSize="14sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_primary"
                     android:alpha="0.8"
                     android:layout_marginTop="4dp" />
 
@@ -88,8 +88,8 @@
                             android:id="@+id/email_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="이메일"
-                            android:inputType="textEmailAddress"
+                            android:hint="?�메??
+                android:inputType="textEmailAddress"
                             android:drawableStart="@drawable/ic_email"
                             android:drawablePadding="12dp" />
 
@@ -112,7 +112,7 @@
                             android:id="@+id/password_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="비밀번호"
+                            android:hint="비�?번호"
                             android:inputType="textPassword"
                             android:drawableStart="@drawable/ic_lock"
                             android:drawablePadding="12dp" />
@@ -124,7 +124,7 @@
                         android:id="@+id/forgot_password_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="비밀번호를 잊으셨나요?"
+                        android:text="비�?번호�??�으?�나??"
                         android:textColor="@color/primary"
                         android:textSize="14sp"
                         android:layout_gravity="end"
@@ -136,9 +136,9 @@
                         android:id="@+id/sign_in_button"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:text="로그인"
+                        android:text="로그??
                         android:textSize="16sp"
-                        android:textColor="@color/white"
+                        android:textColor="@color/text_primary"
                         app:cornerRadius="28dp"
                         android:layout_marginTop="16dp"
                         android:backgroundTint="@color/primary" />
@@ -148,7 +148,7 @@
                         android:id="@+id/sign_up_button"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:text="회원가입"
+                        android:text="?�원가??
                         android:textSize="16sp"
                         android:textColor="@color/primary"
                         app:cornerRadius="28dp"
@@ -172,7 +172,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="또는"
+                    android:text="?�는"
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"
                     android:layout_marginBottom="16dp" />
@@ -202,7 +202,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Google로 계속하기"
+                            android:text="Google�?계속?�기"
                             android:textSize="16sp"
                             android:textColor="@color/text_primary"
                             android:layout_marginStart="12dp" />
@@ -237,7 +237,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="카카오로 계속하기"
+                            android:text="카카?�로 계속?�기"
                             android:textSize="16sp"
                             android:textColor="#191919"
                             android:layout_marginStart="12dp" />
@@ -268,14 +268,14 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_apple"
-                            android:tint="@color/white" />
+                            android:tint="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Apple로 계속하기"
+                            android:text="Apple�?계속?�기"
                             android:textSize="16sp"
-                            android:textColor="@color/white"
+                            android:textColor="@color/text_primary"
                             android:layout_marginStart="12dp" />
 
                     </LinearLayout>
@@ -289,7 +289,7 @@
                 android:id="@+id/skip_login_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="나중에 로그인하기"
+                android:text="?�중??로그?�하�?
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 android:layout_gravity="center"
@@ -309,7 +309,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🎁 7일 무료 체험"
+                    android:text="?�� 7??무료 체험"
                     android:textSize="16sp"
                     android:textColor="@color/primary"
                     android:textStyle="bold"
@@ -318,7 +318,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="• AI 개인 코치의 맞춤 트레이닝"
+                    android:text="??AI 개인 코치??맞춤 ?�레?�닝"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary"
                     android:layout_marginBottom="4dp" />
@@ -326,7 +326,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="• 전문가 비디오 튜토리얼"
+                    android:text="???�문가 비디???�토리얼"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary"
                     android:layout_marginBottom="4dp" />
@@ -334,7 +334,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="• 상세 성과 분석 및 통계"
+                    android:text="???�세 ?�과 분석 �??�계"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary"
                     android:layout_marginBottom="4dp" />
@@ -342,7 +342,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="• 글로벌 랭킹 및 챌린지"
+                    android:text="??글로벌 ??�� �?챌린지"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary" />
 

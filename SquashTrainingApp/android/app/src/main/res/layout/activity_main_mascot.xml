@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_background">
+    android:background="@color/background">
 
     <!-- Zone Manager - draws feature zones -->
     <com.squashtrainingapp.mascot.ZoneManager
@@ -23,7 +23,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:text="Squash Training Pro"
-        android:textColor="@color/volt_green"
+        android:textColor="@color/accent"
         android:textSize="28sp"
         android:textStyle="bold"
         android:shadowColor="@color/black"

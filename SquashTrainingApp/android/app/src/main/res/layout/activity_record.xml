@@ -3,7 +3,7 @@
     android:id="@+id/record_tab_host"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_background">
+    android:background="@color/background">
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,18 +15,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="RECORD WORKOUT"
-            android:textColor="@color/volt_green"
+            android:textColor="@color/accent"
             android:textSize="24sp"
             android:textStyle="bold"
             android:padding="20dp"
-            android:background="@color/dark_surface"/>
+            android:background="@color/surface"/>
         
         <!-- Tab Widget -->
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/dark_surface"/>
+            android:background="@color/surface"/>
         
         <!-- Tab Content -->
         <FrameLayout
@@ -61,7 +61,7 @@
                         android:hint="e.g., Straight Drive"
                         android:textColor="@color/text_primary"
                         android:textColorHint="@color/text_secondary"
-                        android:backgroundTint="@color/volt_green"
+                        android:backgroundTint="@color/accent"
                         android:layout_marginBottom="20dp"/>
                     
                     <LinearLayout
@@ -91,7 +91,7 @@
                                 android:inputType="number"
                                 android:textColor="@color/text_primary"
                                 android:textColorHint="@color/text_secondary"
-                                android:backgroundTint="@color/volt_green"/>
+                                android:backgroundTint="@color/accent"/>
                         </LinearLayout>
                         
                         <LinearLayout
@@ -116,7 +116,7 @@
                                 android:inputType="number"
                                 android:textColor="@color/text_primary"
                                 android:textColorHint="@color/text_secondary"
-                                android:backgroundTint="@color/volt_green"/>
+                                android:backgroundTint="@color/accent"/>
                         </LinearLayout>
                     </LinearLayout>
                     
@@ -136,7 +136,7 @@
                         android:inputType="number"
                         android:textColor="@color/text_primary"
                         android:textColorHint="@color/text_secondary"
-                        android:backgroundTint="@color/volt_green"/>
+                        android:backgroundTint="@color/accent"/>
                 </LinearLayout>
             </ScrollView>
             
@@ -172,7 +172,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5/10"
-                            android:textColor="@color/volt_green"
+                            android:textColor="@color/accent"
                             android:textSize="16sp"
                             android:textStyle="bold"/>
                     </LinearLayout>
@@ -183,8 +183,8 @@
                         android:layout_height="wrap_content"
                         android:max="10"
                         android:progress="5"
-                        android:progressTint="@color/volt_green"
-                        android:thumbTint="@color/volt_green"
+                        android:progressTint="@color/accent"
+                        android:thumbTint="@color/accent"
                         android:layout_marginBottom="30dp"/>
                     
                     <!-- Condition -->
@@ -207,7 +207,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5/10"
-                            android:textColor="@color/volt_green"
+                            android:textColor="@color/accent"
                             android:textSize="16sp"
                             android:textStyle="bold"/>
                     </LinearLayout>
@@ -218,8 +218,8 @@
                         android:layout_height="wrap_content"
                         android:max="10"
                         android:progress="5"
-                        android:progressTint="@color/volt_green"
-                        android:thumbTint="@color/volt_green"
+                        android:progressTint="@color/accent"
+                        android:thumbTint="@color/accent"
                         android:layout_marginBottom="30dp"/>
                     
                     <!-- Fatigue -->
@@ -242,7 +242,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5/10"
-                            android:textColor="@color/volt_green"
+                            android:textColor="@color/accent"
                             android:textSize="16sp"
                             android:textStyle="bold"/>
                     </LinearLayout>
@@ -253,8 +253,8 @@
                         android:layout_height="wrap_content"
                         android:max="10"
                         android:progress="5"
-                        android:progressTint="@color/volt_green"
-                        android:thumbTint="@color/volt_green"/>
+                        android:progressTint="@color/accent"
+                        android:thumbTint="@color/accent"/>
                 </LinearLayout>
             </ScrollView>
             
@@ -284,7 +284,7 @@
                     android:padding="15dp"
                     android:textColor="@color/text_primary"
                     android:textColorHint="@color/text_secondary"
-                    android:background="@color/dark_surface"
+                    android:background="@color/surface"
                     android:inputType="textMultiLine"/>
             </LinearLayout>
         </FrameLayout>
@@ -295,8 +295,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SAVE RECORD"
-            android:textColor="@color/dark_background"
-            android:backgroundTint="@color/volt_green"
+            android:textColor="@color/background"
+            android:backgroundTint="@color/accent"
             android:layout_margin="20dp"
             android:textStyle="bold"/>
     </LinearLayout>

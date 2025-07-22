@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    app:cardBackgroundColor="@color/dark_surface"
+    app:cardBackgroundColor="@color/surface"
     app:cardCornerRadius="8dp"
     app:cardElevation="2dp">
     
@@ -19,7 +19,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_centerHorizontal="true"
-            android:text="🎯"
+            android:text="?��"
             android:textSize="32sp"
             android:gravity="center" />
         
@@ -29,7 +29,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
-            android:text="🥉"
+            android:text="?��"
             android:textSize="16sp"
             android:gravity="center" />
         
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/achievement_icon"
             android:layout_marginTop="8dp"
-            android:text="업적 이름"
+            android:text="?�적 ?�름"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/achievement_name"
             android:layout_marginTop="4dp"
-            android:text="업적 설명"
+            android:text="?�적 ?�명"
             android:textColor="@color/text_secondary"
             android:textSize="11sp"
             android:gravity="center"
@@ -95,7 +95,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:text="+50P"
-            android:textColor="@color/volt_green"
+            android:textColor="@color/accent"
             android:textSize="10sp"
             android:textStyle="bold" />
         

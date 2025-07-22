@@ -9,9 +9,9 @@
         android:layout_height="56dp"
         android:background="@drawable/round_button_background"
         android:src="@drawable/ic_mic"
-        android:tint="@color/white"
+        android:tint="@color/text_primary"
         android:elevation="6dp"
-        android:contentDescription="음성 명령"
+        android:contentDescription="?�성 명령"
         android:scaleType="centerInside"
         android:padding="16dp" />
     

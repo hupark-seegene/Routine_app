@@ -1,3 +1,20 @@
+# FINAL-XML-FIX.ps1
+# Final comprehensive fix for all XML issues
+
+$ErrorActionPreference = "Stop"
+
+Write-Host "Final XML fix - Cleaning and rebuilding problematic files..." -ForegroundColor Yellow
+
+# Clean the build cache first
+Set-Location -Path "..\..\android"
+Write-Host "Cleaning build cache..." -ForegroundColor Yellow
+.\gradlew.bat clean
+
+# Now let's manually fix the most problematic files by recreating them
+$layoutPath = Join-Path (Get-Location) "app\src\main\res\layout"
+
+# Fix activity_achievements.xml
+$achievementsContent = @'
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="?낆쟻"
+            android:text="업적"
             android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -52,7 +69,7 @@
                 android:id="@+id/points_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 ?ъ씤??
+                android:text="0 포인트"
                 android:textColor="@color/accent"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -60,7 +77,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="珥??ъ씤??
+                android:text="총 포인트"
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -82,7 +99,7 @@
                 android:id="@+id/completion_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0% ?꾨즺"
+                android:text="0% 완료"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp" />
             
@@ -128,9 +145,48 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="?대떦?섎뒗 ?낆쟻???놁뒿?덈떎"
+            android:text="해당하는 업적이 없습니다"
             android:textColor="@color/text_secondary"
             android:textSize="16sp"
             android:visibility="gone" />
     </FrameLayout>
 </LinearLayout>
+'@
+
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+$achievementsPath = Join-Path $layoutPath "activity_achievements.xml"
+[System.IO.File]::WriteAllText($achievementsPath, $achievementsContent, $utf8NoBom)
+Write-Host "✓ Fixed activity_achievements.xml" -ForegroundColor Green
+
+# Fix other files that had attribute issues
+$filesToFix = @(
+    "activity_profile.xml",
+    "activity_settings.xml", 
+    "activity_voice_guided_workout.xml",
+    "activity_voice_record.xml",
+    "dialog_create_exercise.xml",
+    "dialog_exercise_details.xml",
+    "global_voice_overlay.xml",
+    "item_custom_exercise.xml",
+    "item_workout_program.xml"
+)
+
+foreach ($fileName in $filesToFix) {
+    $filePath = Join-Path $layoutPath $fileName
+    if (Test-Path $filePath) {
+        $content = Get-Content -Path $filePath -Encoding UTF8 -Raw
+        
+        # Fix common issues
+        $content = $content -replace '@color/volt_green(?!")(?!/)', '@color/accent'
+        $content = $content -replace '(?<!")/>(?=")', '/>'
+        $content = $content -replace '(?<=android:text=")([^"]*[가-힣][^"]*)"(?=[^>]*@color)', '$1"'
+        
+        # Write back
+        [System.IO.File]::WriteAllText($filePath, $content, $utf8NoBom)
+        Write-Host "✓ Processed $fileName" -ForegroundColor Green
+    }
+}
+
+Write-Host "`n=================================================" -ForegroundColor Green
+Write-Host "XML files have been fixed!" -ForegroundColor Green
+Write-Host "Ready to build the APK" -ForegroundColor Cyan

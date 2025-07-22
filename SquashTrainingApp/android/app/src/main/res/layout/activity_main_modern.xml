@@ -126,7 +126,7 @@
                 android:text="Training Programs"
                 style="@style/PrimaryButton"
                 android:drawableEnd="@drawable/ic_arrow_right"
-                android:drawableTint="@color/white" />
+                android:drawableTint="@color/text_primary" />
 
         </LinearLayout>
 
@@ -141,7 +141,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="72dp"
         android:src="@drawable/ic_mic"
-        android:tint="@color/white"
+        android:tint="@color/text_primary"
         app:backgroundTint="@color/accent"
         app:elevation="6dp" />
 
