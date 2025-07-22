@@ -1,160 +1,72 @@
 # SETUP-EMULATOR-MICROPHONE.ps1
-# Script to configure Android Emulator to use host computer's microphone
+# Configure emulator microphone for voice recognition testing
+
+$ErrorActionPreference = "Stop"
 
 Write-Host "======================================" -ForegroundColor Cyan
-Write-Host "Android Emulator Microphone Setup" -ForegroundColor Cyan
+Write-Host "Emulator Microphone Setup" -ForegroundColor Cyan
 Write-Host "======================================" -ForegroundColor Cyan
 
-# Function to check if emulator is running
-function Check-EmulatorRunning {
-    $adbDevices = & adb devices
-    if ($adbDevices -match "emulator") {
-        return $true
-    }
-    return $false
+$adbPath = "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe"
+$emulatorPath = "$env:LOCALAPPDATA\Android\Sdk\emulator\emulator.exe"
+
+# Check connected devices
+Write-Host "`nChecking connected devices..." -ForegroundColor Yellow
+$devices = & $adbPath devices | Select-String -Pattern "\tdevice$" | ForEach-Object { $_.Line.Split("`t")[0] }
+
+if ($devices.Count -eq 0) {
+    Write-Host "No devices connected!" -ForegroundColor Red
+    Write-Host "Please start an emulator first." -ForegroundColor Yellow
+    exit 1
 }
 
-# Function to get emulator name
-function Get-EmulatorName {
-    $emulators = & emulator -list-avds
-    if ($emulators) {
-        return $emulators[0]
-    }
-    return $null
-}
+Write-Host "Found $($devices.Count) device(s):" -ForegroundColor Green
+$devices | ForEach-Object { Write-Host "  - $_" -ForegroundColor Gray }
 
-# Function to configure AVD for microphone
-function Configure-AVDMicrophone {
-    param($avdName)
+# Configure microphone permissions
+Write-Host "`nConfiguring microphone permissions..." -ForegroundColor Yellow
+
+foreach ($device in $devices) {
+    Write-Host "`n[$device] Setting up microphone..." -ForegroundColor Cyan
     
-    $avdPath = "$env:USERPROFILE\.android\avd\$avdName.avd"
-    $configFile = "$avdPath\config.ini"
+    # Grant RECORD_AUDIO permission
+    & $adbPath -s $device shell pm grant com.squashtrainingapp android.permission.RECORD_AUDIO
+    Write-Host "✓ RECORD_AUDIO permission granted" -ForegroundColor Green
     
-    if (Test-Path $configFile) {
-        Write-Host "`nConfiguring AVD: $avdName" -ForegroundColor Yellow
-        
-        # Read current config
-        $config = Get-Content $configFile
-        
-        # Check and update microphone settings
-        $microphoneSettings = @{
-            "hw.audioInput" = "yes"
-            "hw.microphone" = "yes"
-            "hw.camera.front" = "emulated"
-            "hw.camera.back" = "emulated"
-        }
-        
-        foreach ($setting in $microphoneSettings.GetEnumerator()) {
-            $found = $false
-            for ($i = 0; $i -lt $config.Count; $i++) {
-                if ($config[$i] -match "^$($setting.Key)=") {
-                    $config[$i] = "$($setting.Key)=$($setting.Value)"
-                    $found = $true
-                    Write-Host "Updated: $($setting.Key)=$($setting.Value)" -ForegroundColor Green
-                    break
-                }
-            }
-            if (-not $found) {
-                $config += "$($setting.Key)=$($setting.Value)"
-                Write-Host "Added: $($setting.Key)=$($setting.Value)" -ForegroundColor Green
-            }
-        }
-        
-        # Write back config
-        $config | Set-Content $configFile
-        Write-Host "AVD configuration updated successfully!" -ForegroundColor Green
+    # Enable microphone in settings
+    & $adbPath -s $device shell settings put secure voice_interaction_service com.google.android.googlequicksearchbox/com.google.android.voiceinteraction.GsaVoiceInteractionService
+    Write-Host "✓ Voice interaction service configured" -ForegroundColor Green
+    
+    # Check if Google App is installed
+    $googleApp = & $adbPath -s $device shell pm list packages | Select-String "com.google.android.googlequicksearchbox"
+    if ($googleApp) {
+        Write-Host "✓ Google App found" -ForegroundColor Green
     } else {
-        Write-Host "Config file not found: $configFile" -ForegroundColor Red
+        Write-Host "✗ Google App not found - voice recognition may not work" -ForegroundColor Yellow
     }
 }
 
-# Main execution
-Write-Host "`n1. Checking for running emulator..." -ForegroundColor Yellow
-if (Check-EmulatorRunning) {
-    Write-Host "Emulator is already running. Please close it first." -ForegroundColor Red
-    Write-Host "Run: adb emu kill" -ForegroundColor Yellow
-    Start-Sleep -Seconds 2
-}
+Write-Host "`n======================================" -ForegroundColor Cyan
+Write-Host "Host Microphone Configuration" -ForegroundColor Cyan
+Write-Host "======================================" -ForegroundColor Cyan
 
-Write-Host "`n2. Finding available AVDs..." -ForegroundColor Yellow
-$avdName = Get-EmulatorName
-if (-not $avdName) {
-    Write-Host "No AVD found! Please create an AVD first." -ForegroundColor Red
-    exit 1
-}
+Write-Host "`nIMPORTANT: For voice recognition to work in emulator:" -ForegroundColor Yellow
+Write-Host "1. Open Android Studio" -ForegroundColor White
+Write-Host "2. Go to Tools -> AVD Manager" -ForegroundColor White
+Write-Host "3. Click Edit (pencil icon) on your emulator" -ForegroundColor White
+Write-Host "4. Click 'Show Advanced Settings'" -ForegroundColor White
+Write-Host "5. Under 'Microphone', select:" -ForegroundColor White
+Write-Host "   ✓ 'Virtual microphone uses host audio input'" -ForegroundColor Green
+Write-Host "6. Save and restart the emulator" -ForegroundColor White
 
-Write-Host "Found AVD: $avdName" -ForegroundColor Green
-
-Write-Host "`n3. Configuring AVD for microphone access..." -ForegroundColor Yellow
-Configure-AVDMicrophone -avdName $avdName
-
-Write-Host "`n4. Starting emulator with microphone support..." -ForegroundColor Yellow
-Write-Host "Launching emulator with audio input enabled..." -ForegroundColor Cyan
-
-# Start emulator with specific audio settings
-$emulatorArgs = @(
-    "-avd", $avdName,
-    "-feature", "VirtualMicrophone",
-    "-feature", "AudioInput",
-    "-no-snapshot-load"
-)
-
-Write-Host "Command: emulator $($emulatorArgs -join ' ')" -ForegroundColor Gray
-Start-Process -FilePath "emulator" -ArgumentList $emulatorArgs -NoNewWindow
-
-Write-Host "`n5. Waiting for emulator to boot..." -ForegroundColor Yellow
-$timeout = 120
-$elapsed = 0
-while ($elapsed -lt $timeout) {
-    Start-Sleep -Seconds 5
-    $elapsed += 5
-    
-    if (Check-EmulatorRunning) {
-        $bootCompleted = & adb shell getprop sys.boot_completed 2>$null
-        if ($bootCompleted -eq "1") {
-            Write-Host "Emulator booted successfully!" -ForegroundColor Green
-            break
-        }
-    }
-    Write-Host "Waiting... ($elapsed/$timeout seconds)" -ForegroundColor Gray
-}
-
-if ($elapsed -ge $timeout) {
-    Write-Host "Emulator boot timeout!" -ForegroundColor Red
-    exit 1
-}
-
-Write-Host "`n6. Configuring emulator settings..." -ForegroundColor Yellow
-
-# Grant microphone permission to our app
-Write-Host "Granting microphone permission to app..." -ForegroundColor Cyan
-& adb shell pm grant com.squashtrainingapp android.permission.RECORD_AUDIO 2>$null
-
-# Set audio recording source
-Write-Host "Configuring audio settings..." -ForegroundColor Cyan
-& adb shell settings put system microphone_mute 0
-& adb shell settings put system master_mono 0
-
-Write-Host "`n7. Testing microphone..." -ForegroundColor Yellow
-Write-Host "Opening sound recorder to test microphone..." -ForegroundColor Cyan
-
-# Try to open sound recorder app
-& adb shell am start -a android.provider.MediaStore.RECORD_SOUND_ACTION 2>$null
+Write-Host "`nAlternatively, start emulator with microphone enabled:" -ForegroundColor Cyan
+Write-Host "emulator -avd <AVD_NAME> -feature VirtualMic" -ForegroundColor Gray
 
 Write-Host "`n======================================" -ForegroundColor Green
 Write-Host "Microphone Setup Complete!" -ForegroundColor Green
 Write-Host "======================================" -ForegroundColor Green
 
-Write-Host "`nIMPORTANT NOTES:" -ForegroundColor Yellow
-Write-Host "1. If microphone doesn't work, check Windows Sound Settings" -ForegroundColor White
-Write-Host "2. Ensure your PC microphone is not muted" -ForegroundColor White
-Write-Host "3. In emulator: Settings > Apps > Squash Training > Permissions > Microphone" -ForegroundColor White
-Write-Host "4. Test with Google app: Say 'Ok Google'" -ForegroundColor White
-
-Write-Host "`nTROUBLESHOOTING:" -ForegroundColor Yellow
-Write-Host "- If no audio input: Restart emulator with Cold Boot" -ForegroundColor White
-Write-Host "- Check Windows privacy settings for microphone access" -ForegroundColor White
-Write-Host "- Try: emulator -avd $avdName -feature WindowsHypervisorPlatform" -ForegroundColor White
-
-Write-Host "`nPress any key to continue..." -ForegroundColor Gray
-$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+Write-Host "`nNext steps:" -ForegroundColor Cyan
+Write-Host "1. Restart the emulator with microphone enabled" -ForegroundColor White
+Write-Host "2. Run TEST-VOICE-RECOGNITION.ps1 to test" -ForegroundColor White
+Write-Host "3. Or use a physical device for best results" -ForegroundColor White

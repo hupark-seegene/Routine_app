@@ -106,15 +106,17 @@ public class SplashActivity extends AppCompatActivity {
     private void navigateToNextScreen() {
         Intent intent;
         
+        // ALWAYS go to main screen first - let users experience the app!
+        intent = new Intent(this, SimpleMainActivity.class);
+        
+        // Pass guest mode flag if not logged in
+        if (!authManager.isLoggedIn()) {
+            intent.putExtra("isGuest", true);
+        }
+        
+        // Pass first time user flag for optional onboarding
         if (!onboardingManager.hasCompletedOnboarding()) {
-            // First time user - show onboarding
-            intent = new Intent(this, OnboardingActivity.class);
-        } else if (authManager.isLoggedIn()) {
-            // Returning user - go to main
-            intent = new Intent(this, SimpleMainActivity.class);
-        } else {
-            // Not logged in - show login
-            intent = new Intent(this, LoginActivity.class);
+            intent.putExtra("showOnboardingHint", true);
         }
         
         startActivity(intent);

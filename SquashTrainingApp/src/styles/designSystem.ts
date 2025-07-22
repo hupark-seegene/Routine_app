@@ -10,39 +10,39 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 // Brand Identity
 export const Brand = {
   name: 'Squash Master',
-  tagline: 'Train Like a Champion',
-  primaryColor: '#00D4FF',
-  secondaryColor: '#7B61FF',
+  tagline: 'Train Smart, Play Better',
+  primaryColor: '#F5E6D3',
+  secondaryColor: '#4A5D3A',
 };
 
-// Refined Color Palette - Balanced for readability and aesthetics
+// Refined Color Palette - Zen Minimal Design
 export const Palette = {
-  // Primary Colors - More subtle and professional
+  // Primary Colors - Warm beige tones
   primary: {
-    50: '#E6F9FF',
-    100: '#BAF0FF',
-    200: '#8AE5FF',
-    300: '#5ADAFF',
-    400: '#2DCFFF',
-    500: '#00D4FF', // Main brand color
-    600: '#00A8CC',
-    700: '#007D99',
-    800: '#005266',
-    900: '#002733',
+    50: '#FDFBF8',
+    100: '#FAF5ED',
+    200: '#F7EFE3',
+    300: '#F5E6D3',
+    400: '#F0DCC4',
+    500: '#F5E6D3', // Main brand color - warm beige
+    600: '#E6D4BC',
+    700: '#D4C0A5',
+    800: '#C2AC8E',
+    900: '#A89577',
   },
   
-  // Secondary Colors - Complementary purple
+  // Secondary Colors - Deep olive green
   secondary: {
-    50: '#F3F0FF',
-    100: '#E4DBFF',
-    200: '#CBC0FF',
-    300: '#B0A0FF',
-    400: '#9580FF',
-    500: '#7B61FF', // Secondary brand color
-    600: '#6146EA',
-    700: '#4C2FD7',
-    800: '#3A1FB8',
-    900: '#2A1596',
+    50: '#F0F2ED',
+    100: '#E1E5DB',
+    200: '#C3CBB7',
+    300: '#A5B193',
+    400: '#87976F',
+    500: '#4A5D3A', // Secondary brand color - olive green
+    600: '#3A4A2D',
+    700: '#2D3A22',
+    800: '#202A18',
+    900: '#131A0E',
   },
   
   // Neutral Colors - True grays for better readability
@@ -80,13 +80,13 @@ export const Palette = {
     infoDark: '#2563EB',
   },
   
-  // Exercise Categories - Distinct but harmonious
+  // Exercise Categories - Muted earth tones
   categories: {
-    skill: '#06B6D4',      // Cyan
-    strength: '#EC4899',    // Pink
-    cardio: '#10B981',     // Green
-    fitness: '#F59E0B',    // Amber
-    recovery: '#8B5CF6',   // Violet
+    skill: '#7B8F7B',      // Sage green
+    strength: '#B08D7A',   // Warm taupe
+    cardio: '#8FA68F',     // Soft green
+    fitness: '#C2A878',    // Golden sand
+    recovery: '#9B8B7E',   // Soft brown
   },
 };
 
@@ -374,18 +374,18 @@ export const States = {
 export const LightTheme = {
   name: 'light',
   colors: {
-    background: Palette.neutral[50],
+    background: '#FAFAF8',
     surface: Palette.neutral[0],
-    surfaceVariant: Palette.neutral[100],
+    surfaceVariant: '#F5F5F0',
     primary: Palette.primary[500],
     primaryVariant: Palette.primary[600],
     secondary: Palette.secondary[500],
     secondaryVariant: Palette.secondary[600],
-    text: Palette.neutral[900],
-    textSecondary: Palette.neutral[600],
-    textTertiary: Palette.neutral[400],
-    border: Palette.neutral[200],
-    divider: Palette.neutral[100],
+    text: '#2C2C2C',
+    textSecondary: '#6B6B6B',
+    textTertiary: '#8B8680',
+    border: '#E5E5E0',
+    divider: '#F0F0EC',
     ...Palette.semantic,
   },
   isDark: false,
@@ -394,18 +394,18 @@ export const LightTheme = {
 export const DarkTheme = {
   name: 'dark',
   colors: {
-    background: Palette.neutral[950],
-    surface: Palette.neutral[900],
-    surfaceVariant: Palette.neutral[800],
-    primary: Palette.primary[400],
-    primaryVariant: Palette.primary[300],
-    secondary: Palette.secondary[400],
-    secondaryVariant: Palette.secondary[300],
-    text: Palette.neutral[50],
-    textSecondary: Palette.neutral[300],
-    textTertiary: Palette.neutral[500],
-    border: Palette.neutral[800],
-    divider: Palette.neutral[800],
+    background: '#2C2C2C',
+    surface: '#3A3A3A',
+    surfaceVariant: '#424242',
+    primary: Palette.primary[300],
+    primaryVariant: Palette.primary[200],
+    secondary: Palette.secondary[300],
+    secondaryVariant: Palette.secondary[200],
+    text: '#F5F5F5',
+    textSecondary: '#C0C0C0',
+    textTertiary: '#9A9A9A',
+    border: '#4A4A4A',
+    divider: '#3E3E3E',
     ...Palette.semantic,
   },
   isDark: true,

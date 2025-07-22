@@ -59,7 +59,7 @@
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 android:text="다음"
-                app:cornerRadius="8dp"
+                app:cornerRadius="12dp"
                 app:backgroundTint="@color/accent" />
 
             <com.google.android.material.button.MaterialButton
@@ -70,8 +70,8 @@
                 android:layout_marginStart="8dp"
                 android:text="무료 체험 시작"
                 android:visibility="gone"
-                app:cornerRadius="8dp"
-                app:backgroundTint="@color/primary_color" />
+                app:cornerRadius="12dp"
+                app:backgroundTint="@color/primary" />
 
         </LinearLayout>
 

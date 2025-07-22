@@ -104,6 +104,16 @@ public class SimpleMainActivity extends AppCompatActivity implements
         // Show personalized coaching
         showPersonalizedCoaching();
         
+        // Show guest mode banner if applicable
+        if (getIntent().getBooleanExtra("isGuest", false)) {
+            showGuestModeBanner();
+        }
+        
+        // Show onboarding hint if first time
+        if (getIntent().getBooleanExtra("showOnboardingHint", false)) {
+            showOptionalOnboardingHint();
+        }
+        
         // Check voice permission
         checkVoicePermission();
     }
@@ -411,5 +421,37 @@ public class SimpleMainActivity extends AppCompatActivity implements
             return false;
         }
         */
+    }
+    
+    private void showGuestModeBanner() {
+        // Show a subtle, non-intrusive banner
+        View rootView = findViewById(android.R.id.content);
+        View banner = getLayoutInflater().inflate(R.layout.banner_guest_mode, null);
+        
+        // Add click listener to dismiss
+        banner.findViewById(R.id.dismiss_banner).setOnClickListener(v -> {
+            banner.animate().alpha(0f).setDuration(300).withEndAction(() -> {
+                ((android.view.ViewGroup) rootView).removeView(banner);
+            });
+        });
+        
+        // Add to layout
+        if (rootView instanceof android.view.ViewGroup) {
+            ((android.view.ViewGroup) rootView).addView(banner);
+        }
+        
+        // Auto dismiss after 10 seconds
+        new Handler().postDelayed(() -> {
+            if (banner.getParent() != null) {
+                banner.animate().alpha(0f).setDuration(300).withEndAction(() -> {
+                    ((android.view.ViewGroup) rootView).removeView(banner);
+                });
+            }
+        }, 10000);
+    }
+    
+    private void showOptionalOnboardingHint() {
+        // Show a small hint that onboarding is available
+        Toast.makeText(this, "💡 프리미엄 기능 둘러보기는 설정에서 확인하세요", Toast.LENGTH_LONG).show();
     }
 }

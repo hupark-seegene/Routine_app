@@ -39,8 +39,56 @@ public class ChecklistActivity extends AppCompatActivity {
     
     private void loadExercises() {
         exercises = databaseHelper.getExerciseDao().getAllExercises();
+        
+        // If no exercises, add default daily workout
+        if (exercises.isEmpty()) {
+            addDefaultExercises();
+            exercises = databaseHelper.getExerciseDao().getAllExercises();
+        }
+        
+        // Update progress
+        updateProgress();
+        
         adapter = new ExerciseAdapter();
         recyclerView.setAdapter(adapter);
+    }
+    
+    private void addDefaultExercises() {
+        // Add default squash training exercises
+        String[][] defaultExercises = {
+            {"워밍업 러닝", "Cardio", "10분간 가벼운 조깅으로 몸을 준비합니다"},
+            {"고스팅 드릴", "Skill", "코트 코너를 터치하며 움직임 연습 (3세트 x 30초)"},
+            {"포핸드 스윙 연습", "Skill", "벽에 대고 포핸드 스윙 50회"},
+            {"백핸드 스윙 연습", "Skill", "벽에 대고 백핸드 스윙 50회"},
+            {"런지 운동", "Strength", "각 다리 15회씩 3세트"},
+            {"플랭크", "Strength", "30초 유지 x 3세트"},
+            {"서브 연습", "Skill", "다양한 서브 각 10회씩"},
+            {"쿨다운 스트레칭", "Recovery", "10분간 전신 스트레칭"}
+        };
+        
+        for (String[] ex : defaultExercises) {
+            Exercise exercise = new Exercise();
+            exercise.setName(ex[0]);
+            exercise.setCategory(ex[1]);
+            exercise.setDescription(ex[2]);
+            exercise.setChecked(false);
+            databaseHelper.getExerciseDao().insertExercise(exercise);
+        }
+        
+        Toast.makeText(this, "일일 운동 체크리스트가 준비되었습니다!", Toast.LENGTH_SHORT).show();
+    }
+    
+    private void updateProgress() {
+        int completed = 0;
+        for (Exercise ex : exercises) {
+            if (ex.isChecked()) completed++;
+        }
+        
+        TextView progressText = findViewById(R.id.progress_text);
+        if (progressText != null) {
+            progressText.setText(String.format("오늘의 진행도: %d/%d (%d%%)", 
+                completed, exercises.size(), (completed * 100) / Math.max(exercises.size(), 1)));
+        }
     }
     
     private class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHolder> {
