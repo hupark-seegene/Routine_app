@@ -41,14 +41,24 @@ Write-Info "`n[2/4] Available AVDs:"
 # Start emulator with microphone
 Write-Info "`n[3/4] Starting emulator with microphone support..."
 Write-Info "AVD: $AVD_NAME"
-Write-Info "Options: -use-host-audio -show-kernel"
+Write-Info "Options: Audio input enabled with multiple features"
 
 # Set environment variable for better audio support
 $env:ANDROID_EMULATOR_USE_SYSTEM_LIBS = "1"
 
-# Start emulator in background
+# Start emulator with enhanced audio features
+$emulatorArgs = @(
+    "-avd", $AVD_NAME,
+    "-feature", "VirtualMicrophone",
+    "-feature", "AudioInput",
+    "-feature", "WindowsHypervisorPlatform",
+    "-no-snapshot-load"
+)
+
+Write-Info "Starting with args: $($emulatorArgs -join ' ')"
+
 $emulatorProcess = Start-Process -FilePath "$EMULATOR_PATH\emulator.exe" `
-    -ArgumentList "-avd", $AVD_NAME, "-use-host-audio", "-show-kernel" `
+    -ArgumentList $emulatorArgs `
     -PassThru -WindowStyle Normal
 
 Write-Success "Emulator starting with PID: $($emulatorProcess.Id)"
@@ -76,19 +86,43 @@ if ($waitTime -ge $maxWaitTime) {
     exit 1
 }
 
+# Configure audio settings
+Write-Info "`nConfiguring audio settings..."
+& "$ANDROID_HOME\platform-tools\adb.exe" shell settings put system microphone_mute 0
+Write-Success "Microphone unmuted"
+
 # Grant microphone permissions to our app
 Write-Info "`nGranting microphone permission to SquashTrainingApp..."
 & "$ANDROID_HOME\platform-tools\adb.exe" shell pm grant com.squashtrainingapp android.permission.RECORD_AUDIO
+Write-Success "Permission granted to SquashTrainingApp"
+
+# Grant permission to Google app for testing
+Write-Info "Granting microphone permission to Google app..."
+& "$ANDROID_HOME\platform-tools\adb.exe" shell pm grant com.google.android.googlequicksearchbox android.permission.RECORD_AUDIO 2>$null
+Write-Success "Permission granted to Google app"
+
+# Grant overlay permission for floating button
+Write-Info "Granting overlay permission for floating voice button..."
+& "$ANDROID_HOME\platform-tools\adb.exe" shell appops set com.squashtrainingapp SYSTEM_ALERT_WINDOW allow 2>$null
 
 Write-Success "`n✓ Emulator is ready with microphone support!"
 Write-Info "`nTo test microphone:"
-Write-Host "1. Open SquashTrainingApp"
-Write-Host "2. Long press mascot for 2 seconds"
-Write-Host "3. Tap the microphone button"
-Write-Host "4. Speak into your computer's microphone"
+Write-Host "1. Test with Google app first:"
+Write-Host "   - Open Google app"
+Write-Host "   - Say 'Ok Google' or tap mic icon"
+Write-Host ""
+Write-Host "2. Test in SquashTrainingApp:"
+Write-Host "   - Open the app"
+Write-Host "   - Navigate to Record screen"
+Write-Host "   - Tap the microphone button"
+Write-Host "   - Say: '3세트 기록해줘' or 'Record 3 sets'"
+Write-Host ""
+Write-Host "3. Test wake word:"
+Write-Host "   - Say '헤이 코치' or 'Hey Coach'"
+Write-Host "   - The floating mic button should appear"
 
 Write-Info "`nTroubleshooting tips:"
-Write-Host "- Make sure your computer's microphone is working"
-Write-Host "- Check Windows sound settings"
-Write-Host "- In emulator: Settings > System > Advanced > Microphone"
-Write-Host "- Try: adb shell pm grant com.squashtrainingapp android.permission.RECORD_AUDIO"
+Write-Host "- Ensure Windows microphone privacy is enabled"
+Write-Host "- Check your PC microphone is not muted"
+Write-Host "- In emulator: Settings > Apps > SquashTraining > Permissions"
+Write-Host "- Monitor logs: adb logcat | grep -i 'speech\|voice\|audio'"
