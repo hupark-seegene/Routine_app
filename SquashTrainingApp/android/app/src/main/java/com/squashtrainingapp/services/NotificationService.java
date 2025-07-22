@@ -140,7 +140,7 @@ public class NotificationService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle("⚠️ 연속 기록이 끊길 위기에요!")
-            .setContentText(현재 " + currentStreak + "일 연속 운동 중! 오늘도 계속해볼까요?")
+            .setContentText("현재 " + currentStreak + "일 연속 운동 중! 오늘도 계속해볼까요?")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true);

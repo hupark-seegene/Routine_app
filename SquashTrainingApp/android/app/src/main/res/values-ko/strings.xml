@@ -30,7 +30,7 @@
     <string name="calories">칼로리</string>
     <string name="hours">시간</string>
     <string name="days_streak">일 연속</string>
-    <string name="achievements">업적</string>
+    <string name="achievements_section">업적</string>
     <string name="completed_7_day_streak">7일 연속 달성!</string>
     <string name="first_workout">첫 운동</string>
     <string name="week_warrior">주간 전사</string>

@@ -1,0 +1,24 @@
+{
+    "AverageDuration":  0,
+    "Results":  [
+                    {
+                        "BuildSuccess":  false,
+                        "MemoryUsage":  0,
+                        "TestsPassed":  0,
+                        "Errors":  [
+                                       "Build failed"
+                                   ],
+                        "Success":  false,
+                        "StartTime":  "\/Date(1753175856291)\/",
+                        "Duration":  37.74,
+                        "CycleNumber":  1,
+                        "TotalTests":  10
+                    }
+                ],
+    "SuccessRate":  0,
+    "AverageMemoryUsage":  0,
+    "TotalCycles":  1,
+    "FailedCycles":  1,
+    "TotalDuration":  0.8,
+    "SuccessfulCycles":  0
+}

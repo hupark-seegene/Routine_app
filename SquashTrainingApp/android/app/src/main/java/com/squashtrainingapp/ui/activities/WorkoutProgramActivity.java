@@ -143,8 +143,10 @@ public class WorkoutProgramActivity extends AppCompatActivity implements
     }
     
     private void createNewProgram() {
-        Intent intent = new Intent(this, CreateProgramActivity.class);
-        startActivity(intent);
+        // TODO: Implement CreateProgramActivity
+        Toast.makeText(this, "Create program feature coming soon!", Toast.LENGTH_SHORT).show();
+        // Intent intent = new Intent(this, CreateProgramActivity.class);
+        // startActivity(intent);
     }
     
     @Override
