@@ -9,7 +9,7 @@ This repository contains a React Native project. Always follow these guidelines 
 - project_plan.md와 claude.md, FILE_INVENTORY_ANALYSIS.md, FILE_MANAGEMENT_SYSTEM.md를 지침으로 하여 project를 진행해줘
 - 새로운 build를 할 때마다 ddd를 업데이트 해서 설치를 진행해줘
 - 이전에 만든 ps1를 사용하지말고 새로운 ps1를 생성해서 진행해줘
-- 현재 완성된 app을 생성하여 구동하는게 목표이며, emulator에 (설치 -실행 -모든기능 디버그- 앱삭제- 수정) 이 사이클을 fail/issue가 없을 때까지 계속 반복(x50회 이상)해서 수행해줘
+- 현재 완성된 app을 생성하여 구동하는게 목표이며, emulator에서 안정적으로 실행되도록 해줘
 
 ## Project Management Rules
 
