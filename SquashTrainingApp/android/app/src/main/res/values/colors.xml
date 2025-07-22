@@ -75,4 +75,9 @@
     <!-- Missing colors for subscription screens -->
     <color name="bg_primary">#FAFAFA</color>
     <color name="bg_secondary">#F5F5F5</color>
+    
+    <!-- Medal colors for leaderboard -->
+    <color name="gold">#FFD700</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="bronze">#CD7F32</color>
 </resources>

@@ -208,6 +208,30 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"/>
             
+        <activity
+            android:name=".ui.activities.LeaderboardActivity"
+            android:label="Leaderboard"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.ChallengesActivity"
+            android:label="Challenges"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.CreateChallengeActivity"
+            android:label="Create Challenge"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.ChallengeDetailActivity"
+            android:label="Challenge Detail"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
         <!-- Global Voice Command Service -->
         <service 
             android:name=".services.GlobalVoiceCommandService"

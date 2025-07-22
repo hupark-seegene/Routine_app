@@ -226,22 +226,29 @@ public class ChallengeService {
                                         // Award points
                                         int rewardPoints = challengeDoc.getLong("rewardPoints").intValue();
                                         awardPoints(userId, rewardPoints);
-                                    }
-                                    
-                                    // Update progress
-                                    db.collection("userChallenges").document(docId)
-                                            .update(updates)
-                                            .addOnSuccessListener(aVoid -> {
-                                                if (progress >= targetValue) {
+                                        
+                                        // Update progress
+                                        db.collection("userChallenges").document(docId)
+                                                .update(updates)
+                                                .addOnSuccessListener(aVoid -> {
                                                     callback.onSuccess("Challenge completed! You earned " + rewardPoints + " points!");
-                                                } else {
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    Log.e(TAG, "Failed to update progress", e);
+                                                    callback.onError("Failed to update progress");
+                                                });
+                                    } else {
+                                        // Update progress
+                                        db.collection("userChallenges").document(docId)
+                                                .update(updates)
+                                                .addOnSuccessListener(aVoid -> {
                                                     callback.onSuccess("Progress updated: " + progress + "/" + targetValue);
-                                                }
-                                            })
-                                            .addOnFailureListener(e -> {
-                                                Log.e(TAG, "Failed to update progress", e);
-                                                callback.onError("Failed to update progress");
-                                            });
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    Log.e(TAG, "Failed to update progress", e);
+                                                    callback.onError("Failed to update progress");
+                                                });
+                                    }
                                 });
                     } else {
                         callback.onError("Challenge not found");

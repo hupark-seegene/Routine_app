@@ -101,4 +101,21 @@ public class WorkoutSession {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+    
+    // Additional methods for GPT4CoachingService
+    public int getDuration() {
+        return durationMinutes * 60; // Return duration in seconds
+    }
+    
+    public String getIntensity() {
+        // Return intensity based on duration or notes
+        if (durationMinutes >= 60) return "High";
+        else if (durationMinutes >= 30) return "Medium";
+        else return "Low";
+    }
+    
+    public String getExerciseTypes() {
+        // Return exercise types from session name or default
+        return sessionName != null ? sessionName : "General Training";
+    }
 }
