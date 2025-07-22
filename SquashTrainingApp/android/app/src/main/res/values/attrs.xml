@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Custom attributes for CircularPulseButton -->
+    <declare-styleable name="CircularPulseButton">
+        <attr name="buttonColor" format="color" />
+        <attr name="pulseColor" format="color" />
+        <attr name="glowColor" format="color" />
+    </declare-styleable>
+</resources>

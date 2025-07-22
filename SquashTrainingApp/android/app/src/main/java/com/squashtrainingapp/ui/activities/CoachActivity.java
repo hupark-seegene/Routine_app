@@ -90,8 +90,8 @@ public class CoachActivity extends AppCompatActivity {
         });
         
         askAiButton.setOnClickListener(v -> {
-            // Launch AI Chatbot Activity
-            android.content.Intent intent = new android.content.Intent(this, com.squashtrainingapp.ai.AIChatbotActivity.class);
+            // Launch Voice Assistant Activity (ChatGPT-style UI)
+            android.content.Intent intent = new android.content.Intent(this, VoiceAssistantActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });

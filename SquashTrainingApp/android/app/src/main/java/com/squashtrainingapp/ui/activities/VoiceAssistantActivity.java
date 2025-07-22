@@ -43,7 +43,7 @@ public class VoiceAssistantActivity extends AppCompatActivity implements
     private View backgroundGradient;
     
     private VoiceRecognitionManager voiceManager;
-    private AIResponseEngine aiEngine;
+    private ImprovedAIResponseEngine aiEngine;
     private Handler uiHandler;
     
     private boolean isListening = false;
@@ -111,7 +111,7 @@ public class VoiceAssistantActivity extends AppCompatActivity implements
     private void setupVoiceRecognition() {
         voiceManager = new VoiceRecognitionManager(this);
         voiceManager.setVoiceRecognitionListener(this);
-        voiceManager.setLanguage(Locale.KOREAN); // Support Korean
+        // Korean language support is handled by system locale
     }
     
     private void toggleListening() {
@@ -218,37 +218,32 @@ public class VoiceAssistantActivity extends AppCompatActivity implements
     }
     
     @Override
-    public void onVoiceRecognitionReady() {
+    public void onReadyForSpeech() {
         // Voice recognition is ready
     }
     
     @Override
-    public void onVoiceRecognitionStarted() {
-        // Already handled in startListening
+    public void onEndOfSpeech() {
+        // Speech ended
     }
     
     @Override
-    public void onVoiceRecognitionResult(String result) {
+    public void onResults(String result) {
         stopListening();
         showThinking();
         
         // Process with AI
-        aiEngine.processUserInput(result);
+        aiEngine.getResponse(result);
     }
     
     @Override
-    public void onVoiceRecognitionError(String error) {
+    public void onError(String error) {
         stopListening();
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
     
     @Override
-    public void onVoiceRecognitionPartialResult(String partialResult) {
-        // Could show partial results if desired
-    }
-    
-    @Override
-    public void onAIResponse(String response) {
+    public void onResponse(String response) {
         hideThinking();
         showResponse(response);
         animateBackgroundPulse();
