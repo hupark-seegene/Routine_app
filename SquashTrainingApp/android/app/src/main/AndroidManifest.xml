@@ -26,25 +26,25 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
             
-        <!-- React Native Main Activity (launcher) -->
+        <!-- Simple Main Activity (launcher) -->
         <activity
-            android:name=".ReactMainActivity"
+            android:name=".SimpleMainActivity"
             android:exported="true"
-            android:theme="@style/AppTheme"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         
-        <!-- Simple Main Activity (non-launcher) -->
+        <!-- React Native Main Activity (non-launcher for now) -->
         <activity
-            android:name=".SimpleMainActivity"
+            android:name=".ReactMainActivity"
             android:exported="false"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
         
         <activity
             android:name=".ModernMainActivity"
@@ -200,6 +200,13 @@
             android:label="Set Your Goals"
             android:exported="false"
             android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.PremiumCoachActivity"
+            android:label="AI Premium Coach"
+            android:exported="false"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"/>
             
         <!-- Global Voice Command Service -->
         <service 

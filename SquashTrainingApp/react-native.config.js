@@ -1,8 +1,1 @@
-module.exports = {
-  project: {
-    android: {
-      sourceDir: './android',
-      packageName: 'com.squashtrainingapp',
-    },
-  },
-};
+module.exports = { project: { android: { sourceDir: './android' } } };

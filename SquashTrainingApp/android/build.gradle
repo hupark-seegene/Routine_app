@@ -38,6 +38,10 @@ allprojects {
             // React Native android library is installed from source (node_modules)
             url "$rootDir/../node_modules/react-native/android"
         }
+        maven {
+            // Android JSC is installed from npm
+            url("$rootDir/../node_modules/jsc-android/dist")
+        }
         // Ensure all modules can find React Native
         exclusiveContent {
             forRepository {

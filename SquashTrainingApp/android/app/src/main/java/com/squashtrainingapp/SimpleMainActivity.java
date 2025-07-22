@@ -161,7 +161,8 @@ public class SimpleMainActivity extends AppCompatActivity implements
         // Coach (Premium feature)
         cardCoach.setOnClickListener(v -> {
             if (checkPremiumForAICoach()) {
-                startActivity(new Intent(this, CoachActivity.class));
+                // Use premium AI coach if available
+                startActivity(new Intent(this, PremiumCoachActivity.class));
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });

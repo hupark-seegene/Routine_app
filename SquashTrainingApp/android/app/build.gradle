@@ -14,6 +14,8 @@ android {
         targetSdkVersion 34
         versionCode 5
         versionName "1.0-ddd005"
+        
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "false"
     }
     
     signingConfigs {
@@ -33,7 +35,7 @@ android {
     }
     
     buildFeatures {
-        buildConfig false  // Disable auto-generation to avoid duplicates
+        buildConfig true
     }
     
     packagingOptions {
@@ -108,31 +110,46 @@ dependencies {
     // Kakao Login SDK
     implementation 'com.kakao.sdk:v2-user:2.19.0'
     
+    // OkHttp for API calls
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    
     // Work Manager for background tasks
     implementation 'androidx.work:work-runtime:2.9.0'
     
-    // React Native dependencies
-    implementation("com.facebook.react:react-native:+")
-    implementation("com.facebook.react:react-android:0.72.6")
-    implementation("com.facebook.react:hermes-android:0.72.6")
+    // React Native dependencies - temporarily commented for basic APK
+    // implementation("com.facebook.react:react-native:+")
+    // implementation("com.facebook.react:react-android:+")
+    // implementation("com.facebook.react:hermes-android:+")
 }
 
 // Create JS bundle for React Native
 tasks.register("createJSBundle", Exec) {
     workingDir "../.."
-    commandLine "npx", "react-native", "bundle", 
-        "--platform", "android",
-        "--dev", "false",
-        "--entry-file", "index.js",
-        "--bundle-output", "android/app/src/main/assets/index.android.bundle",
-        "--assets-dest", "android/app/src/main/res"
+    
+    // Use cmd.exe on Windows
+    if (System.properties['os.name'].toLowerCase().contains('windows')) {
+        commandLine "cmd", "/c", "npx", "react-native", "bundle", 
+            "--platform", "android",
+            "--dev", "false",
+            "--entry-file", "index.js",
+            "--bundle-output", "android/app/src/main/assets/index.android.bundle",
+            "--assets-dest", "android/app/src/main/res"
+    } else {
+        commandLine "npx", "react-native", "bundle", 
+            "--platform", "android",
+            "--dev", "false",
+            "--entry-file", "index.js",
+            "--bundle-output", "android/app/src/main/assets/index.android.bundle",
+            "--assets-dest", "android/app/src/main/res"
+    }
     
     doFirst {
         file("src/main/assets").mkdirs()
     }
 }
 
-preBuild.dependsOn createJSBundle
+// Temporarily disable JS bundle creation
+// preBuild.dependsOn createJSBundle
 
 // Create empty assets directory
 task createAssetsDir {
