@@ -179,7 +179,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 "스쿼시 트레이닝의 새로운 기준",
                 "AI 코치와 함께하는 맞춤형 트레이닝으로\n실력을 한 단계 업그레이드하세요",
                 R.drawable.ic_squash_racket,
-                R.raw.welcome_animation
+                R.raw.onboarding_animation_1
         );
     }
     
@@ -189,7 +189,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 "GPT-4 기반 AI 개인 코치",
                 "24시간 당신만을 위한 코치가 실시간으로\n폼 분석과 전술 조언을 제공합니다",
                 R.drawable.ic_coach,
-                R.raw.ai_coach_animation
+                R.raw.onboarding_animation_2
         );
     }
     
@@ -220,7 +220,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 "프리미엄으로 더 빠른 성장을",
                 "7일 무료 체험 후 월 9,900원\n언제든지 취소 가능합니다",
                 R.drawable.ic_premium_crown,
-                R.raw.premium_animation
+                R.raw.onboarding_animation_4
         );
     }
     
@@ -240,7 +240,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 "준비되셨나요?",
                 onboardingManager.getPersonalizedWelcome(),
                 R.drawable.ic_sports,
-                R.raw.start_animation
+                R.raw.onboarding_animation_5
         );
     }
     

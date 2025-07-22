@@ -16,6 +16,15 @@
     <string name="no_speech_detected">No speech detected - try again</string>
     <string name="network_error_try_again">Network error - please try again</string>
     
+    <!-- Training Times Array -->
+    <string-array name="training_times">
+        <item>30분</item>
+        <item>45분</item>
+        <item>60분</item>
+        <item>90분</item>
+        <item>120분</item>
+    </string-array>
+    
     <!-- Navigation -->
     <string name="profile">Profile</string>
     <string name="checklist">Checklist</string>

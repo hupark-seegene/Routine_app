@@ -91,6 +91,11 @@ public class FirebaseAuthManager {
         return getCurrentUser() != null;
     }
     
+    // Alias for isUserLoggedIn
+    public boolean isLoggedIn() {
+        return isUserLoggedIn();
+    }
+    
     // Email/Password Authentication
     public void signUpWithEmail(String email, String password, String displayName, AuthCallback callback) {
         mAuth.createUserWithEmailAndPassword(email, password)
