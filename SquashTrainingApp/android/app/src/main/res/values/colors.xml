@@ -80,4 +80,19 @@
     <color name="gold">#FFD700</color>
     <color name="silver">#C0C0C0</color>
     <color name="bronze">#CD7F32</color>
+    
+    <!-- Chip status colors -->
+    <color name="chip_draft">#9E9E9E</color>
+    <color name="chip_pending">#FF9800</color>
+    <color name="chip_approved">#4CAF50</color>
+    <color name="chip_rejected">#F44336</color>
+    <color name="chip_archived">#607D8B</color>
+    
+    <!-- Common colors -->
+    <color name="light_gray">#E0E0E0</color>
+    <color name="primary_color">@color/primary</color>
+    <color name="text_primary_color">@color/text_primary</color>
+    <color name="text_secondary_color">@color/text_secondary</color>
+    <color name="background_color">@color/background</color>
+    <color name="success_color">@color/success</color>
 </resources>

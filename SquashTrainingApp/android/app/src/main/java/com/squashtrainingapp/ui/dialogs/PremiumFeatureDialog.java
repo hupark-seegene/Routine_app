@@ -115,6 +115,28 @@ public class PremiumFeatureDialog {
         );
     }
     
+    public void showForAnalytics() {
+        show(
+            "고급 분석 대시보드 📈",
+            "데이터 기반의 상세한 분석으로 실력을 향상시키세요.\n\n" +
+            "• 성능 추세 분석\n" +
+            "• 기술 레벨 측정\n" +
+            "• 체력 통계 추적\n" +
+            "• AI 인사이트 제공"
+        );
+    }
+    
+    public void showForMarketplace() {
+        show(
+            "콘텐츠 마켓플레이스 🛒",
+            "프리미엄 트레이닝 콘텐츠에 접근하고 자신의 콘텐츠를 판매하세요.\n\n" +
+            "• 프로 코치 프로그램\n" +
+            "• 고급 드릴 컬렉션\n" +
+            "• 영양 및 체력 계획\n" +
+            "• 콘텐츠 제작자 수익 공유"
+        );
+    }
+    
     public void dismiss() {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();

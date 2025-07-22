@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="정렬 기준"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary_color"
+        android:layout_marginBottom="16dp" />
+    
+    <RadioGroup
+        android:id="@+id/sort_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <RadioButton
+            android:id="@+id/radio_popular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="인기순"
+            android:padding="8dp" />
+        
+        <RadioButton
+            android:id="@+id/radio_newest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="최신순"
+            android:padding="8dp" />
+        
+        <RadioButton
+            android:id="@+id/radio_rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="평점순"
+            android:padding="8dp" />
+        
+        <RadioButton
+            android:id="@+id/radio_price_low"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="가격 낮은순"
+            android:padding="8dp" />
+        
+        <RadioButton
+            android:id="@+id/radio_price_high"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="가격 높은순"
+            android:padding="8dp" />
+    </RadioGroup>
+    
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/apply_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="적용"
+        android:layout_marginTop="24dp" />
+</LinearLayout>
