@@ -1,0 +1,150 @@
+package com.squashtrainingapp.ui.activities;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.squashtrainingapp.R;
+import com.squashtrainingapp.SimpleMainActivity;
+import com.squashtrainingapp.ui.adapters.OnboardingAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class OnboardingActivity extends AppCompatActivity {
+    
+    private ViewPager2 viewPager;
+    private TabLayout tabLayout;
+    private Button nextButton;
+    private Button skipButton;
+    private OnboardingAdapter adapter;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_onboarding);
+        
+        initializeViews();
+        setupOnboarding();
+    }
+    
+    private void initializeViews() {
+        viewPager = findViewById(R.id.onboarding_viewpager);
+        tabLayout = findViewById(R.id.onboarding_tab_layout);
+        nextButton = findViewById(R.id.next_button);
+        skipButton = findViewById(R.id.skip_button);
+    }
+    
+    private void setupOnboarding() {
+        List<OnboardingItem> items = new ArrayList<>();
+        
+        // Page 1: Welcome
+        items.add(new OnboardingItem(
+                R.drawable.onboarding_welcome,
+                "환영합니다! 🎉",
+                "스쿼시 트레이닝 프로의 프리미엄 멤버가 되신 것을 축하합니다! 7일 무료 체험이 시작되었습니다.",
+                "#4CAF50"
+        ));
+        
+        // Page 2: AI Coach
+        items.add(new OnboardingItem(
+                R.drawable.onboarding_ai_coach,
+                "AI 개인 코치 🤖",
+                "GPT-4 기반 AI 코치가 당신의 실력과 목표에 맞춘 맞춤형 트레이닝을 제공합니다.",
+                "#2196F3"
+        ));
+        
+        // Page 3: Analytics
+        items.add(new OnboardingItem(
+                R.drawable.onboarding_analytics,
+                "상세 분석 📊",
+                "운동 데이터를 실시간으로 분석하여 약점을 파악하고 개선 방향을 제시합니다.",
+                "#FF9800"
+        ));
+        
+        // Page 4: Social Features
+        items.add(new OnboardingItem(
+                R.drawable.onboarding_social,
+                "글로벌 커뮤니티 🌍",
+                "전 세계 스쿼시 플레이어들과 경쟁하고, 팀을 만들어 함께 도전하세요!",
+                "#9C27B0"
+        ));
+        
+        // Page 5: Get Started
+        items.add(new OnboardingItem(
+                R.drawable.onboarding_ready,
+                "준비되셨나요? 💪",
+                "목표를 설정하고 첫 운동을 시작해보세요. AI 코치가 모든 단계에서 도와드립니다!",
+                "#F44336"
+        ));
+        
+        adapter = new OnboardingAdapter(items);
+        viewPager.setAdapter(adapter);
+        
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            // Tab dots will be automatically handled
+        }).attach();
+        
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                if (position == items.size() - 1) {
+                    nextButton.setText("시작하기");
+                    skipButton.setVisibility(View.GONE);
+                } else {
+                    nextButton.setText("다음");
+                    skipButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        
+        nextButton.setOnClickListener(v -> {
+            int currentItem = viewPager.getCurrentItem();
+            if (currentItem < items.size() - 1) {
+                viewPager.setCurrentItem(currentItem + 1);
+            } else {
+                completeOnboarding();
+            }
+        });
+        
+        skipButton.setOnClickListener(v -> completeOnboarding());
+    }
+    
+    private void completeOnboarding() {
+        // Save onboarding completion
+        getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .edit()
+                .putBoolean("onboarding_completed", true)
+                .apply();
+        
+        // Navigate to goal setting
+        Intent intent = new Intent(this, GoalSettingActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        finish();
+    }
+    
+    // Data class for onboarding items
+    public static class OnboardingItem {
+        public final int imageResId;
+        public final String title;
+        public final String description;
+        public final String backgroundColor;
+        
+        public OnboardingItem(int imageResId, String title, String description, String backgroundColor) {
+            this.imageResId = imageResId;
+            this.title = title;
+            this.description = description;
+            this.backgroundColor = backgroundColor;
+        }
+    }
+}

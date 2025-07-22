@@ -1,4 +1,6 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 34
@@ -87,28 +89,50 @@ dependencies {
     // Charts
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     
-    // React Native dependencies will be added back once basic build works
-    // implementation("com.facebook.react:react-native:+")
-    // implementation("com.facebook.react:react-android:0.80.1")
-    // implementation("com.facebook.react:hermes-android:0.80.1")
+    // Firebase dependencies
+    implementation platform('com.google.firebase:firebase-bom:32.7.0')
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-functions'
+    
+    // Google Sign-In
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
+    
+    // Google Play Billing
+    implementation 'com.android.billingclient:billing:6.1.0'
+    
+    // Kakao Login SDK
+    implementation 'com.kakao.sdk:v2-user:2.19.0'
+    
+    // Work Manager for background tasks
+    implementation 'androidx.work:work-runtime:2.9.0'
+    
+    // React Native dependencies
+    implementation("com.facebook.react:react-native:+")
+    implementation("com.facebook.react:react-android:0.72.6")
+    implementation("com.facebook.react:hermes-android:0.72.6")
 }
 
-// Skip JS bundle creation for now - will be handled by Metro bundler
-// tasks.register("createJSBundle", Exec) {
-//     workingDir "../.."
-//     commandLine "npx", "react-native", "bundle", 
-//         "--platform", "android",
-//         "--dev", "true",
-//         "--entry-file", "index.js",
-//         "--bundle-output", "android/app/src/main/assets/index.android.bundle",
-//         "--assets-dest", "android/app/src/main/res"
-//     
-//     doFirst {
-//         file("src/main/assets").mkdirs()
-//     }
-// }
+// Create JS bundle for React Native
+tasks.register("createJSBundle", Exec) {
+    workingDir "../.."
+    commandLine "npx", "react-native", "bundle", 
+        "--platform", "android",
+        "--dev", "false",
+        "--entry-file", "index.js",
+        "--bundle-output", "android/app/src/main/assets/index.android.bundle",
+        "--assets-dest", "android/app/src/main/res"
+    
+    doFirst {
+        file("src/main/assets").mkdirs()
+    }
+}
 
-// preBuild.dependsOn createJSBundle
+preBuild.dependsOn createJSBundle
 
 // Create empty assets directory
 task createAssetsDir {

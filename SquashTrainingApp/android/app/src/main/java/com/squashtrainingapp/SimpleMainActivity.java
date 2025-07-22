@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseUser;
 import com.squashtrainingapp.ai.AdvancedAIResponseEngine;
 import com.squashtrainingapp.ai.ExtendedVoiceCommands;
 import com.squashtrainingapp.ai.ImprovedVoiceRecognitionManager;
@@ -25,6 +26,8 @@ import com.squashtrainingapp.models.CoachingAdvice;
 import com.squashtrainingapp.models.User;
 import com.squashtrainingapp.models.WorkoutRecommendation;
 import com.squashtrainingapp.ui.activities.*;
+import com.squashtrainingapp.auth.FirebaseAuthManager;
+import com.squashtrainingapp.ui.dialogs.PremiumFeatureDialog;
 
 import java.util.List;
 
@@ -58,10 +61,29 @@ public class SimpleMainActivity extends AppCompatActivity implements
     private PersonalizedCoachingEngine coachingEngine;
     private SmartRecommendationEngine recommendationEngine;
     private Handler handler = new Handler();
+    private FirebaseAuthManager authManager;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Initialize auth manager
+        authManager = FirebaseAuthManager.getInstance(this);
+        
+        // Check if user needs to login
+        if (!getIntent().getBooleanExtra("isGuest", false)) {
+            if (!authManager.isUserLoggedIn()) {
+                // Redirect to login - temporarily commented for build
+                /*
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+                return;
+                */
+            }
+        }
+        
         setContentView(R.layout.activity_simple_main);
         
         // Initialize database
@@ -136,10 +158,12 @@ public class SimpleMainActivity extends AppCompatActivity implements
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
         
-        // Coach
+        // Coach (Premium feature)
         cardCoach.setOnClickListener(v -> {
-            startActivity(new Intent(this, CoachActivity.class));
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            if (checkPremiumForAICoach()) {
+                startActivity(new Intent(this, CoachActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
         });
         
         // Settings
@@ -329,7 +353,10 @@ public class SimpleMainActivity extends AppCompatActivity implements
                 cardHistory.performClick();
                 break;
             case NAVIGATE_COACH:
-                cardCoach.performClick();
+                // Check if premium for AI coach
+                if (checkPremiumForAICoach()) {
+                    cardCoach.performClick();
+                }
                 break;
             case NAVIGATE_SETTINGS:
                 cardSettings.performClick();
@@ -339,10 +366,12 @@ public class SimpleMainActivity extends AppCompatActivity implements
                 showProgressSummary();
                 break;
             default:
-                // Use AI engine for other queries
-                String response = aiEngine.generateContextualResponse(command.parameters);
-                voiceManager.speak(response);
-                Toast.makeText(this, response, Toast.LENGTH_LONG).show();
+                // Use AI engine for other queries - premium feature
+                if (checkPremiumForAICoach()) {
+                    String response = aiEngine.generateContextualResponse(command.parameters);
+                    voiceManager.speak(response);
+                    Toast.makeText(this, response, Toast.LENGTH_LONG).show();
+                }
         }
     }
     
@@ -351,5 +380,35 @@ public class SimpleMainActivity extends AppCompatActivity implements
                         ", " + currentUser.getCurrentStreak() + "일 연속 운동 중!";
         voiceManager.speak(summary);
         Toast.makeText(this, summary, Toast.LENGTH_LONG).show();
+    }
+    
+    private boolean checkPremiumForAICoach() {
+        // Temporarily simplified for build
+        return true;
+        /*
+        FirebaseUser user = authManager.getCurrentUser();
+        if (user != null && authManager.isPremiumUser()) {
+            return true;
+        } else {
+            PremiumFeatureDialog dialog = new PremiumFeatureDialog(this);
+            dialog.showForAICoach();
+            return false;
+        }
+        */
+    }
+    
+    private boolean checkPremiumForAnalytics() {
+        // Temporarily simplified for build
+        return true;
+        /*
+        FirebaseUser user = authManager.getCurrentUser();
+        if (user != null && authManager.isPremiumUser()) {
+            return true;
+        } else {
+            PremiumFeatureDialog dialog = new PremiumFeatureDialog(this);
+            dialog.showForAdvancedAnalytics();
+            return false;
+        }
+        */
     }
 }

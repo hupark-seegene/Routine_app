@@ -26,16 +26,25 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
             
-        <!-- New Simple Main Activity (launcher) -->
+        <!-- React Native Main Activity (launcher) -->
         <activity
-            android:name=".SimpleMainActivity"
+            android:name=".ReactMainActivity"
             android:exported="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- Simple Main Activity (non-launcher) -->
+        <activity
+            android:name=".SimpleMainActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
         
         <activity
             android:name=".ModernMainActivity"
@@ -165,6 +174,32 @@
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
+            
+        <!-- Authentication and Subscription Activities -->
+        <activity
+            android:name=".ui.activities.LoginActivity"
+            android:label="Login"
+            android:exported="false"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"/>
+            
+        <activity
+            android:name=".ui.activities.SubscriptionActivity"
+            android:label="Premium Subscription"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.OnboardingActivity"
+            android:label="Welcome"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
+        <activity
+            android:name=".ui.activities.GoalSettingActivity"
+            android:label="Set Your Goals"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
             
         <!-- Global Voice Command Service -->
         <service 

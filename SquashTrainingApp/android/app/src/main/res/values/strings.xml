@@ -178,4 +178,8 @@
     <string name="no_data_to_export">No data to export</string>
     <string name="data_exported_to">Data exported to:</string>
     <string name="export_failed">Export failed</string>
+    
+    <!-- Authentication -->
+    <string name="default_web_client_id">YOUR_WEB_CLIENT_ID</string>
+    <string name="kakao_app_key">YOUR_KAKAO_APP_KEY</string>
 </resources>
