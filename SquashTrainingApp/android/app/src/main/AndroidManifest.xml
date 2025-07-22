@@ -26,16 +26,22 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
             
-        <!-- Simple Main Activity (launcher) -->
+        <!-- Splash Activity (launcher) -->
         <activity
-            android:name=".SimpleMainActivity"
+            android:name=".ui.activities.SplashActivity"
             android:exported="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- Simple Main Activity (no longer launcher) -->
+        <activity
+            android:name=".SimpleMainActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
         
         <!-- React Native Main Activity (non-launcher for now) -->
         <activity
@@ -232,6 +238,13 @@
             android:exported="false"
             android:theme="@style/AppTheme"/>
             
+        <!-- Phase 4: Marketing and Referral Activities -->
+        <activity
+            android:name=".marketing.ReferralActivity"
+            android:label="Referral Program"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+            
         <!-- Global Voice Command Service -->
         <service 
             android:name=".services.GlobalVoiceCommandService"
@@ -250,6 +263,17 @@
                 <action android:name="com.squashtrainingapp.WORKOUT_REMINDER" />
             </intent-filter>
         </receiver>
+        
+        <!-- FileProvider for social sharing -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
             
     </application>
 </manifest>

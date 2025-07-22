@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:minWidth="320dp">
+    
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="친구 초대하기"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary_color" />
+        
+        <ImageButton
+            android:id="@+id/close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp" />
+    </LinearLayout>
+    
+    <!-- Email Invite -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이메일로 초대"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+    
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="친구의 이메일 주소"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+    
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/send_email_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="초대장 발송"
+        android:layout_marginBottom="24dp" />
+    
+    <!-- Social Share -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SNS로 공유"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+    
+    <LinearLayout
+        android:id="@+id/social_share_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+        
+        <ImageButton
+            android:id="@+id/kakao_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_kakao"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="#FFE812"
+            android:scaleType="centerInside"
+            android:padding="12dp"
+            android:layout_margin="8dp" />
+        
+        <ImageButton
+            android:id="@+id/facebook_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_facebook"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="#1877F2"
+            android:scaleType="centerInside"
+            android:padding="12dp"
+            android:layout_margin="8dp"
+            android:tint="@android:color/white" />
+        
+        <ImageButton
+            android:id="@+id/instagram_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_instagram"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="#E4405F"
+            android:scaleType="centerInside"
+            android:padding="12dp"
+            android:layout_margin="8dp"
+            android:tint="@android:color/white" />
+        
+        <ImageButton
+            android:id="@+id/whatsapp_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_whatsapp"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="#25D366"
+            android:scaleType="centerInside"
+            android:padding="12dp"
+            android:layout_margin="8dp"
+            android:tint="@android:color/white" />
+    </LinearLayout>
+    
+    <!-- General Share -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/share_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="다른 방법으로 공유" />
+    
+    <!-- Benefits Info -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_background"
+        android:backgroundTint="#F5F5F5"
+        android:padding="12dp"
+        android:layout_marginTop="16dp">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🎁 추천 혜택"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="• 친구가 가입하면 1개월 무료 이용권"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary_color" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="• 친구는 첫 달 50% 할인 혜택"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary_color" />
+    </LinearLayout>
+</LinearLayout>
