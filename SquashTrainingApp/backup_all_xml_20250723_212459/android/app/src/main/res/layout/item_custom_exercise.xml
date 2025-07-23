@@ -35,7 +35,7 @@
                 android:id="@+id/exercise_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="운동 Name"
+                android:text="운동 이름"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -70,7 +70,7 @@
                     android:id="@+id/exercise_difficulty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="초급 Level"
+                    android:text="초급 레벨"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
                 

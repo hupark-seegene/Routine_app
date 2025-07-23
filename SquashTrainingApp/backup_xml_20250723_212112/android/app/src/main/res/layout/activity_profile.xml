@@ -73,7 +73,7 @@
                     android:id="@+id/settings_button"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:text="Settings"
+                    android:text="설정"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:textColor="@color/text_secondary" />
             </LinearLayout>

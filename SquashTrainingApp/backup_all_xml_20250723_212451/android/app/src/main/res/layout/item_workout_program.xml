@@ -44,7 +44,7 @@
                 android:id="@+id/program_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="프로그램 Name"
+                android:text="프로그램 이름"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -79,7 +79,7 @@
                     android:id="@+id/program_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4주 · 3 times a week"
+                    android:text="4주 · 주 3회"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -95,7 +95,7 @@
                     android:id="@+id/progress_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="25% Complete (3/12회)"
+                    android:text="25% 완료 (3/12회)"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:layout_marginBottom="4dp" />

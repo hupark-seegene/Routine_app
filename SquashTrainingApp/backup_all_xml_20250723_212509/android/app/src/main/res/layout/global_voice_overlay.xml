@@ -66,7 +66,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="??'?�로??보여�?\n??'?�동 ?�작?�자'\n??'체크리스???�어�?\n??'?�늘 ?�동 기록?�줘'\n??'AI Coach 불러�?"
+                android:text="??'?�로??보여�?\n??'?�동 ?�작?�자'\n??'체크리스???�어�?\n??'?�늘 ?�동 기록?�줘'\n??'AI 코치 불러�?"
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:lineSpacingMultiplier="1.2" />
@@ -76,7 +76,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="'Cancel'라고 말하면 음성 명령이 종료됩니다"
+            android:text="'취소'라고 말하면 음성 명령이 종료됩니다"
             android:textColor="@color/text_primary"
             android:textSize="12sp" />
     </LinearLayout>
