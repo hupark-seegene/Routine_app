@@ -14,7 +14,7 @@
             android:id="@+id/exercise_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="?�동 ?�름"
+            android:text="?대룞 ?대쫫"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -39,8 +39,8 @@
                 android:id="@+id/exercise_difficulty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="?�� ?�이??
-                android:textColor="@color/text_secondary" />
+                android:text="난이도"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
         </LinearLayout>
         
@@ -67,10 +67,9 @@
                     android:id="@+id/exercise_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="15�?
+                    android:text="15분"
                     android:textColor="@color/text_primary"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                    android:textSize="20sp" />
             
             <LinearLayout
                 android:layout_width="0dp"
@@ -81,7 +80,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="?�트/반복"
+                    android:text="세트/반복"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
                 

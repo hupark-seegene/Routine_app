@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="?�성 명령 ?�시:"
-                android:textColor="#B3FFFFFF"
+                android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp" />
             
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="??'?�로??보여�?\n??'?�동 ?�작?�자'\n??'체크리스???�어�?\n??'?�늘 ?�동 기록?�줘'\n??'AI 코치 불러�?"
-                android:textColor="#B3FFFFFF"
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:lineSpacingMultiplier="1.2" />
         </LinearLayout>
@@ -76,10 +76,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="'취소'?�고 말하�??�성 명령??종료?�니??
-                android:textColor="@color/text_primary" />
-            android:textSize="12sp"
-            android:layout_marginTop="24dp" />
+            android:text="'취소'라고 말하면 음성 명령이 종료됩니다"
+            android:textColor="@color/text_primary"
+            android:textSize="12sp" />
     </LinearLayout>
     
     <!-- Bottom hint -->

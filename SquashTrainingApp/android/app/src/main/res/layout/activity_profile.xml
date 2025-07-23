@@ -73,10 +73,9 @@
                     android:id="@+id/settings_button"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:text="??
-                android:text="?섏젙" />
+                    android:text="설정"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:textColor="@color/text_secondary"/>
+                    android:textColor="@color/text_secondary" />
             </LinearLayout>
             
             <!-- Experience Bar -->
@@ -295,7 +294,7 @@
                 android:layout_marginEnd="8dp" />
             
             <Button
-                android:id="@+id/settings_button"
+                android:id="@+id/settings_button_bottom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

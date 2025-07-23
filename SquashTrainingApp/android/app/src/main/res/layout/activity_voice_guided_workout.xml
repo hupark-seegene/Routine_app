@@ -49,9 +49,9 @@
         android:layout_below="@id/workout_progress_bar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
-        android:text="?�작 버튼???�러주세??
-                android:text="10:00"
-        android:textColor="@color/text_secondary" />
+        android:text="시작 버튼을 눌러주세요"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp" />
     
     <!-- Voice Wave Animation -->
     <com.squashtrainingapp.ui.widgets.VoiceWaveView

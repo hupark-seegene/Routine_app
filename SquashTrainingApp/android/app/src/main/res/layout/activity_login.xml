@@ -88,8 +88,8 @@
                             android:id="@+id/email_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="?�메??
-                android:inputType="textEmailAddress"
+                            android:hint="이메일"
+                            android:inputType="textEmailAddress"
                             android:drawableStart="@drawable/ic_email"
                             android:drawablePadding="12dp" />
 

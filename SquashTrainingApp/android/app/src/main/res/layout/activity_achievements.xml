@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="?낆쟻"
+            android:text="업적"
             android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -52,7 +52,7 @@
                 android:id="@+id/points_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 ?ъ씤??
+                android:text="0 포인트"
                 android:textColor="@color/accent"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -60,7 +60,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="珥??ъ씤??
+                android:text="총 포인트"
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -82,7 +82,7 @@
                 android:id="@+id/completion_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0% ?꾨즺"
+                android:text="0% 완료"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp" />
             
@@ -128,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="?대떦?섎뒗 ?낆쟻???놁뒿?덈떎"
+            android:text="해당하는 업적이 없습니다"
             android:textColor="@color/text_secondary"
             android:textSize="16sp"
             android:visibility="gone" />

@@ -67,7 +67,7 @@
                     android:id="@+id/radio_auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Auto / ?�동"
+                    android:text="Auto / 자동"
                     android:textColor="@color/text_primary"
                     android:buttonTint="@color/accent" />
 
@@ -75,8 +75,7 @@
                     android:id="@+id/radio_korean"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="?�국??
-                android:text="?쒓뎅?? />
+                    android:text="한국어"
                     android:buttonTint="@color/accent" />
 
                 <RadioButton
