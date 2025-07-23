@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
             android:id="@+id/exercise_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="?대룞 ?대쫫"
+            android:text="Exercise Name"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -30,7 +30,7 @@
                 android:id="@+id/exercise_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="?�� 카테고리"
+                android:text="Exercise Category"
                 android:textColor="@color/accent"
                 android:textSize="14sp"
                 android:layout_marginEnd="16dp" />
@@ -59,7 +59,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="?�간"
+                    android:text="Duration"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
                 
@@ -67,7 +67,7 @@
                     android:id="@+id/exercise_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="15분"
+                    android:text="15 min"
                     android:textColor="@color/text_primary"
                     android:textSize="20sp" />
             
@@ -80,7 +80,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="세트/반복"
+                    android:text="Sets/Reps"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
                 
@@ -88,7 +88,7 @@
                     android:id="@+id/exercise_sets_reps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3?�트 x 10??
+                    android:text="3 sets x 10 reps"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -102,7 +102,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="?�계"
+                    android:text="Usage"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
                 
@@ -110,7 +110,7 @@
                     android:id="@+id/exercise_usage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="?�용: 5??
+                    android:text="Usage: 5 times"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -125,7 +125,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="?�행 방법"
+            android:text="Instructions"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
             android:layout_marginBottom="8dp" />
@@ -134,7 +134,7 @@
             android:id="@+id/exercise_instructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="?�동 ?�행 방법???�기???�시?�니??"
+            android:text="Exercise instructions will be shown here"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:lineSpacingExtra="2dp"
@@ -143,7 +143,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="??�?주의?�항"
+            android:text="Tips & Precautions"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
             android:layout_marginBottom="8dp" />
@@ -152,7 +152,7 @@
             android:id="@+id/exercise_tips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="?�과 주의?�항???�기???�시?�니??"
+            android:text="Tips and precautions will be displayed here"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:lineSpacingExtra="2dp" />

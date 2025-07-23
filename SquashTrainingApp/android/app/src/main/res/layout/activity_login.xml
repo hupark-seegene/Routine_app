@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="?�쿼???�레?�닝 ?�로"
+                    android:text="Squash Training Pro"
                     android:textSize="24sp"
                     android:textColor="@color/text_primary"
                     android:textStyle="bold"
@@ -50,7 +50,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="AI 코치?� ?�께?�는 맞춤 ?�레?�닝"
+                    android:text="Personalized training with AI coach"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary"
                     android:alpha="0.8"
@@ -88,7 +88,7 @@
                             android:id="@+id/email_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="이메일"
+                            android:hint="Email"
                             android:inputType="textEmailAddress"
                             android:drawableStart="@drawable/ic_email"
                             android:drawablePadding="12dp" />
@@ -112,7 +112,7 @@
                             android:id="@+id/password_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="비�?번호"
+                            android:hint="Password"
                             android:inputType="textPassword"
                             android:drawableStart="@drawable/ic_lock"
                             android:drawablePadding="12dp" />
@@ -124,7 +124,7 @@
                         android:id="@+id/forgot_password_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="비�?번호�??�으?�나??"
+                        android:text="Forgot password?"
                         android:textColor="@color/primary"
                         android:textSize="14sp"
                         android:layout_gravity="end"
@@ -136,7 +136,7 @@
                         android:id="@+id/sign_in_button"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:text="로그??
+                        android:text="Sign In"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         app:cornerRadius="28dp"
@@ -148,7 +148,7 @@
                         android:id="@+id/sign_up_button"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:text="?�원가??
+                        android:text="Sign Up"
                         android:textSize="16sp"
                         android:textColor="@color/primary"
                         app:cornerRadius="28dp"
@@ -172,7 +172,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="?�는"
+                    android:text="OR"
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"
                     android:layout_marginBottom="16dp" />
@@ -202,7 +202,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Google�?계속?�기"
+                            android:text="Continue with Google"
                             android:textSize="16sp"
                             android:textColor="@color/text_primary"
                             android:layout_marginStart="12dp" />
@@ -237,7 +237,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="카카?�로 계속?�기"
+                            android:text="Continue with Kakao"
                             android:textSize="16sp"
                             android:textColor="#191919"
                             android:layout_marginStart="12dp" />
@@ -273,7 +273,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Apple�?계속?�기"
+                            android:text="Continue with Apple"
                             android:textSize="16sp"
                             android:textColor="@color/text_primary"
                             android:layout_marginStart="12dp" />
@@ -289,7 +289,7 @@
                 android:id="@+id/skip_login_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="?�중??로그?�하�?
+                android:text="Guest Login"
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 android:layout_gravity="center"
@@ -309,7 +309,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="?�� 7??무료 체험"
+                    android:text="Free 7-day trial"
                     android:textSize="16sp"
                     android:textColor="@color/primary"
                     android:textStyle="bold"
@@ -318,7 +318,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="??AI 개인 코치??맞춤 ?�레?�닝"
+                    android:text="• Personalized training with AI coach"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary"
                     android:layout_marginBottom="4dp" />
@@ -326,7 +326,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="???�문가 비디???�토리얼"
+                    android:text="• Expert video tutorials"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary"
                     android:layout_marginBottom="4dp" />
@@ -334,7 +334,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="???�세 ?�과 분석 �??�계"
+                    android:text="• Detailed performance analysis"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary"
                     android:layout_marginBottom="4dp" />
@@ -342,7 +342,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="??글로벌 ??�� �?챌린지"
+                    android:text="• Global player challenges"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary" />
 
@@ -361,3 +361,4 @@
         android:visibility="gone" />
 
 </RelativeLayout>
+

@@ -117,7 +117,7 @@
                 android:id="@+id/radio_fitness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fitness improvement & diet"
+                android:text="Fitness improvement &amp; diet"
                 android:padding="12dp"
                 android:textSize="16sp" />
 
@@ -125,7 +125,7 @@
                 android:id="@+id/radio_technique"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Technique improvement & form"
+                android:text="Technique improvement &amp; form"
                 android:padding="12dp"
                 android:textSize="16sp" />
 

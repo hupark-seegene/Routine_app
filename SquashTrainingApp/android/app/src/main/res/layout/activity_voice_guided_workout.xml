@@ -123,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="?�성 가?�드가 ?�동???�내?�드립니??
+            android:text="Voice guide will automatically assist you"
             android:textSize="14sp"
             android:textColor="@color/text_secondary"
             android:gravity="center" />
